@@ -15,4 +15,14 @@ public class Explosion : MonoBehaviour {
             }
         }
     }
+    void OnDestroy()
+    {
+        PlayerController[] players = GameObject.FindObjectsOfType<PlayerController>();
+        foreach (PlayerController gplayer in players)
+        {
+            if(gplayer.player == player) {
+                gplayer.removeBomb();
+            }
+        }
+    }
 }

@@ -9,9 +9,13 @@ public class BombDrop : MonoBehaviour {
             Vector2 pos = transform.position;
             pos.x = Mathf.Round(pos.x);
             pos.y = Mathf.Round(pos.y);
-
-            GameObject bomb = (GameObject)Instantiate(bombPrefab, pos, Quaternion.identity);
-            bomb.GetComponent<Bomb>().player = GetComponent<PlayerController>().player;
+            
+            if (GetComponent<PlayerController>().getBombs() < 3)
+            {
+                GameObject bomb = (GameObject)Instantiate(bombPrefab, pos, Quaternion.identity);
+                bomb.GetComponent<Bomb>().player = GetComponent<PlayerController>().player;
+                GetComponent<PlayerController>().addBomb();
+            }
         }
     }
 }
