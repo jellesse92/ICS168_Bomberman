@@ -10,14 +10,14 @@ public class PlayerController : MonoBehaviour {
     //PLAYER DEFAULT STATS
     const float POWER_UP_TIME = 5.0f;
     const float DEFAULT_SPEED = 6f;
-    const int DEFAULT_EXPLOSION_MULTIPLIER = 1;
+    const int DEFAULT_EXPLOSION_MULTIPLIER = 0;
     const int DEFAULT_BOMB_AMOUNT = 1;
 
     public int player = -1;
 
-    public float speed = DEFAULT_SPEED;                                     //Speed player moves at
-    public int explosionMultiplier = DEFAULT_EXPLOSION_MULTIPLIER;          //For increasing explosion size
-    public int maxBombsAllowed = DEFAULT_BOMB_AMOUNT;                       //Max amount of bombs player can place 
+    float speed = DEFAULT_SPEED;                                            //Speed player moves at
+    int explosionMultiplier = DEFAULT_EXPLOSION_MULTIPLIER;                 //For increasing explosion size
+    int maxBombsAllowed = DEFAULT_BOMB_AMOUNT;                              //Max amount of bombs player can place 
     public GameObject spawnLocation;                                        //Location player set to spawn at
     public GameController gcScript;                                         //For repeated access of game controller script
 
@@ -84,6 +84,8 @@ public class PlayerController : MonoBehaviour {
             ActivatePowerUp("PowerUp_Sprint");
         if (obj.tag == "BuffExplosion")
             ActivatePowerUp("PowerUp_Explosion");
+        if (obj.tag == "BuffLimit")
+            ActivatePowerUp("PowerUp_Limit");
     }
 
     //Activates power up with given buff name
@@ -106,5 +108,22 @@ public class PlayerController : MonoBehaviour {
         explosionMultiplier++;
         yield return new WaitForSeconds(POWER_UP_TIME);
         explosionMultiplier = 1;
+    }
+
+    IEnumerator PowerUp_Limit()
+    {
+        maxBombsAllowed++;
+        yield return new WaitForSeconds(POWER_UP_TIME);
+        maxBombsAllowed = DEFAULT_BOMB_AMOUNT;
+    }
+
+    public bool BombLimitReached()
+    {
+        return getBombs() < maxBombsAllowed;
+    }
+
+    public int GetExplosionMulti()
+    {
+        return explosionMultiplier;
     }
 }

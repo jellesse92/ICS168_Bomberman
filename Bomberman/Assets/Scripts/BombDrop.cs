@@ -13,10 +13,11 @@ public class BombDrop : MonoBehaviour {
             pos.y = Mathf.Round(pos.y);
 
             
-            if (GetComponent<PlayerController>().getBombs() < GetComponent<PlayerController>().maxBombsAllowed)
+            if (GetComponent<PlayerController>().BombLimitReached())
             {
                 GameObject bomb = (GameObject)Instantiate(bombPrefab, pos, Quaternion.identity);
                 bomb.GetComponent<Bomb>().player = GetComponent<PlayerController>().player;
+                bomb.GetComponent<Bomb>().multiplier = GetComponent<PlayerController>().GetExplosionMulti();
                 GetComponent<PlayerController>().addBomb();
             }
         }

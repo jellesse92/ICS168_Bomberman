@@ -2,10 +2,12 @@
 using System.Collections;
 
 public class Bomb : MonoBehaviour {
-    // Explosion Prefab
     public int player = -1;
-    int released = 1;
     public GameObject explosionPrefab;
+
+    public int multiplier = 0;
+
+    int released = 1;
 
     void Start()
     {
@@ -26,12 +28,12 @@ public class Bomb : MonoBehaviour {
         if(released == 0)
         {
             released = 1;
-            //
         }
     }
 
     void OnDestroy() {
         GameObject explosion = (GameObject)Instantiate(explosionPrefab, transform.position, Quaternion.identity);
-        explosion.GetComponent<Explosion>().player = player;
+        explosion.GetComponent<ExplosionScript>().player = player;
+        explosion.GetComponent<ExplosionScript>().Resize((float)multiplier * .20f + .25f);
     }
 }
