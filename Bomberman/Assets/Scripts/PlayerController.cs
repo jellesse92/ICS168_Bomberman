@@ -5,11 +5,25 @@ public class PlayerController : MonoBehaviour {
 
     //TEMPORARY FUNCTIONALITY
     int lives = 3;              //Amount of lives player has
+    int bombs = 0;              //Number of bombs player has dropped
 
     public int player = -1;
     public float speed = 6;                 //Speed player moves at
     public GameObject spawnLocation;        //Location player set to spawn at
     public GameController gcScript;         //For repeated access of game controller script
+
+    public int getBombs()
+    {
+        return bombs;
+    }
+    public void addBomb()
+    {
+        bombs++;
+    }
+    public void removeBomb()
+    {
+        bombs--;
+    }
 
     void Awake()
     {
