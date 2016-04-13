@@ -5,6 +5,7 @@ public class PlayerController : MonoBehaviour {
 
     //TEMPORARY FUNCTIONALITY
     int lives = 3;              //Amount of lives player has
+    int bombs = 0;              //Number of bombs player has dropped
 
     //PLAYER DEFAULT STATS
     const float POWER_UP_TIME = 5.0f;
@@ -19,6 +20,19 @@ public class PlayerController : MonoBehaviour {
     public int maxBombsAllowed = DEFAULT_BOMB_AMOUNT;                       //Max amount of bombs player can place 
     public GameObject spawnLocation;                                        //Location player set to spawn at
     public GameController gcScript;                                         //For repeated access of game controller script
+
+    public int getBombs()
+    {
+        return bombs;
+    }
+    public void addBomb()
+    {
+        bombs++;
+    }
+    public void removeBomb()
+    {
+        bombs--;
+    }
 
     void Awake()
     {

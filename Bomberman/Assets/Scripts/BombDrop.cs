@@ -12,20 +12,14 @@ public class BombDrop : MonoBehaviour {
             pos.x = Mathf.Round(pos.x);
             pos.y = Mathf.Round(pos.y);
 
-            if(bombs_placed < GetComponent<PlayerController>().maxBombsAllowed)
+            
+            if (GetComponent<PlayerController>().getBombs() < GetComponent<PlayerController>().maxBombsAllowed)
             {
-                StartCoroutine("PlacedBomb");
                 GameObject bomb = (GameObject)Instantiate(bombPrefab, pos, Quaternion.identity);
                 bomb.GetComponent<Bomb>().player = GetComponent<PlayerController>().player;
+                GetComponent<PlayerController>().addBomb();
             }
-
         }
     }
-
-    IEnumerator PlacedBomb()
-    {
-        bombs_placed++;
-        yield return new WaitForSeconds(3.0f);
-        bombs_placed--;
-    }
+   
 }
