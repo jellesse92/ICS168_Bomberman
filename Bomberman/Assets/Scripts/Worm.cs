@@ -14,6 +14,14 @@ public class Worm : MonoBehaviour {
         int r = Random.Range(-1, 2);
         return (Random.value < 0.5) ? new Vector2(r, 0) : new Vector2(0, r);
     }
+
+    void OnCollisionEnter2D(Collision2D gco)
+    {
+        if(gco.gameObject.tag == "Player")
+        {
+            gco.gameObject.GetComponent<PlayerController>().Damage();
+        }
+    }
     
     bool isValidDir(Vector2 dir) {        
         // Linecast to find out if anything is between worm and worm+dir
