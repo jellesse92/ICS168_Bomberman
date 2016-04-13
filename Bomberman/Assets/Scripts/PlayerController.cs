@@ -7,10 +7,19 @@ public class PlayerController : MonoBehaviour {
     int lives = 3;              //Amount of lives player has
     int bombs = 0;              //Number of bombs player has dropped
 
+    //PLAYER DEFAULT STATS
+    const float POWER_UP_TIME = 5.0f;
+    const float DEFAULT_SPEED = 6f;
+    const int DEFAULT_EXPLOSION_MULTIPLIER = 1;
+    const int DEFAULT_BOMB_AMOUNT = 1;
+
     public int player = -1;
-    public float speed = 6;                 //Speed player moves at
-    public GameObject spawnLocation;        //Location player set to spawn at
-    public GameController gcScript;         //For repeated access of game controller script
+
+    public float speed = DEFAULT_SPEED;                                     //Speed player moves at
+    public int explosionMultiplier = DEFAULT_EXPLOSION_MULTIPLIER;          //For increasing explosion size
+    public int maxBombsAllowed = DEFAULT_BOMB_AMOUNT;                       //Max amount of bombs player can place 
+    public GameObject spawnLocation;                                        //Location player set to spawn at
+    public GameController gcScript;                                         //For repeated access of game controller script
 
     public int getBombs()
     {
@@ -58,5 +67,44 @@ public class PlayerController : MonoBehaviour {
             gcScript.PlayerDied(0);
             gameObject.SetActive(false);
         }
+    }
+
+    void OnParticleCollision(GameObject obj)
+    {
+        if (obj.tag == "Explosion")
+        {
+            Damage();
+            Debug.Log("Died to Player: " + obj.transform.parent.GetComponent<ExplosionScript>().player);
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D obj)
+    {
+        if (obj.tag == "BuffSpeed")
+            ActivatePowerUp("PowerUp_Sprint");
+        if (obj.tag == "BuffExplosion")
+            ActivatePowerUp("PowerUp_Explosion");
+    }
+
+    //Activates power up with given buff name
+    void ActivatePowerUp(string buff)
+    {
+        StopCoroutine(buff);                    //Prevents it from returning to default speed due to previous call
+        StartCoroutine(buff);                   //in the scenario the player pick ups another speed buff
+    }
+
+    //For temporary activation of increased player speed
+    IEnumerator PowerUp_Sprint()
+    {
+        speed = 12f;
+        yield return new WaitForSeconds(POWER_UP_TIME);
+        speed = DEFAULT_SPEED;
+    }
+
+    IEnumerator PowerUp_Explosion()
+    {
+        explosionMultiplier++;
+        yield return new WaitForSeconds(POWER_UP_TIME);
+        explosionMultiplier = 1;
     }
 }
