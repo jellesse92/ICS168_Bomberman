@@ -7,11 +7,15 @@ public class PickUpScript : MonoBehaviour {
 	void Awake () {
         Randomize();
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+
+    void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.gameObject.tag == "Player")
+        {
+            col.gameObject.GetComponent<PlayerController>().PickUp(gameObject.tag);
+            gameObject.SetActive(false);
+        }
+    }
 
     void Randomize()
     {

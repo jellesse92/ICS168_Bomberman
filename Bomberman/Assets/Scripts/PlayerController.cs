@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour {
     int explosionMultiplier = DEFAULT_EXPLOSION_MULTIPLIER;                 //For increasing explosion size
     int maxBombsAllowed = DEFAULT_BOMB_AMOUNT;                              //Max amount of bombs player can place 
     public GameObject spawnLocation;                                        //Location player set to spawn at
-    public GameController gcScript;                                         //For repeated access of game controller script
+    GameController gcScript;                                                //For repeated access of game controller script
 
     public int getBombs()
     {
@@ -61,12 +61,16 @@ public class PlayerController : MonoBehaviour {
     public void Damage()
     {
         Respawn();
+
+        //Restore when activating mode with Lives
+        /*
         //TEMPORARY ASPECT
         lives--;
         if (lives < 0) { 
             gcScript.PlayerDied(0);
             gameObject.SetActive(false);
         }
+        */
     }
 
     void OnParticleCollision(GameObject obj)
@@ -78,13 +82,13 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    void OnTriggerEnter2D(Collider2D obj)
+    public void PickUp(string name)
     {
-        if (obj.tag == "BuffSpeed")
+        if (name == "BuffSpeed")
             ActivatePowerUp("PowerUp_Sprint");
-        if (obj.tag == "BuffExplosion")
+        if (name == "BuffExplosion")
             ActivatePowerUp("PowerUp_Explosion");
-        if (obj.tag == "BuffLimit")
+        if (name == "BuffLimit")
             ActivatePowerUp("PowerUp_Limit");
     }
 
