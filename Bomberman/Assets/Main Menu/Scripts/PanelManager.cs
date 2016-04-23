@@ -7,13 +7,30 @@ using System.Collections.Generic;
 public class PanelManager : MonoBehaviour {
 
 	public Animator initiallyOpen;
+	public bool loggedIn = false;
+
+	public InputField inputUsername;
+	public InputField inputPassword;
+	public InputField inputRepassword;
+
+	public InputField loginUsername;
+	public InputField loginPassword;
 
 	private int m_OpenParameterId;
 	private Animator m_Open;
 	private GameObject m_PreviouslySelected;
+	
+	private string username = "";
+	private string password = "";
+	private string repassword = "";
 
 	const string k_OpenTransitionName = "Open";
 	const string k_ClosedStateName = "Closed";
+
+	public void OnPlay()
+	{
+		Application.LoadLevel (1);
+	}
 
 	public void OnEnable()
 	{
@@ -70,6 +87,38 @@ public class PanelManager : MonoBehaviour {
 		StartCoroutine(DisablePanelDeleyed(m_Open));
 		m_Open = null;
 	}
+
+	public void CreateAccount()
+	{
+		username = inputUsername.text;
+		password = inputPassword.text;
+		repassword = inputRepassword.text;
+
+		if ((password != "") && (repassword != "") && (password == repassword))
+		{
+			//Connect to server. Ask if okay.
+			loggedIn = true;
+			CloseCurrent();
+		} 
+		else 
+		{
+			// Give user an Error Message explaining to them how to properly create an account.
+		}
+	}
+
+	public void LogIn()
+	{
+		username = loginUsername.text;
+		password = loginPassword.text;
+
+		if (password != "") 
+		{
+			//Connect to server. Ask if okay.
+			loggedIn = true;
+			CloseCurrent ();
+		}
+	}
+
 
 	IEnumerator DisablePanelDeleyed(Animator anim)
 	{
