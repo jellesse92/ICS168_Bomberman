@@ -98,6 +98,7 @@ public class PanelManager : MonoBehaviour {
 		{
 			//Connect to server. Ask if okay.
 			loggedIn = true;
+			Debug.Log (loggedIn);
 			CloseCurrent();
 		} 
 		else 
@@ -115,9 +116,20 @@ public class PanelManager : MonoBehaviour {
 		{
 			//Connect to server. Ask if okay.
 			loggedIn = true;
+			Debug.Log (loggedIn);
 			CloseCurrent ();
 		}
 	}
+
+	public void OpenIfLoggedIn (Animator anim)
+	{
+		Debug.Log (loggedIn);
+		if (loggedIn)
+		{
+			OpenPanel(anim);
+		}
+	}
+
 
 
 	IEnumerator DisablePanelDeleyed(Animator anim)
