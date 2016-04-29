@@ -1,0 +1,42 @@
+-- VERSION_4
+-- START DISKCACHE
+/Users/Lukas/Google Drive/School/UCI/ICS 33/.metadata/.plugins/org.eclipse.core.resources/.projects/project3/com.python.pydev.analysis/v2_indexcache
+kargsexample|1378739938000|/Users/Lukas/Google Drive/School/UCI/ICS 33/project3/kargsexample.py
+miniexample|1430602126000|/Users/Lukas/Google Drive/School/UCI/ICS 33/project3/miniexample.py
+restaurant|1367095736000|/Users/Lukas/Google Drive/School/UCI/ICS 33/project3/restaurant.py
+pcollections|1431485693000|/Users/Lukas/Google Drive/School/UCI/ICS 33/project3/pcollections.py
+CIStunes|1399130698000|/Users/Lukas/Google Drive/School/UCI/ICS 33/project3/CIStunes.py
+-- END DISKCACHE
+-- START DICTIONARY
+5
+4=kargsexample
+3=miniexample
+1=restaurant
+5=pcollections
+2=CIStunes
+-- END DICTIONARY
+-- START TREE 1
+19
+__a|1|__author__!11@
+alb|4|Album!19@Album_length!18@Album_to_Songdisplays!18@Album_id!18@
+all|2|all_songs!18@all_Songdisplays!18@
+col|6|Collection_search_by_name!10@Collection_new!10@Collection_str!10@collection_sort!18@Collection_add!10@Collection_remove_by_name!10@
+dec|1|decorate_it!27@
+f|2|f!27@f!34@
+fil|1|filter_letters!27@
+han|1|handle_commands!10@
+inv|1|invalid_command!10@
+mak|1|make_keep!26@
+men|1|MENU!11@
+mus|1|MUSIC!19@
+pla|1|play_count_from_songdisplay!18@
+pna|1|pnamedtuple!42@
+res|4|Restaurant!11@restaurants!10@Restaurant_str!10@Restaurant_get_info!10@
+son|4|Songlist!19@Song_play_count!18@Song!19@Songdisplay!19@
+tes|1|test_list!19@
+top|2|top_n_played!18@top_n_played_songs!18@
+wor|1|word!27@
+-- END TREE
+-- START TREE 2
+0
+-- END TREE

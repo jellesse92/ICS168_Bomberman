@@ -1,0 +1,5 @@
+from performance import Performance
+from goody import irange
+from graph_goody import random, spanning_tree
+
+# Put script here to generate data for Problem #1

@@ -1,0 +1,42 @@
+-- VERSION_4
+-- START DISKCACHE
+/Users/Lukas/Google Drive/School/UCI/ICS 33/.metadata/.plugins/org.eclipse.core.resources/.projects/q3helper/com.python.pydev.analysis/v2_indexcache
+history|1429854225000|/Users/Lukas/Google Drive/School/UCI/ICS 33/q3helper/history.py
+fraction|1429846175000|/Users/Lukas/Google Drive/School/UCI/ICS 33/q3helper/fraction.py
+-- END DISKCACHE
+-- START DICTIONARY
+6
+5=Fraction.__init__
+6=History.__init__
+3=Fraction
+2=history
+4=History
+1=fraction
+-- END DICTIONARY
+-- START TREE 1
+3
+com|1|compute_pi!10@
+fra|1|Fraction!9@
+his|1|History!17@
+-- END TREE
+-- START TREE 2
+18
+__a|2|__add__!3&10@__abs__!3&10@
+__b|1|__bool__!3&10@
+__c|1|__call__!3&10@
+__e|1|__eq__!3&10@
+__g|4|__getitem__!4&18@__getitem__!3&10@__getattr__!4&18@__gt__!3&10@
+__i|2|__init__!3&10@__init__!4&18@
+__l|1|__lt__!3&10@
+__m|1|__mul__!3&10@
+__n|1|__neg__!3&10@
+__p|2|__pos__!3&10@__pow__!3&10@
+__r|5|__radd__!3&10@__rsub__!3&10@__rmul__!3&10@__repr__!3&10@__rtruediv__!3&10@
+__s|4|__str__!3&10@__sub__!3&10@__setattr__!4&18@__setattr__!3&10@
+__t|1|__truediv__!3&10@
+_va|2|_validate_relational!3&10@_validate_arithmetic!3&10@
+den|1|denom!5&11@
+gcd|1|gcd!3&10@
+his|1|history_dict!6&19@
+num|1|num!5&11@
+-- END TREE

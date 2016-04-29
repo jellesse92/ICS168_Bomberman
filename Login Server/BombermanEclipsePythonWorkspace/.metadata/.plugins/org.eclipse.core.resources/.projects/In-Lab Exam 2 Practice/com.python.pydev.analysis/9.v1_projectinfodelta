@@ -1,0 +1,18 @@
+INSTUPexam.sparse_matrix
+/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/In-Lab Exam 2 Practice/exam/sparse_matrix.py
+INFOS:&&1|1|2|0&&2|3|2|1&&2|4|2|1&&2|5|2|1&&2|6|2|1&&2|7|2|1&&2|8|2|1&&2|9|2|1&&2|10|2|1&&2|11|2|1&&2|12|2|1&&2|13|2|1&&2|14|2|1&&3|15|2|0
+__radd__=13
+Sparse_Matrix=1
+__str__=6
+__iter__=9
+__eq__=14
+exam.sparse_matrix=2
+m=15
+__setitem__=11
+__add__=12
+size=4
+__len__=5
+__repr__=8
+__getitem__=10
+details=7
+__init__=3

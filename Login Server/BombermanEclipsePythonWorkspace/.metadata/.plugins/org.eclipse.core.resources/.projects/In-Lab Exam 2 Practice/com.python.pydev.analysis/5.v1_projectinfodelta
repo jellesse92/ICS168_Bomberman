@@ -1,0 +1,10 @@
+INSTUPexam.goody
+/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/In-Lab Exam 2 Practice/exam/goody.py
+INFOS:&&2|1|2|0&&2|3|2|0&&2|4|2|0&&2|5|2|0&&2|6|2|0&&2|7|2|0
+irange=3
+frange=4
+leading=5
+exam.goody=2
+type_as_str=1
+safe_open=6
+read_file_values=7

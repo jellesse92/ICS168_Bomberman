@@ -1,0 +1,6 @@
+import unittest  # use unittest.TestCase
+from graph import Graph, GraphError
+
+
+class Test_Graph(unittest.TestCase):
+    pass

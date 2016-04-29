@@ -1,0 +1,107 @@
+from goody import type_as_str  # Useful in some exceptions
+
+class DictList:
+    def __init__(self, *dict_list: list):
+        assert len(dict_list) != 0, 'DictList.__init__: ' + str(dictionary) + 'requires at least 1 dict argument.'
+        dict_list = list(dict_list)
+        for dictionary in dict_list:
+            assert type(dictionary) == dict, 'DictList.__init__: ' + str(dictionary) + 'is not a dictionary.'
+            assert dictionary != {}, 'DictList.__init__: ' + str(dictionary) + 'cannot be an empty dict.'
+        self.dl = dict_list
+        
+    def __len__(self):
+        unique_keys= set()
+        for dictionary in self.dl:
+            unique_keys = unique_keys.union(set(dictionary.keys()))
+        return len(unique_keys)
+    
+    def __bool__(self):
+        return len(self.dl) > 1
+    
+    def __repr__(self):
+        dict_list_str = ''
+        for dictionary in self.dl:
+            dict_list_str += ',' + str(dictionary)
+        return 'DictList(' + dict_list_str.strip(',') + ')'
+    
+    def __contains__(self, search_key):
+        for dictionary in self.dl:
+            for key in dictionary.keys():
+                if search_key == key:
+                    return True
+        return False
+    
+    def __getitem__(self, search_key):               
+        for dictionary in reversed(self.dl):
+            for key in dictionary.keys():
+                if search_key == key:
+                    return dictionary[key]
+        raise KeyError
+    
+    def __setitem__(self, search_key, search_value):
+        for dictionary in reversed(self.dl):
+            for key in dictionary.keys():
+                if search_key == key:
+                    dictionary[key] = search_value
+                    return
+        self.dl.append({search_key:search_value})
+        
+    def __delitem__(self, search_key):
+        #Clunky, needs work
+        new_dl = []
+        found = False
+        for dictionary in reversed(self.dl):
+            new_dict = {}
+            for key in dictionary.keys():
+                if search_key != key:
+                    new_dict.update({key:dictionary[key]})
+                if found:
+                    new_dict.update({key:dictionary[key]})
+                if search_key == key:
+                    found = True
+            if new_dict != {}:
+                new_dl.append(new_dict)
+        self.dl = list(reversed(new_dl))
+        if not found:
+            raise KeyError(str(search_key) + ' is not a valid key.')
+                
+    def __call__(self, search_key):
+        call_list = []
+        for dict_index in range(len(self.dl)):
+            for key in self.dl[dict_index]:
+                if search_key == key:
+                    call_list.append((dict_index, self.dl[dict_index][key]))
+        return call_list
+
+                
+
+
+
+            
+if __name__ == '__main__':
+    #Simple tests before running driver
+    #Put your own test code here to test DictList before doing bsc tests
+    
+    d = DictList(dict(a=1,b=2), dict(b=12,c=13))
+    '''
+    print('len(d): ', len(d))
+    print('bool(d):', bool(d))
+    print('repr(d):', repr(d))
+    print(', '.join("'"+x+"'" + ' in d = '+str(x in d) for x in 'abcx'))
+    print("d['a']:", d['a'])
+    print("d['b']:", d['b'])
+    print("d('b'):", d('b'))
+    print('iter results:', ', '.join(i for i in d))
+    print('item iter results:', ', '.join(str(i) for i in d.items()))
+    print('d.collapse():', d.collapse())
+    print('d==d:', d==d)
+    print('d+d:', d+d)
+    print('(d+d).collapse():', (d+d).collapse())
+    '''
+    print()
+    import driver
+    driver.default_file_name = 'bsc1.txt'
+#     driver.default_show_exception=True
+#     driver.default_show_exception_message=True
+#     driver.default_show_traceback=True
+    driver.driver()

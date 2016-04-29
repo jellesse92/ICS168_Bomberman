@@ -1,0 +1,36 @@
+-- VERSION_4
+-- START DISKCACHE
+/Users/Lukas/Google Drive/School/UCI/ICS 33/.metadata/.plugins/org.eclipse.core.resources/.projects/project1/com.python.pydev.analysis/v2_indexcache
+instantrunoff|1429068131000|/Users/Lukas/Google Drive/School/UCI/ICS 33/project1/instantrunoff.py
+ndfa|1429068373000|/Users/Lukas/Google Drive/School/UCI/ICS 33/project1/ndfa.py
+google|1429068131000|/Users/Lukas/Google Drive/School/UCI/ICS 33/project1/google.py
+fa|1429068131000|/Users/Lukas/Google Drive/School/UCI/ICS 33/project1/fa.py
+reachable|1429068131000|/Users/Lukas/Google Drive/School/UCI/ICS 33/project1/reachable.py
+-- END DISKCACHE
+-- START DICTIONARY
+5
+2=instantrunoff
+5=ndfa
+1=google
+3=fa
+4=reachable
+-- END DICTIONARY
+-- START TREE 1
+13
+add|1|add_query!10@
+all|1|all_prefixes!10@
+dic|2|dict_as_str!10@dict_as_str!18@
+eva|1|evaluate_ballot!18@
+fa_|1|fa_as_str!26@
+gra|1|graph_as_str!34@
+int|2|interpret!42@interpret!26@
+ndf|1|ndfa_as_str!42@
+pro|2|process!26@process!42@
+rea|6|read_queries!10@read_voter_preferences!18@read_fa!26@read_graph!34@reachable!34@read_ndfa!42@
+rem|1|remaining_candidates!18@
+run|1|run_election!18@
+top|1|top_n!10@
+-- END TREE
+-- START TREE 2
+0
+-- END TREE

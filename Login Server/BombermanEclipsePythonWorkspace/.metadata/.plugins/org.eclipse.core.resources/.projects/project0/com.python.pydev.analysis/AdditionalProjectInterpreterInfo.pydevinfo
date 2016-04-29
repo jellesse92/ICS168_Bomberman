@@ -1,0 +1,33 @@
+-- VERSION_4
+-- START DISKCACHE
+/Users/Lukas/Google Drive/School/UCI/ICS 33/.metadata/.plugins/org.eclipse.core.resources/.projects/project0/com.python.pydev.analysis/v2_indexcache
+collatz|1427819995000|/Users/Lukas/Google Drive/School/UCI/ICS 33/project0/collatz.py
+craps|1427856438000|/Users/Lukas/Google Drive/School/UCI/ICS 33/project0/craps.py
+demo|1427587466000|/Users/Lukas/Google Drive/School/UCI/ICS 33/project0/demo.py
+facts|1379874366000|/Users/Lukas/Google Drive/School/UCI/ICS 33/project0/facts.py
+-- END DISKCACHE
+-- START DICTIONARY
+3
+1=collatz
+2=craps
+3=facts
+-- END DICTIONARY
+-- START TREE 1
+13
+cyc|1|cycle_count!11@
+dic|1|dice!19@
+fac|2|fact1!26@fact2!26@
+fir|1|first_roll!19@
+gam|2|games_to_play!19@game_timer!19@
+is_|1|is_debugging!11@
+los|1|lose_count!19@
+ori|1|original_number!11@
+poi|1|point!19@
+rol|1|roll!19@
+tes|1|test_number!11@
+tim|1|timer!11@
+win|1|win_count!19@
+-- END TREE
+-- START TREE 2
+0
+-- END TREE

@@ -1,0 +1,173 @@
+# Submitter: llohden(Lohden, Luke)
+# Partner  : mlgill(Gill, Matt)
+# We certify that we worked cooperatively on this programming
+#   assignment, according to the rules for pair programming
+
+import re, traceback, keyword
+
+def pnamedtuple(type_name, field_names, mutable=False):
+            
+    def show_listing(s):
+        for i, l in enumerate(s.split('\n'),1):
+            print('{num: >3} {text}'.format(num= i, text= l.rstrip()))
+
+
+    # Parameter Checking:
+            
+            
+    def _parameter_check(parameters):
+        for parameter in parameters:
+            if type(parameter) != str:
+                raise SyntaxError('pnamedtuple type_name parameter must be of type: str')
+            if parameter in keyword.kwlist:
+                raise SyntaxError('pnamedtuple type_name parameter cannot be a python keyword: ' + str(parameter))
+            if re.fullmatch('[a-zA-Z]\w*', parameter) == None:
+                raise SyntaxError('Invalid type_name parameter to pnamedtuple:' + str(parameter))
+            
+    if type(field_names) not in (str,list):
+        raise SyntaxError('pnamedtuple field_names parameter must be of types: str, list')
+    
+    _parameter_check([type_name])
+    
+    _parameter_check(re.findall('(\w+)', str(field_names)))
+    
+    
+    # Template String Segments:
+
+    pytab = '    '
+    
+    arg_list = re.findall('(\w+)', str(field_names))
+    class_args = ''
+    for name in arg_list:
+        class_args += name + ', '
+        
+    def gen_init(arg_list):    
+        init_str = ''
+        for name in arg_list:
+            init_str += pytab*2 + 'self.' + name + '=' + name + '\n'
+        init_str += pytab*2 + 'self._fields = ' + str(arg_list) + '\n'
+        init_str += pytab*2 + 'self._mutable = ' + str(mutable) + '\n'
+        return init_str
+
+    def gen_repr(type_name, arg_list):
+        repr_str = pytab + 'def __repr__(self):\n'
+        repr_str += pytab*2 + 'return "' + str(type_name) + '('
+        for name in arg_list:
+            repr_str += name + '={' + name + '},'
+        repr_str = repr_str[:-1]
+        repr_str += ')".format('
+        for name in arg_list:
+            repr_str += name + '=self.' + name + ','
+        repr_str += ')'
+        return repr_str
+    
+    def gen_get(arg_list):
+        get_str = ''
+        for name in arg_list:
+            get_str += pytab + 'def get_' + name + '(self):\n' + pytab*2 + 'return self.' + name + '\n'
+        return get_str
+            
+        
+    def gen_getitem():
+        get_item_str = pytab + 'def __getitem__(self,target):\n'
+        get_item_str += pytab*2 + 'if type(target) == str:\n' + pytab*3 + 'if target not in self._fields:\n' + \
+                        pytab*4 + 'raise IndexError("Designated attribute does not exist")' + '\n' + pytab*3 + 'else:\n' + \
+                        pytab*4 + 'return eval("self." + target)' + '\n'
+        get_item_str += pytab*2 + 'if type(target) == int:\n' + pytab*3 + 'if target not in range(len(self._fields)):\n' + \
+                        pytab*4 + 'raise IndexError("Designated index out of range")' + '\n' + pytab*3 + 'else:\n' + \
+                        pytab*4 + 'return eval("self.get_" + self._fields[target] + "()")' + '\n'
+        get_item_str += pytab*2 + 'else:\n' + pytab*3 + 'raise IndexError("__getitem__ index must be of type: str or int")'
+        return get_item_str
+
+    def gen_eq(type_name):
+        eq_str = pytab + 'def __eq__(self, right):\n'
+        eq_str += pytab*2 + 'if type(right) != {type_name}:\n' + pytab*3 + 'return False' + '\n'
+        eq_str += pytab*2 + 'else:\n' + pytab*3 + 'for attr in self._fields:\n' + \
+                  pytab*4 + 'if eval("self." + attr) != eval("right." +attr):\n' + pytab*5 + 'return False' + '\n'
+        eq_str += pytab*2 + 'return True' + '\n'
+        return eq_str.format(type_name = type_name)
+    
+    def gen_replace(type_name, mutable):
+        '''
+        replace_str = pytab + 'def _replace(self, **kargs):\n'
+        replace_str += pytab*2 + 'for key in kargs:\n' + pytab*3 + 'if key not in self._fields:\n' + \
+                       pytab*4 + 'raise TyperError("Keys in kargs must be a valid attribute in _fields")\n'
+        if mutable:
+            replace_str += pytab*2 + 'for key in kargs:\n' + pytab*3 + 'eval("self._" + key) = kargs[key]\n'
+        else:
+            replace_str += pytab*2 + 'dic = {field:eval("self." + field) for field in self._fields}\n'
+            replace_str += pytab*2 + 'for field,value in dic.items():\n' + pytab*3 + 'if field in kargs:\n' +\
+                           pytab*4 + 'value = kargs[field]\n'
+            replace_str += pytab*2 + 'args = ""\n'
+            replace_str += pytab*2 + 'for key,value in dic.items():\n' + pytab*3 + 'args += (key + "=" + str(value), )\n'
+            replace_str += pytab*2 + 'return {type_name}(args[:-2])'.format(type_name = type_name)
+        return replace_str
+        '''
+        replace_str = pytab + 'def _replace(self, **kargs):\n'
+        replace_str += pytab*2 + 'for key in kargs:\n' + pytab*3 + 'if key not in self._fields:\n' + \
+                       pytab*4 + 'raise TyperError("Keys in kargs must be a valid attribute in _fields")\n'
+        replace_str += pytab*2 + 'if self._mutable:\n' + pytab*3 + 'for key in kargs:\n' + \
+                       pytab*4 + 'name = eval("self._" + key)\n' + pytab*4 + 'name = kargs[key]\n'
+        replace_str += pytab*2 + 'return None\n'
+        replace_str += pytab*2 + 'else:\n' + pytab*3 + 'new_fields = dict()\n' + pytab*3 + 'for field in self._fields:\n' + \
+                       pytab*4 + 'new_fields.update({field: eval("self.get_" + field + "()")})\n'
+        replace_str += pytab*2 + 'for key in new_fields.keys():\n' + pytab*3 + 'if key in kargs.keys():\n' + \
+                       pytab*4 + 'new_fields[key] = kargs[key]\n'
+        replace_str += pytab*2 + 'print(new_fields)\n'
+        replace_str += pytab*2 + 'args = ""\n'
+        replace_str += pytab*2 + 'for key, value in new_fields.items():\n' + pytab*3 + 'args += str(key) + "=" + str(value) + ","\n'
+        replace_str += pytab*2 + 'print(args[:-1])\n'
+        replace_str += pytab*2 + 'return eval("{type_name}(" + (args[:-1]) + ")")'.format(type_name = type_name)
+        return replace_str
+    
+
+
+    
+    class_template = '''\
+class {type_name}:
+    def __init__(self, {field_names}):
+{init}
+        
+{reproduce}
+
+{get_functions}
+
+{get_item}
+
+{eq}
+
+{replace}
+           
+''' 
+    class_definition = \
+            class_template.format(type_name = type_name, field_names = class_args, init = gen_init(arg_list),
+                                  reproduce = gen_repr(type_name, arg_list), get_functions = gen_get(arg_list),
+                                  get_item = gen_getitem(), eq = gen_eq(type_name),
+                                  replace = gen_replace(type_name, mutable))
+    show_listing(class_definition)
+    
+    # bind class_definition (used below) to the string constructed for the class
+
+
+
+    # For initial debugging, always show the source code of the class
+    #show_listing(class_definition)
+    
+    # Execute the class_definition string in a local name-space and bind the
+    #   name source_code in its dictionary to the class_defintion; return the
+    #   class object created; if there is a syntax error, list the class and
+    #   show the error
+    name_space = dict(__name__='pnamedtuple_{type_name}'.format(type_name=type_name))
+    try:
+        exec(class_definition, name_space)
+        name_space[type_name].source_code = class_definition
+    except(SyntaxError,TypeError):
+        show_listing(class_definition)
+        traceback.print_exc()
+    return name_space[type_name]
+
+
+    
+if __name__ == '__main__':
+    import driver
+    driver.driver()

@@ -1,0 +1,11 @@
+INSTUPgenerator
+/Users/Lukas/Google Drive/School/UCI/ICS 33/Project2/generator.py
+INFOS:&&2|1|2|0&&2|3|2|0&&2|4|2|0&&2|5|2|0&&2|6|2|0&&2|7|2|0&&2|8|2|0
+sequence=7
+hide=1
+overlap=6
+generator=2
+alternate=8
+running_count=3
+once_in_a_row=4
+group=5

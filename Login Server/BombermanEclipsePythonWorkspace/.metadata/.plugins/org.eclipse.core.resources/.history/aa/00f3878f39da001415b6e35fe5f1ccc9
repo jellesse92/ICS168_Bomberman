@@ -1,0 +1,63 @@
+# Submitter: llohden(Lohden, Lukas)
+# Partner  : niharikg(Gupta, Nikki)
+# We certify that we worked cooperatively on this programming
+#   assignment, according to the rules for pair programming
+
+import goody
+import prompt
+from collections import defaultdict
+
+
+def read_graph(file : open) -> {str:{str}}:
+    """
+    Reads the file and returns the dictionary representing  the graph
+    """
+    graph = defaultdict(set)
+    for line in file:
+        vertices = line.split(';')
+        graph[vertices[0]].add(vertices[1].strip('\n'))
+    return graph
+        
+
+
+
+def graph_as_str(graph : {str:{str}}) -> str:
+    """
+    Takes in the graph as a dictionary and returns a formatted, multi-line
+    string that shows the contents of the graph in the appropriate textual form
+    """
+    graph_str = 'Graph: source -> {destination} edges\n  '
+    for key in graph.keys():
+        graph_str += key + ' -> ' + str(list(graph[key])) + '\n  '
+    return graph_str
+
+        
+def reachable(graph : {str:{str}}, start : str) -> {str}:
+    """
+    """
+    reach_set = set()
+    reach_set.add(graph.get(start))
+    for value in reach_set:
+        reach_set.add(reachable(graph, value))
+    return reach_set
+    
+
+
+
+
+
+if __name__ == '__main__':
+    # Script:
+    graph_file = goody.safe_open('Enter file with graph: ', 'r', 'File could not be opened.')
+    graph = read_graph(graph_file)
+    graph_str = graph_as_str(graph)
+    print(graph.items())
+              
+    # For running batch self-tests:
+    print()
+    import driver
+    driver.default_file_name = "bsc1.txt"
+#     driver.default_show_traceback = True
+#     driver.default_show_exception = True
+#     driver.default_show_exception_message = True
+    driver.driver()

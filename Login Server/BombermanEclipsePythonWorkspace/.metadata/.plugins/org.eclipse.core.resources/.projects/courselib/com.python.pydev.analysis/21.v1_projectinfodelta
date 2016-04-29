@@ -1,0 +1,27 @@
+INSTUPstopwatch
+/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/courselib/stopwatch.py
+INFOS:&&1|1|2|0&&2|3|2|1&&3|4|2|5&&3|6|2|5&&3|7|2|5&&3|8|2|5&&2|9|2|1&&3|4|2|10&&3|6|2|10&&3|7|2|10&&3|8|2|10&&2|11|2|1&&3|8|2|12&&3|4|2|12&&3|6|2|12&&2|13|2|1&&3|8|2|14&&3|4|2|14&&3|6|2|14&&2|15|2|1&&3|4|2|16&&2|17|2|1&&2|18|2|1&&2|19|2|1&&2|20|2|1&&3|8|2|21&&3|22|2|1&&3|23|2|1&&3|24|2|1
+start_backwards=13
+Stopwatch=1
+Stopwatch.__init__=5
+Stopwatch.stop=16
+Stopwatch.start=12
+_update=20
+action=24
+read=17
+_last_start_time=8
+__str__=18
+Stopwatch.start_backwards=14
+start=11
+_running_forward=6
+_running_now=4
+Stopwatch._update=21
+Stopwatch.reset=10
+_elapsed_prior=7
+s=23
+stop=15
+reset=9
+commandPrompt=22
+__init__=3
+stopwatch=2
+status=19

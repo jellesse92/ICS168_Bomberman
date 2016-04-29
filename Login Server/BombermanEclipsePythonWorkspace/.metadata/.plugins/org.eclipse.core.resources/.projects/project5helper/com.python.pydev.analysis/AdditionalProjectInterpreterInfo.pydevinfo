@@ -1,0 +1,56 @@
+-- VERSION_4
+-- START DISKCACHE
+/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/.metadata/.plugins/org.eclipse.core.resources/.projects/project5helper/com.python.pydev.analysis/v2_indexcache
+ball|1369150816000|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/project5helper/ball.py
+controller|1369147524000|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/project5helper/controller.py
+view|1369147400000|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/project5helper/view.py
+model|1369148446000|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/project5helper/model.py
+script|1368890012000|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/project5helper/script.py
+-- END DISKCACHE
+-- START DICTIONARY
+7
+5=Ball
+1=ball
+3=view
+4=controller
+7=Ball.bounce
+6=Ball.__init__
+2=model
+-- END DICTIONARY
+-- START TREE 1
+18
+bal|2|Ball!9@balls!19@
+cyc|1|cycle_count!19@
+dis|1|display_all!18@
+fra|1|frame!27@
+mou|1|mouse_click!18@
+pro|1|progress!34@
+ran|3|random_speed!18@random_color!18@random_angle!18@
+rep|1|repeater!34@
+res|2|reset_button!34@reset!18@
+rev|2|reverse_button!34@reverse!18@
+roo|1|root!27@
+run|1|running!19@
+sim|1|simulation_canvas!34@
+sta|2|start!18@start_button!34@
+sto|2|stop_button!34@stop!18@
+the|2|the_progress!35@the_canvas!35@
+upd|1|update_all!18@
+wor|1|world!18@
+-- END TREE
+-- START TREE 2
+13
+__i|1|__init__!5&10@
+_an|2|_angle!6&11@_angle!7&11@
+_co|1|_color!6&11@
+_sp|1|_speed!6&11@
+_x|1|_x!6&11@
+_y|1|_y!6&11@
+bou|1|bounce!5&10@
+dis|1|display!5&10@
+mov|1|move!5&10@
+rad|1|radius!5&11@
+rev|1|reverse!5&10@
+upd|1|update!5&10@
+wal|1|wall_bounce!5&10@
+-- END TREE

@@ -1,0 +1,63 @@
+-- VERSION_4
+-- START DISKCACHE
+/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/.metadata/.plugins/org.eclipse.core.resources/.projects/q6helper/com.python.pydev.analysis/v2_indexcache
+predicate|1368399296000|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/q6helper/predicate.py
+goody|1367342622000|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/q6helper/goody.py
+q6solution|1432257432000|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/q6helper/q6solution.py
+prompt|1365396900000|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/q6helper/prompt.py
+-- END DISKCACHE
+-- START DICTIONARY
+13
+12=LN.__init__
+5=LN
+3=goody
+7=StringVar_WithHistory
+11=TN.__init__
+10=StringVar_WithHistory.undo
+4=predicate
+13=OptionMenuUndo.__init__
+8=OptionMenuUndo
+1=q6solution
+6=TN
+2=prompt
+9=StringVar_WithHistory.__init__
+-- END DICTIONARY
+-- START TREE 1
+16
+LN|1|LN!9@
+TN|1|TN!9@
+for|9|for_int_between!18@for_string_via_index!18@for_string!18@for_bool!18@for_int!18@for_float!18@for_num!18@for_value!18@for_char!18@
+fra|1|frange!26@
+ira|1|irange!26@
+is_|9|is_even!34@is_positive!34@is_min_heap!10@is_odd!34@is_percentage!34@is_bigger_than!34@is_less_than!34@is_non_negative!34@is_prime!34@
+lea|1|leading!26@
+len|1|length_equal!34@
+lis|2|list_to_ll!10@list_to_tree!10@
+opt|1|OptionMenuUndo!9@
+rea|1|read_file_values!26@
+rev|1|reverse!34@
+saf|1|safe_open!26@
+sep|1|separate!10@
+str|3|str_tree!10@str_ll!10@StringVar_WithHistory!9@
+typ|1|type_as_str!26@
+-- END TREE
+-- START TREE 2
+17
+__i|4|__init__!5&10@__init__!6&10@__init__!7&10@__init__!8&10@
+b|1|b!8&11@
+get|1|get!8&10@
+his|2|history!9&11@history!10&11@
+lef|1|left!11&11@
+ll|1|ll!8&11@
+mai|1|main!8&11@
+nex|1|next!12&11@
+omu|1|omu!8&11@
+res|1|result!13&11@
+rig|1|right!11&11@
+roo|1|root!8&11@
+set|1|set!7&10@
+sim|1|simulate_selection!8&10@
+t|1|t!8&11@
+und|2|undo!7&10@undo!8&10@
+val|2|value!12&11@value!11&11@
+-- END TREE

@@ -1,0 +1,331 @@
+from goody import type_as_str
+import inspect
+
+class Check_All_OK:
+    """
+    Check_All_OK class implements __check_annotation__ by checking whether each
+      annotation passed to its constructor is OK; the first one that
+      fails (raises AssertionError) prints its problem, with a list of all
+      annotations being tried at the end of the check_history.
+    """
+       
+    def __init__(self,*args):
+        self._annotations = args
+        
+    def __repr__(self):
+        return 'Check_All_OK('+','.join([str(i) for i in self._annotations])+')'
+
+    def __check_annotation__(self, check, param, value,check_history):
+        for annot in self._annotations:
+            check(param, annot, value, check_history+'Check_All_OK check: '+str(annot)+' while trying: '+str(self)+'\n')
+
+
+class Check_Any_OK:
+    """
+    Check_Any_OK implements __check_annotation__ by checking whether at least
+      one of the annotations passed to its constructor is OK; if all fail 
+      (raise AssertionError) this classes raises AssertionError and prints its
+      failure, along with a list of all annotations tried followed by the check_history.
+    """
+    
+    def __init__(self,*args):
+        self._annotations = args
+        
+    def __repr__(self):
+        return 'Check_Any_OK('+','.join([str(i) for i in self._annotations])+')'
+
+    def __check_annotation__(self, check, param, value, check_history):
+        failed = 0
+        for annot in self._annotations: 
+            try:
+                check(param, annot, value, check_history)
+            except AssertionError:
+                failed += 1
+        if failed == len(self._annotations):
+            assert False, repr(param)+' failed annotation check(Check_Any_OK): value = '+repr(value)+\
+                         '\n  tried '+str(self)+'\n'+check_history                 
+
+
+
+class Check_Annotation():
+    # set name to True for checking to occur
+    checking_on  = True
+  
+    # self._checking_on must also be true for checking to occur
+    def __init__(self, function):
+        self._function = function
+        self.checking_on = True
+        
+    # Add to check_history if recursively checks again 
+    def check(self,parameter,annotation,value,check_history='', check_count=0):
+        """
+        Checks if the type(<value>) of the <parameter> matches the <annotation>
+        Raises an AssertionError if this check fails.
+        """
+        
+        def check_type(value, annotation):
+            """
+            Checks to see if the <value> is of the same type as specified by <annotation>
+            Raises an AssertionError if this check fails.
+            """
+            assert isinstance(value, annotation), \
+                   '"{parameter}" failed annotation check(wrong type): value = {value}\n was type {value_type} ...should be type {correct_type}\n{check_history}'\
+                   .format(parameter = parameter, value = value,\
+                           value_type = type(value), correct_type = annotation,\
+                           check_history = check_history)
+            
+        def check_length(value, annotation):
+            """
+            Asserts that two iterable objects are both of the same length.
+            """
+            assert len(annotation) == len(value), \
+                   '"{parameter}" failed annotation check(wrong number of elements): value = "{value}"\n  annotation had {annotation_length} elements {list_annotation}\n{check_history}'\
+                   .format(parameter = parameter, value = value, annotation_length = len(annotation), \
+                           list_annotation = [type(specification) for specification in annotation],\
+                           check_history = check_history)
+
+        def check_list():
+            """
+            Checks to see if the <value> is a list with the same format as defined by <annotation>
+            Raises an AssertionError if this check fails.
+            """
+            check_type(value, list) # Ensures value is a list
+            
+            if len(annotation) == 1:
+                if type(annotation[0]) == type or list:
+                    for item in value:
+                        self.check(parameter, annotation[0], item, check_history+'list[' + str(check_count) + '] check: ' + str(annotation[0]) + '\n', check_count + 1)
+                        
+
+            if len(annotation) > 1:
+                
+                check_length(value, annotation)
+                
+                for item in range(len(value)):
+                    self.check(parameter, annotation[item], value[item], check_history+'list[' + str(check_count) + '] check: ' + str(annotation[item]) + '\n', check_count + 1)
+                    
+                    
+        def check_tuple():
+            """
+            Checks to see if the <value> is a tuple with the same format as defined by <annotation>
+            Raises an AssertionError if this check fails.
+            """
+            check_type(value, tuple) # Ensures value is a tuple
+            
+            if len(annotation) == 1:
+                if type(annotation[0]) == type or tuple:
+                    for item in value:
+                        self.check(parameter, annotation[0], item, check_history+'tuple[' + str(check_count) + '] check: ' + str(annotation[0]) + '\n', check_count + 1)
+
+            if len(annotation) > 1:
+                
+                check_length(value, annotation)
+                
+                for item in range(len(value)):
+                    self.check(parameter, annotation[item], value[item], check_history+'tuple[' + str(check_count) + '] check: ' + str(annotation[item]) + '\n', check_count + 1)
+
+        def check_dict():
+            """
+            Checks to see if the <value> is a dict with the same format as defined by <annotation>
+            Raises an AssertionError if this check fails.
+            """
+            
+            check_type(value, dict) # Ensures value is a dict
+            
+            assert len(annotation) == 1,\
+                   '{parameter} annotation inconsistency: dict should have 1 item but had {annotation_length}\n  annotation = {set_annotation}'\
+                   .format(parameter = parameter, annotation_length = len(annotation), \
+                           set_annotation = {type(specification) for specification in annotation})
+            
+            for key in value.keys(): # There should only be one at this point
+                self.check(parameter, tuple(annotation.keys())[0], key, check_history+'dict[' + str(check_count) + '] key check: ' + str(tuple(annotation.keys())[0]) + '\n', check_count + 1)
+                self.check(parameter, tuple(annotation.values())[0], value[key], check_history+'dict[' + str(check_count) + '] value check: ' + str(tuple(annotation.values())[0]) + '\n', check_count + 1)
+                
+        def check_set():
+            """
+            Checks to see if the <value> is a set with the same format as defined by <annotation>
+            Raises an AssertionError if this check fails.
+            """
+            
+            check_type(value, set) # Ensures value is a set
+            
+            assert len(annotation) == 1, \
+                   '{parameter} annotation inconsistency: set should have 1 value, but had {annotation_length}\n  annotation = {set_annotation}'\
+                   .format(parameter = parameter, annotation_length = len(annotation), \
+                           set_annotation = {type(specification) for specification in annotation})
+            
+            for item in value:
+                self.check(parameter, tuple(annotation)[0], item, check_history+'set[' + str(check_count) + '] value check: ' + str(tuple(annotation)[0]) + '\n', check_count + 1)
+                
+        def check_frozenset():
+            """
+            Checks to see if the <value> is a frozenset with the same format as defined by <annotation>
+            Raises an AssertionError if this check fails.
+            """
+            
+            check_type(value, frozenset) # Ensures value is a frozenset
+            
+            assert len(annotation) == 1, \
+                   '{parameter} annotation inconsistency: frozenset should have 1 value, but had {annotation_length}\n  annotation = {set_annotation}'\
+                   .format(parameter = parameter, annotation_length = len(annotation), \
+                           set_annotation = {type(specification) for specification in annotation})
+            
+            for item in value:
+                self.check(parameter, tuple(annotation)[0], item, check_history+'frozenset[' + str(check_count) + '] value check: ' + str(tuple(annotation)[0]) + '\n', check_count + 1)
+                
+        def check_lambda():
+            """
+            Checks to see if the <value> is a lambda with the same format as defined by <annotation>
+            Raises an AssertionError if this check fails.
+            """
+            
+            assert len(inspect.getargspec(annotation).args) == 1, \
+                   '{parameter} annotation inconsistency: predicate should have 1 parameter, but had {args_length}\n  predicate = {predicate}\n{check_history}'\
+                   .format(parameter = parameter, args_length = len(inspect.getargspec(annotation).args),\
+                           predicate = annotation, check_history = check_history)
+                   
+            try:
+                assert annotation(value), \
+                '{parameter} failed annotation check: value = {value}\n  predicate = {predicate}\n{check_history}'\
+                .format(parameter = parameter, value = value, predicate = annotation, check_history = check_history)
+                
+            except Exception as exception:
+                raise AssertionError('{parameter} annotation predicate({predicate}) raised exception\n  exception = {exception}\n{check_history}'\
+                                     .format(parameter = parameter, predicate = annotation, exception = exception, check_history = check_history))
+        
+        def check_str():
+            """
+            Checks to see if the <value> is a string with the same format as defined by <annotation>
+            Raises an AssertionError if this check fails.
+            """
+            pass
+        
+        def check_other():
+            """
+            Checks any other type of object on the assumption that the object
+            supports annotation checking.
+            Raises an AssertionError if this check fails or the class does not
+            support annotation checking.
+            """
+            try:
+    
+                value.__check_annotation__(self.check, parameter, value, check_history)
+                
+            except AttributeError:
+                print('AttributeError')
+                raise AssertionError('{parameter} annotation undecipherable: {annotation})\n{check_history}'\
+                                     .format(parameter = parameter, annotation = annotation, check_history = check_history))
+            except Exception as exception:
+                raise AssertionError('{parameter} annotation predicate({annotation}) raised exception\n  exception = {exception}\n{check_history}'\
+                                     .format(parameter = parameter, annotation = annotation, exception = exception, check_history = check_history))
+            
+                
+
+        # None
+        if annotation == None:
+            pass
+        
+        # type
+        elif type(annotation) == type:
+            check_type(value, annotation)
+        
+        # list
+        elif type(annotation) == list:
+            check_list()
+            
+        # dict
+        elif isinstance(annotation, dict):
+            check_dict()
+
+        # tuple
+        elif type(annotation) == tuple:
+            check_tuple()
+            
+        # set
+        elif type(annotation) == set:
+            check_set()
+            
+        # frozenset
+        elif type(annotation) == frozenset:
+            check_frozenset()
+
+        # lambda
+        elif inspect.isfunction(annotation):
+            check_lambda()
+        
+
+        # str
+        elif  type(annotation) == str:
+            check_str()
+        
+        # class whose __check_annotation__ is called
+        else:
+            check_other()
+        
+    def __call__(self, *args, **kargs):
+        """
+        Intercepts calls made to functions decorated by this class and performs
+        a check on all of the function's annotations before allowing the call to proceed
+        normally.
+        """
+
+        def param_arg_bindings():
+            """
+            Creates an ordered dictionary of the self._function's parameters
+            Keys are parameter names, Values are the parameter values,
+            Order is the order they are written in the function's header.
+            """
+            function_signature  = inspect.signature(self._function)
+            bound_function_signature = function_signature.bind(*args,**kargs)
+            for param in function_signature.parameters.values():
+                if param.name not in bound_function_signature.arguments:
+                    bound_function_signature.arguments[param.name] = param.default
+            return bound_function_signature.arguments
+
+        # Don't check annotations if checking is set to False:
+        if not self.checking_on and checking_on:
+            return self._function(*args, **kargs)
+
+        # Data
+        parameter_dict = param_arg_bindings() 
+        annotations = self._function.__annotations__
+
+        # Checking:
+        try:
+
+            # Check every value in the paramter_dict
+            for name, value in parameter_dict.items():
+                self.check(name, annotations[name], value)
+
+            # Find out what the function returns
+            func_return = self._function(*args, **kargs)
+
+            # Check if the function returns the correct thing if it was annotated
+            if 'return' in annotations:
+                self.check('return', annotations['return'], func_return)
+
+            # Return after finishing the check
+            return func_return
+                        
+        except AssertionError:
+#            print(80*'-')
+#            for line in inspect.getsourcelines(self._function)[0]: # ignore starting line #
+#                print(line.rstrip())
+#            print(80*'-')
+            raise
+
+
+
+
+  
+if __name__ == '__main__':     
+    # an example of testing a simple annotation  
+    '''
+    def f(x : ((str,))): pass
+    f = Check_Annotation(f)
+    f((('a','b'),(3,'d')))
+    '''
+    
+
+    import driver
+    driver.driver()

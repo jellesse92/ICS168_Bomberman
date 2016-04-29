@@ -1,0 +1,15 @@
+INSTUPexam.driver
+/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/In-Lab Exam 2 Practice/exam/driver.py
+INFOS:&&3|1|2|0&&3|3|2|0&&3|4|2|0&&3|5|2|0&&3|6|2|0&&3|7|2|0&&3|8|2|0&&2|9|2|0&&2|10|2|0&&2|11|2|0&&2|12|2|0
+default_show_comment=4
+num_just=9
+exam.driver=2
+default_show_all=5
+default_show_exception_message=8
+default_file_name=1
+batch_test=10
+driver=12
+default_show_exception=7
+default_show_traceback=6
+default_separator=3
+batch_self_check=11

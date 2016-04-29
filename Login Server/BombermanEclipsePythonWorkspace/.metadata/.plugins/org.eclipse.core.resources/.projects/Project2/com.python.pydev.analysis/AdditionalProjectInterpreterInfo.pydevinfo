@@ -1,0 +1,53 @@
+-- VERSION_4
+-- START DISKCACHE
+/Users/Lukas/Google Drive/School/UCI/ICS 33/.metadata/.plugins/org.eclipse.core.resources/.projects/Project2/com.python.pydev.analysis/v2_indexcache
+bag|1430270518000|/Users/Lukas/Google Drive/School/UCI/ICS 33/project2/bag.py
+generator|1430268285000|/Users/Lukas/Google Drive/School/UCI/ICS 33/project2/generator.py
+dictlist|1430272584000|/Users/Lukas/Google Drive/School/UCI/ICS 33/project2/dictlist.py
+-- END DISKCACHE
+-- START DICTIONARY
+7
+5=DictList
+7=DictList.__init__
+1=generator
+2=bag
+4=Bag
+3=dictlist
+6=Bag.__init__
+-- END DICTIONARY
+-- START TREE 1
+9
+alt|1|alternate!10@
+bag|1|Bag!17@
+dic|1|DictList!25@
+gro|1|group!10@
+hid|1|hide!10@
+onc|1|once_in_a_row!10@
+ove|1|overlap!10@
+run|1|running_count!10@
+seq|1|sequence!10@
+-- END TREE
+-- START TREE 2
+21
+__a|2|__add__!4&18@__add__!5&26@
+__b|1|__bool__!5&26@
+__c|3|__contains__!4&18@__contains__!5&26@__call__!5&26@
+__d|1|__delitem__!5&26@
+__e|2|__eq__!4&18@__eq__!5&26@
+__g|2|__getitem__!5&26@__gt__!5&26@
+__i|4|__iter__!4&18@__init__!4&18@__iter__!5&26@__init__!5&26@
+__l|3|__len__!4&18@__lt__!5&26@__len__!5&26@
+__n|1|__ne__!4&18@
+__r|4|__radd__!5&26@__repr__!4&18@__radd__!4&18@__repr__!5&26@
+__s|3|__str__!4&18@__setitem__!5&26@__setattr__!5&26@
+add|1|add!4&18@
+bag|1|bag!6&19@
+col|1|collapse!5&26@
+cou|1|count!4&18@
+d|1|d!5&27@
+dl|1|dl!7&27@
+ite|1|items!5&26@
+key|1|keys!5&26@
+rem|1|remove!4&18@
+uni|1|unique!4&18@
+-- END TREE

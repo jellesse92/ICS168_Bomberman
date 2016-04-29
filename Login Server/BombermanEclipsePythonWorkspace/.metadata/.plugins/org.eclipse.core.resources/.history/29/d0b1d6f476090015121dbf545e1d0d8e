@@ -1,0 +1,23 @@
+import unittest  # use unittest.TestCase
+from graph import Graph, GraphError
+
+
+class Test_Graph(unittest.TestCase):
+    def setUp(self):
+        self.graph = Graph(('a','b',1), ('a','c',3), ('b','a',2), ('d','b',2), ('d','c',1), 'e')
+    def test_del_edge(self):
+        assert len(self.graph.edges) == 5
+        
+        for edge in self.graph.edges:
+            graph_length = len(self.graph.edges)
+            print('before', graph_length)
+            del self.graph.edge
+            print('after', len(self.graph.edges))
+            assert len(self.graph.edges) == graph_length - 1
+            
+        
+    def test_del_node(self):
+        pass
+    
+    def test_del_errors(self):
+        pass

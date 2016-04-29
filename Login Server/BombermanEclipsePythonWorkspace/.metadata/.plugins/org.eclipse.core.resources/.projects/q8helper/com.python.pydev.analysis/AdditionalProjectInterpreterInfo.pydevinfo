@@ -1,0 +1,64 @@
+-- VERSION_4
+-- START DISKCACHE
+/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/.metadata/.plugins/org.eclipse.core.resources/.projects/q8helper/com.python.pydev.analysis/v2_indexcache
+performance|1433278619000|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/q8helper/performance.py
+graph_goody|1432952938000|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/q8helper/graph_goody.py
+q81solution|1433278938000|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/q8helper/q81solution.py
+q82solution|1433282292000|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/q8helper/q82solution.py
+graph|1432996842000|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/q8helper/graph.py
+-- END DISKCACHE
+-- START DICTIONARY
+10
+2=performance
+6=Graph
+5=graph_goody
+10=Graph.__init__
+3=q81solution
+1=q82solution
+7=Performance
+4=graph
+9=Performance.evaluate
+8=Performance.__init__
+-- END DICTIONARY
+-- START TREE 1
+13
+!<m|0|
+che|1|check_tree!10@
+cod|1|code!18@
+cre|2|create_tree!10@create_random!26@
+gra|3|Graph!33@graph_code!26@GraphError!33@
+p|1|p!19@
+per|1|Performance!17@
+pro|0|
+ran|1|random!42@
+set|1|setup!18@
+siz|1|size!19@
+spa|1|spanning_tree!42@
+tes|0|
+-- END TREE
+-- START TREE 2
+23
+!<m|0|
+__c|2|__contains__!6&34@__call__!6&34@
+__d|1|__delitem__!6&34@
+__g|1|__getitem__!6&34@
+__i|3|__init__!6&34@__init__!7&18@__iter__!6&34@
+__l|2|__len__!6&34@__le__!6&34@
+__s|2|__setitem__!6&34@__str__!6&34@
+_co|1|_code!8&19@
+_ev|2|_evaluate_results!8&19@_evaluate_results!9&19@
+_se|1|_setup!8&19@
+_ti|2|_title!8&19@_times!8&19@
+all|1|all_nodes!6&34@
+ana|1|analyze!7&18@
+cod|0|
+deg|1|degree!6&34@
+edg|1|edges!10&35@
+eva|1|evaluate!7&18@
+gra|0|
+in_|1|in_degree!6&34@
+leg|1|legal_tuple!6&34@
+out|1|out_degree!6&34@
+set|0|
+tes|0|
+-- END TREE

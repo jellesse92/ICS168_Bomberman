@@ -1,0 +1,14 @@
+import cProfile
+from graph_goody import random,spanning_tree
+import pstats
+
+# Put script here to generate data for Problem #2
+if __name__ == '__main__':
+    def create_tree(size):
+        spanning_tree(random(size, lambda n: 10*n))
+        
+    size = 50000
+    cProfile.run('create_tree({size})'.format(size = size), 'tree_profile')
+    profile = pstats.Stats('tree_profile')
+    #profile.strip_dirs().sort_stats(-1).print_stats()
+    profile.sort_stats('calls').print_stats(10)

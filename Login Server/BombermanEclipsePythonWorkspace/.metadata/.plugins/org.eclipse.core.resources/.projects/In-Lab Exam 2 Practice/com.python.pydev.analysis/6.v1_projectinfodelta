@@ -1,0 +1,13 @@
+INSTUPexam.prompt
+/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/In-Lab Exam 2 Practice/exam/prompt.py
+INFOS:&&2|1|2|0&&2|3|2|0&&2|4|2|0&&2|5|2|0&&2|6|2|0&&2|7|2|0&&2|8|2|0&&2|9|2|0&&2|10|2|0
+for_int=3
+for_char=8
+for_int_between=6
+for_num=5
+for_bool=9
+for_value=1
+for_string=7
+for_string_via_index=10
+exam.prompt=2
+for_float=4

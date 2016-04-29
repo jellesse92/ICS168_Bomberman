@@ -1,0 +1,7 @@
+SHOW_CONSOLE_PROMPT_ON_DEBUG=false
+eclipse.preferences.version=1
+pydevconsole_background_color=41,41,41
+pydevconsole_prompt_color=217,143,35
+pydevconsole_syserr_color=253,24,2
+pydevconsole_sysin_color=69,234,220
+pydevconsole_sysout_color=244,244,244

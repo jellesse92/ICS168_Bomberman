@@ -1,0 +1,29 @@
+-- VERSION_4
+-- START DISKCACHE
+/Users/Lukas/Google Drive/School/UCI/ICS 33/.metadata/.plugins/org.eclipse.core.resources/.projects/q4helper/com.python.pydev.analysis/v2_indexcache
+q4solution|1430435510000|/Users/Lukas/Google Drive/School/UCI/ICS 33/q4helper/q4solution.py
+-- END DISKCACHE
+-- START DICTIONARY
+3
+1=q4solution
+2=Ordered
+3=Ordered.__init__
+-- END DICTIONARY
+-- START TREE 1
+8
+alt|1|alternate_all!10@
+com|1|compress!10@
+hid|1|hide!10@
+ord|1|Ordered!9@
+pea|1|peaks!10@
+pri|1|primes!10@
+sta|1|start_when!10@
+sto|1|stop_when!10@
+-- END TREE
+-- START TREE 2
+4
+__i|2|__iter__!2&10@__init__!2&10@
+ase|1|aset!3&11@
+i|1|i!2&11@
+s|1|s!2&11@
+-- END TREE

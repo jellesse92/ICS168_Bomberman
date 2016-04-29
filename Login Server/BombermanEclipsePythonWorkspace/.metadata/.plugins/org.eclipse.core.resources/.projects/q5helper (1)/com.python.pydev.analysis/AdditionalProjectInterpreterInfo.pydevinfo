@@ -1,0 +1,30 @@
+-- VERSION_4
+-- START DISKCACHE
+/Users/Lukas/Google Drive/School/UCI/ICS 33/.metadata/.plugins/org.eclipse.core.resources/.projects/q5helper/com.python.pydev.analysis/v2_indexcache
+cmtest|1367535634000|/Users/Lukas/Google Drive/School/UCI/ICS 33/q5helper/cmtest.py
+collatz|1423242054000|/Users/Lukas/Google Drive/School/UCI/ICS 33/q5helper/collatz.py
+q5solution|1431048278000|/Users/Lukas/Google Drive/School/UCI/ICS 33/q5helper/q5solution.py
+-- END DISKCACHE
+-- START DICTIONARY
+3
+3=cmtest
+2=collatz
+1=q5solution
+-- END DICTIONARY
+-- START TREE 1
+11
+cod|1|code_metric!10@
+com|1|compare!10@
+cyc|1|cycle_count!19@
+is_|2|is_debugging!19@is_sorted!10@
+l|0|
+mer|1|merge!10@
+ori|1|original_number!19@
+sor|1|sort!10@
+tes|1|test_number!19@
+tim|1|timer!19@
+x|1|x!27@
+-- END TREE
+-- START TREE 2
+0
+-- END TREE

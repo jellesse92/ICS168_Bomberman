@@ -1,0 +1,5 @@
+import cProfile
+from graph_goody import random,spanning_tree
+import pstats
+
+# Put script here to generate data for Problem #2

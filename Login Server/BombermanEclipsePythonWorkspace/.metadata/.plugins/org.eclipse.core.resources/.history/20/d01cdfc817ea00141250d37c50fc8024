@@ -1,0 +1,182 @@
+from goody import irange
+from goody import type_as_str
+
+import math
+from _ast import Num
+
+class Fraction:
+    @staticmethod
+    # Call as Fraction._gcd(...); no self parameter
+    # Helper method computes the Greatest Common Divisor of x and y
+    def gcd(x : int, y : int) -> int:
+        assert x >= 0 and y >= 0, 'Fraction._gcd: x('+str(x)+') and y('+str(y)+') must be >= 0'
+        while y != 0:
+            x, y = y, x % y
+        return x
+
+    # Returns a string that is the decimal representation of a Fraction, with
+    #   decimal_places digitst appearing after the decimal points.
+    # For example: if x = Fraction(23,8), then x(5) returns '2.75000'
+    def __call__(self, decimal_places):
+        answer = ''
+        num = self.num
+        denom = self.denom
+    
+        # handle negative values
+        if num < 0:
+            num, answer = -num, '-'
+    
+        # handle integer part
+        if num >= denom:
+            answer += str(num//denom)
+            num     = num - num//denom*denom
+            
+        # handle decimal part
+        answer += '.'+str(num*10**decimal_places//denom)
+        return answer
+    
+    @staticmethod
+    # Call as Fraction._validate_arithmetic(..); no self parameter
+    # Helper method raises exception with appropriate message if type(v) is not
+    #   in the set of types t; the message includes the values of the strings
+    #   op (operator), lt (left type) and rt (right type)
+    # An example call (from my __add__ method), which checks whether the type of
+    #   right is a Fraction or int is...
+    # Fraction._validate_arithmetic(right, {Fraction,int},'+','Fraction',type_as_str(right))
+    def _validate_arithmetic(v, t : set, op : str, lt : str, rt : str):
+        if type(v) not in t:
+            raise TypeError('unsupported operand type(s) for '+op+
+                            ': \''+lt+'\' and \''+rt+'\'')        
+
+    @staticmethod
+    # Call as Fraction._validate_relational(..); no self parameter
+    # Helper method raises exception with appropriate message if type(v) is not
+    #   in the set of types t; the message includes the values of the strings
+    #   op (operator), and rt (right type)
+    def _validate_relational(v, t : set, op : str, rt : str):
+        if type(v) not in t:
+            raise TypeError('unorderable types: '+
+                            'Fraction() '+op+' '+rt+'()')        
+
+
+    def __init__(self,num=0,denom=1):
+        assert type(num) == int and type(denom) == int, 'Number(s) given not of type: int'
+        assert denom != 0, 'Denominator parameter cannot equal zero'
+        if num == 0:
+            denom = 1
+        if denom < 0:
+            num = -num
+            denom = -denom
+        self.num = int(num/self.gcd(abs(num), abs(denom)))
+        self.denom = int(denom/self.gcd(abs(num), abs(denom)))
+        
+
+    def __repr__(self):
+        return 'Fraction(' + str(self.num) + ',' + str(self.denom) +')'
+    
+    def __str__(self):
+        return str(self.num) + '/' + str(self.denom)
+   
+
+    def __bool__(self):
+        return self.num != 0
+    
+
+    def __getitem__(self,i):
+        pass
+ 
+    def __pos__(self):
+        pass
+    
+    def __neg__(self):
+        pass
+    
+    def __abs__(self):
+        pass
+    
+
+    def __add__(self,right):
+        pass
+
+    def __radd__(self,left):
+        pass
+
+
+    def __sub__(self,right):
+        pass
+     
+    def __rsub__(self,left):
+        pass
+
+     
+    def __mul__(self,right):
+        pass
+
+    def __rmul__(self,left):
+        pass
+
+    
+    def __truediv__(self,right):
+        pass
+
+    def __rtruediv__(self,left):
+        pass
+
+
+    def __pow__(self,right):
+        pass
+
+
+    def __eq__(self,right):
+        pass
+    
+
+    def __lt__(self,right):
+        pass
+
+    
+    def __gt__(self,right):
+        pass
+
+    # Uncomment this method when you are ready to write/test it
+    # If this is pass, then no attributes will be set
+    #def __setattr__(self,name,value):
+    #    pass
+ 
+
+
+##############################
+
+
+# Newton: pi = 6*arcsin(1/2); see the arcsin series at http://mathforum.org/library/drmath/view/54137.html
+# Check your results at http://www.geom.uiuc.edu/~huberty/math5337/groupe/digits.html
+#   also see http://www.numberworld.org/misc_runs/pi-5t/details.html
+def compute_pi(n):
+    def prod(r):
+        answer = 1
+        for i in r:
+            answer *= i
+        return answer
+    
+    answer = Fraction(1,2)
+    x      = Fraction(1,2)
+    for i in irange(1,n):
+        big = 2*i+1
+        answer += Fraction(prod(range(1,big,2)),prod(range(2,big,2)))*x**big/big       
+    return 6*answer
+
+
+
+
+
+if __name__ == '__main__':
+    # Put in simple tests for Fraction before allowing driver to run
+ 
+    print()
+    import driver
+    
+    driver.default_file_name = 'bsc1.txt'
+#     driver.default_show_traceback = True
+#     driver.default_show_exception = True
+#     driver.default_show_exception_message = True
+    driver.driver()

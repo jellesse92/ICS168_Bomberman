@@ -1,0 +1,12 @@
+MODULES_MANAGER_V2
+dice|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/courselib/dice.py
+driver|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/courselib/driver.py
+equivalence|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/courselib/equivalence.py
+goody|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/courselib/goody.py
+graph|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/courselib/graph.py
+modular|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/courselib/modular.py
+predicate|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/courselib/predicate.py
+priorityqueue|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/courselib/priorityqueue.py
+prompt|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/courselib/prompt.py
+stack|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/courselib/stack.py
+stopwatch|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/courselib/stopwatch.py

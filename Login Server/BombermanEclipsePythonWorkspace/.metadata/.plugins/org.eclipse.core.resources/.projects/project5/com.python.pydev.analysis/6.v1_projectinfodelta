@@ -1,0 +1,22 @@
+INSTUPmobilesimulton
+/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/project5/mobilesimulton.py
+INFOS:&&1|1|2|0&&2|3|2|1&&3|4|2|5&&3|6|2|5&&2|7|2|1&&2|8|2|1&&3|4|2|9&&2|10|2|1&&2|11|2|1&&3|6|2|12&&2|13|2|1&&2|14|2|1&&3|4|2|15&&2|16|2|1&&2|17|2|1&&3|4|2|18&&2|19|2|1
+move=16
+wall_bounce=19
+mobilesimulton=2
+Mobile_Simulton.set_speed=12
+bounce=17
+set_speed=11
+get_speed=10
+_speed=6
+set_velocity=13
+Mobile_Simulton.bounce=18
+_angle=4
+Mobile_Simulton.__init__=5
+get_angle=7
+Mobile_Simulton.set_angle=9
+Mobile_Simulton.randomize_angle=15
+set_angle=8
+__init__=3
+Mobile_Simulton=1
+randomize_angle=14

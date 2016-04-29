@@ -1,0 +1,25 @@
+INSTUPq6solution
+/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/qq6helper/q6solution.py
+INFOS:&&1|1|2|0&&2|3|2|1&&3|4|2|5&&3|6|2|5&&2|7|2|0&&2|8|2|0&&1|9|2|0&&2|3|2|9&&3|4|2|10&&3|11|2|10&&3|12|2|10&&2|13|2|0&&2|14|2|0&&2|15|2|0&&2|16|2|0&&1|17|2|0&&2|3|2|0&&2|18|2|0&&2|19|2|0&&1|20|2|0&&2|3|2|0&&2|21|2|0&&2|19|2|0&&2|22|2|0
+next=6
+LN.__init__=5
+LN=1
+set=18
+separate=15
+StringVar_WithHistory=17
+TN.__init__=10
+right=12
+simulate_selection=22
+is_min_heap=16
+undo=19
+left=11
+OptionMenuUndo=20
+get=21
+q6solution=2
+list_to_ll=7
+TN=9
+str_ll=8
+__init__=3
+value=4
+list_to_tree=13
+str_tree=14

@@ -1,0 +1,88 @@
+-- VERSION_4
+-- START DISKCACHE
+/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/.metadata/.plugins/org.eclipse.core.resources/.projects/project5/com.python.pydev.analysis/v2_indexcache
+ball|1369152396000|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/project5/ball.py
+controller|1369148392000|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/project5/controller.py
+prey|1369149828000|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/project5/prey.py
+view|1369148338000|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/project5/view.py
+mobilesimulton|1369436730000|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/project5/mobilesimulton.py
+floater|1369152428000|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/project5/floater.py
+pulsator|1369152540000|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/project5/pulsator.py
+model|1418184918000|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/project5/model.py
+hunter|1432648294000|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/project5/hunter.py
+simulton|1369150052000|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/project5/simulton.py
+blackhole|1369152414000|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/project5/blackhole.py
+script|1368898360000|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/project5/script.py
+-- END DISKCACHE
+-- START DICTIONARY
+21
+8=controller
+9=prey
+7=mobilesimulton
+20=Mobile_Simulton.set_speed
+10=pulsator
+21=Simulton.set_location
+3=blackhole
+12=Prey
+2=ball
+18=Mobile_Simulton.bounce
+5=view
+15=Mobile_Simulton.__init__
+19=Simulton.set_dimension
+14=Simulton
+16=Mobile_Simulton.set_angle
+17=Mobile_Simulton.randomize_angle
+4=floater
+1=model
+6=hunter
+11=simulton
+13=Mobile_Simulton
+-- END DICTIONARY
+-- START TREE 1
+26
+add|1|add!10@
+bal|1|Ball!17@
+bla|1|Black_Hole!25@
+dis|1|display_all!10@
+fin|1|find!10@
+flo|1|Floater!33@
+fra|1|frame!43@
+hun|1|Hunter!49@
+mob|1|Mobile_Simulton!57@
+mou|1|mouse_click!10@
+obj|1|object_button!66@
+pre|1|Prey!73@
+pro|1|progress!66@
+pul|1|Pulsator!81@
+rem|1|remove!10@
+rep|1|repeater!66@
+res|2|reset_button!66@reset!10@
+roo|1|root!43@
+sel|1|select_object!10@
+sim|2|simulation_canvas!66@Simulton!89@
+sta|2|start!10@start_button!66@
+ste|2|step!10@step_button!66@
+sto|2|stop_button!66@stop!10@
+the|2|the_progress!67@the_canvas!67@
+upd|1|update_all!10@
+wor|1|world!10@
+-- END TREE
+-- START TREE 2
+16
+__i|3|__init__!12&74@__init__!13&58@__init__!14&90@
+_an|4|_angle!15&59@_angle!16&59@_angle!17&59@_angle!18&59@
+_he|1|_height!19&91@
+_sp|2|_speed!15&59@_speed!20&59@
+_wi|1|_width!19&91@
+_x|1|_x!21&91@
+_y|1|_y!21&91@
+bou|1|bounce!13&58@
+cha|2|change_location!14&90@change_dimension!14&90@
+con|1|contains!14&90@
+dis|1|distance!14&90@
+get|4|get_dimension!14&90@get_angle!13&58@get_speed!13&58@get_location!14&90@
+mov|1|move!13&58@
+ran|1|randomize_angle!13&58@
+set|5|set_angle!13&58@set_location!14&90@set_dimension!14&90@set_speed!13&58@set_velocity!13&58@
+wal|1|wall_bounce!13&58@
+-- END TREE

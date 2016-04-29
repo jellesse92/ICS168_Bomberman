@@ -1,0 +1,62 @@
+-- VERSION_4
+-- START DISKCACHE
+/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/.metadata/.plugins/org.eclipse.core.resources/.projects/qq6helper/com.python.pydev.analysis/v2_indexcache
+q6solution|1432070562000|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/qq6helper/q6solution.py
+-- END DISKCACHE
+-- START DICTIONARY
+8
+7=LN.__init__
+2=LN
+8=OptionMenuUndo.__init__
+4=StringVar_WithHistory
+5=OptionMenuUndo
+6=TN.__init__
+1=q6solution
+3=TN
+-- END DICTIONARY
+-- START TREE 1
+24
+LN|1|LN!9@
+TN|1|TN!9@
+__i|0|
+b|1|b!11@
+big|1|big!11@
+com|1|composite!11@
+eve|1|even!11@
+get|0|
+is_|1|is_min_heap!10@
+lis|2|list_to_ll!10@list_to_tree!10@
+ll|1|ll!11@
+mai|1|main!11@
+odd|1|odd!11@
+omu|1|omu!11@
+opt|1|OptionMenuUndo!9@
+pri|1|prime!11@
+roo|1|root!11@
+sep|1|separate!10@
+set|0|
+sim|0|
+sma|1|small!11@
+str|3|str_tree!10@str_ll!10@StringVar_WithHistory!9@
+t|1|t!11@
+und|0|
+-- END TREE
+-- START TREE 2
+16
+__i|4|__init__!2&10@__init__!3&10@__init__!4&10@__init__!5&10@
+b|0|
+get|1|get!5&10@
+lef|1|left!6&11@
+ll|0|
+mai|0|
+nex|1|next!7&11@
+omu|0|
+res|1|result!8&11@
+rig|1|right!6&11@
+roo|0|
+set|1|set!4&10@
+sim|1|simulate_selection!5&10@
+t|0|
+und|2|undo!4&10@undo!5&10@
+val|2|value!7&11@value!6&11@
+-- END TREE

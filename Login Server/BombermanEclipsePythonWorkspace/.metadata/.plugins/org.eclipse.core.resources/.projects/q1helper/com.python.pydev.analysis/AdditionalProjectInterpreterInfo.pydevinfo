@@ -1,0 +1,21 @@
+-- VERSION_4
+-- START DISKCACHE
+/Users/Lukas/Google Drive/School/UCI/ICS 33/.metadata/.plugins/org.eclipse.core.resources/.projects/q1helper/com.python.pydev.analysis/v2_indexcache
+q1solution|1428533585000|/Users/Lukas/Google Drive/School/UCI/ICS 33/q1helper/q1solution.py
+-- END DISKCACHE
+-- START DICTIONARY
+1
+1=q1solution
+-- END DICTIONARY
+-- START TREE 1
+6
+alt|1|alt_dictionary!10@
+bet|1|between!10@
+big|2|big_family!10@big_word_map!10@
+bot|1|both!10@
+nea|2|near1!10@near2!10@
+sor|2|sort_generations!10@sort_descendants!10@
+-- END TREE
+-- START TREE 2
+0
+-- END TREE

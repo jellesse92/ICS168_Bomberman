@@ -1,0 +1,20 @@
+from performance import Performance
+from goody import irange
+from graph_goody import random, spanning_tree
+from tkinter.tix import Tree
+
+# Put script here to generate data for Problem #1
+if __name__ == '__main__':
+    def create_random(size):
+        global tree
+        tree = random(size, lambda n: 10*n)
+        
+    def graph_code():
+        global tree
+        spanning_tree(tree)
+        
+    for repeat in range(7):
+        size = 1000 * 2**repeat
+        perform_test = Performance(lambda: graph_code(), lambda: create_random(size), 8, '\n\nSpanning Tree of size ' + str(size))
+        perform_test.evaluate()
+        perform_test.analyze()

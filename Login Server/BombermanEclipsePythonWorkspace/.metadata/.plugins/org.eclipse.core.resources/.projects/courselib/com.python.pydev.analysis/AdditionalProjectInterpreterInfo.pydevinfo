@@ -1,0 +1,161 @@
+-- VERSION_4
+-- START DISKCACHE
+/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/.metadata/.plugins/org.eclipse.core.resources/.projects/courselib/com.python.pydev.analysis/v2_indexcache
+predicate|1368399296000|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/courselib/predicate.py
+equivalence|1369925088000|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/courselib/equivalence.py
+stack|1363560502000|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/courselib/stack.py
+goody|1367342622000|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/courselib/goody.py
+modular|1363560492000|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/courselib/modular.py
+driver|1425748690000|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/courselib/driver.py
+dice|1363452282000|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/courselib/dice.py
+priorityqueue|1363560508000|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/courselib/priorityqueue.py
+prompt|1365396900000|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/courselib/prompt.py
+graph|1363621002000|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/courselib/graph.py
+stopwatch|1363620806000|/Users/Lukas/Google Drive/Education/UC Irvine/ICS 33/courselib/stopwatch.py
+-- END DISKCACHE
+-- START DICTIONARY
+40
+10=stack
+32=EquivalenceClass.clear
+6=goody
+25=PriorityQueue.__init__
+3=dice
+9=priorityqueue
+17=Stopwatch
+40=Stack.clear
+15=Modular
+21=Graph.clear
+22=Stopwatch.__init__
+35=Modular.inc
+7=predicate
+18=Graph.NodeInfo
+34=Stopwatch.stop
+20=Graph.__init__
+26=Stopwatch.start
+24=Graph.NodeInfo.__init__
+30=Modular.__init__
+29=Dice.__init__
+13=EquivalenceClass
+4=equivalence
+8=modular
+39=Stack.__init__
+19=Dice
+27=Stopwatch.start_backwards
+14=PriorityQueue
+33=Dice.roll
+2=graph
+28=Stopwatch._update
+12=Stack
+23=Stopwatch.reset
+16=Graph
+1=driver
+36=Modular.dec
+31=EquivalenceClass.__init__
+38=PriorityQueue.clear
+37=Modular.clear
+5=prompt
+11=stopwatch
+-- END DICTIONARY
+-- START TREE 1
+25
+bat|2|batch_test!10@batch_self_check!10@
+con|1|connected_components!18@
+def|7|default_show_exception_message!11@default_show_exception!11@default_show_comment!11@default_show_traceback!11@default_file_name!11@default_show_all!11@default_separator!11@
+dic|1|Dice!25@
+dri|1|driver!10@
+equ|1|EquivalenceClass!33@
+for|9|for_int_between!42@for_string_via_index!42@for_string!42@for_bool!42@for_int!42@for_float!42@for_num!42@for_value!42@for_char!42@
+fra|1|frange!50@
+gra|1|Graph!17@
+ira|1|irange!50@
+is_|8|is_even!58@is_positive!58@is_odd!58@is_percentage!58@is_bigger_than!58@is_less_than!58@is_non_negative!58@is_prime!58@
+lea|1|leading!50@
+len|1|length_equal!58@
+mak|1|make_symmetric!18@
+min|1|minimum_spanning_tree!18@
+mod|1|Modular!65@
+num|1|num_just!10@
+pri|1|PriorityQueue!73@
+ran|1|random_graph!18@
+rea|1|read_file_values!50@
+rev|1|reverse!58@
+saf|1|safe_open!50@
+sta|1|Stack!81@
+sto|1|Stopwatch!89@
+typ|1|type_as_str!50@
+-- END TREE
+-- START TREE 2
+72
+__a|4|__add__!12&82@__add__!13&34@__add__!14&74@__add__!15&66@
+__b|5|__bool__!15&66@__bool__!14&74@__bool__!13&34@__bool__!12&82@__bool__!16&18@
+__e|1|__eq__!15&66@
+__g|2|__ge__!15&66@__gt__!15&66@
+__i|11|__init__!17&90@__init__!15&66@__iter__!14&74@__iter__!13&34@__init__!14&74@__iter__!12&82@__init__!13&34@__init__!16&18@__init__!18&18@__init__!12&82@__init__!19&26@
+__l|2|__le__!15&66@__lt__!15&66@
+__m|1|__mul__!15&66@
+__n|2|__ne__!15&66@__next__!14&74@
+__p|1|__pow__!15&66@
+__r|4|__rmul__!15&66@__radd__!15&66@__rpow__!15&66@__rsub__!15&66@
+__s|8|__sub__!15&66@__str__!19&26@__str__!16&18@__str__!17&90@__str__!14&74@__str__!15&66@__str__!12&82@__str__!13&34@
+_co|1|_compress_to_root!13&34@
+_ed|2|_edges!20&19@_edges!21&19@
+_el|2|_elapsed_prior!22&91@_elapsed_prior!23&91@
+_ge|1|_gen!14&74@
+_he|1|_heapify!14&74@
+_in|2|_in_heap!14&74@_in_edges!24&19@
+_ke|1|_key!25&75@
+_la|5|_last_start_time!22&91@_last_start_time!23&91@_last_start_time!26&91@_last_start_time!27&91@_last_start_time!28&91@
+_le|1|_left_child!14&74@
+_ma|1|_max_pips!29&27@
+_mo|1|_modulus!30&67@
+_no|2|_nodes!20&19@_nodes!21&19@
+_ou|1|_out_edges!24&19@
+_pa|3|_parent!31&35@_parent!32&35@_parent!14&74@
+_pe|3|_percolate_up_recursive!14&74@_percolate_up!14&74@_percolate_down!14&74@
+_pi|2|_pips!29&27@_pips!33&27@
+_re|1|_reverse!25&75@
+_ri|1|_right_child!14&74@
+_ro|3|_roll_count!29&27@_root_size!31&35@_root_size!32&35@
+_ru|9|_running_now!22&91@_running_now!23&91@_running_now!26&91@_running_now!27&91@_running_now!34&91@_running_forward!22&91@_running_forward!23&91@_running_forward!26&91@_running_forward!27&91@
+_st|1|_strict!20&19@
+_sw|1|_swap!14&74@
+_tr|1|_trichotomy!14&74@
+_up|1|_update!17&90@
+_va|8|_value!30&67@_value!35&67@_value!36&67@_value!37&67@_values!25&75@_values!38&75@_values!39&83@_values!40&83@
+a|1|a!13&35@
+act|6|action!19&27@action!17&91@action!13&35@action!14&75@action!12&83@action!15&67@
+add|5|add_singleton!13&34@add_node!16&18@add!14&74@add!12&82@add_edge!16&18@
+all|3|all_pip_maximums!19&26@all_classes!13&34@all_pips!19&26@
+b|1|b!13&35@
+cle|5|clear!15&66@clear!12&82@clear!13&34@clear!14&74@clear!16&18@
+com|6|command_prompt!13&35@command_prompt!12&83@command_prompt!15&67@commandPrompt!17&91@command_prompt!19&27@command_prompt!14&75@
+d|1|d!19&27@
+dec|1|dec!15&66@
+deg|1|degree!16&18@
+e|1|e!13&35@
+edg|3|edges!16&18@edge_count!16&18@edge_value!16&18@
+has|2|has_edge!16&18@has_node!16&18@
+i|1|i!19&27@
+in_|4|in_degree!16&18@in_nodes!16&18@in_edges!16&18@in_same_class!13&34@
+inc|1|inc!15&66@
+is_|4|is_singleton!13&34@is_empty!16&18@is_empty!14&74@is_empty!12&82@
+m|1|m!15&67@
+mer|2|merge!14&74@merge_classes_containing!13&34@
+mod|1|modulus!15&66@
+nod|3|nodes!16&18@NodeInfo!16&17@node_count!16&18@
+num|1|number_of_dice!19&26@
+out|3|out_degree!16&18@out_edges!16&18@out_nodes!16&18@
+pee|2|peek!12&82@peek!14&74@
+pip|3|pips_on!19&26@pips_same!19&26@pip_sum!19&26@
+pq|1|pq!14&75@
+rea|2|read!16&18@read!17&90@
+rem|4|remove!14&74@remove_edge!16&18@remove_node!16&18@remove!12&82@
+res|1|reset!17&90@
+rol|2|rolls!19&26@roll!19&26@
+s|2|s!17&91@s!12&83@
+siz|3|size!14&74@size!13&34@size!12&82@
+sta|4|standard_rolls_for_debugging!19&26@start!17&90@start_backwards!17&90@status!17&90@
+sto|1|stop!17&90@
+val|1|value!15&66@
+wri|1|write!16&18@
+-- END TREE

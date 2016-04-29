@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;q1helper/bsc&apos; to &apos;bsc.txt&apos;" description="Rename resource &apos;bsc&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="bsc" name="bsc.txt" stamp="1428530792460" updateReferences="true"/>
+</session>

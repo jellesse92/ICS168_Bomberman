@@ -1,0 +1,102 @@
+# Submitter: llohden(Lohden, Luke)
+# Partner  : mlgill(Gill, Matt)
+# We certify that we worked cooperatively on this programming
+#   assignment, according to the rules for pair programming
+
+import re, traceback, keyword
+
+def pnamedtuple(type_name, field_names, mutable=False):
+            
+    def show_listing(s):
+        for i, l in enumerate(s.split('\n'),1):
+            print('{num: >3} {text}'.format(num= i, text= l.rstrip()))
+
+
+    # Parameter Checking:
+            
+            
+    def _parameter_check(parameters):
+        for parameter in parameters:
+            if type(parameter) != str:
+                raise SyntaxError('pnamedtuple type_name parameter must be of type: str')
+            if parameter in keyword.kwlist:
+                raise SyntaxError('pnamedtuple type_name parameter cannot be a python keyword:' + str(parameter))
+            if re.fullmatch('[a-zA-Z]\w*', parameter) == None:
+                raise SyntaxError('Invalid type_name parameter to pnamedtuple:' + str(parameter))
+            
+    if type(field_names) not in (str,list):
+        raise SyntaxError('pnamedtuple field_names parameter must be of types: str, list')
+    
+    _parameter_check([type_name])
+    
+    _parameter_check(re.findall('(\w+)', str(field_names)))
+    
+    
+    # Template String Segments:
+    
+    
+    class_args = ''
+    for name in re.findall('(\w+)', str(field_names)):
+        class_args += name + ', '
+        
+    init_str = ''
+    for name in re.findall('(\w+)', str(field_names)):
+        init_str += 'self.' + name + '=' + name + '\n'
+    init_str += 'self._fields = ' + str(re.findall('(\w+)', str(field_names))) + '\n'
+    init_str += 'self._mutable = ' + str(mutable) + '\n'
+        
+    """
+    self.x = x
+    self.y = y
+    self._fields = ['x','y']
+    self._mutable = False
+    """
+    
+    
+    
+    class_template = '''\
+class {type_name}:
+    def __init__(self, {field_names}):
+        {init_body}
+        
+
+        
+        
+        
+'''  
+     
+    """    
+    def __repr__(self):
+    args = ''
+    for name in self._fields:
+    args += name + '={' + name + '} ,'
+    return ({type_name} + (args.strip(' ,')+')')) 
+    """
+    class_definition = \
+        class_template.format(type_name = type_name, field_names = class_args, init_body = init_str)
+    
+    # bind class_definition (used below) to the string constructed for the class
+
+
+
+    # For initial debugging, always show the source code of the class
+    #show_listing(class_definition)
+    
+    # Execute the class_definition string in a local name-space and bind the
+    #   name source_code in its dictionary to the class_defintion; return the
+    #   class object created; if there is a syntax error, list the class and
+    #   show the error
+    name_space = dict(__name__='pnamedtuple_{type_name}'.format(type_name=type_name))
+    try:
+        exec(class_definition, name_space)
+        name_space[type_name].source_code = class_definition
+    except(SyntaxError,TypeError):
+        show_listing(class_definition)
+        traceback.print_exc()
+    return name_space[type_name]
+
+
+    
+if __name__ == '__main__':
+    import driver
+    driver.driver()
