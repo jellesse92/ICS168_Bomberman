@@ -37,10 +37,10 @@ def LogIn_Server(database: dict):
             
             if query[0] == '0':
                 call = queries.create_account(database, query[1], query[2])
-                print("Sending: ", call[0])
+                print(call[0])
                 client[0].send(call[0].encode())
                 database = call[1]
-                dataManage.save_database(database)
+                dataManage.save_database(database) # Somehow it believes dataManage to be a str and not a module...?
                 
             elif query[0] == '1':
                 client[0].send(queries.validate(database, query[1], query[2]))

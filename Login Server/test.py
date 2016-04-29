@@ -21,6 +21,7 @@ def test_connection() -> Communication:
     return Communication(test_socket, socket_in, socket_out)
 
 def test_communication(channel: Communication, message: str) -> str:
+    print('sending: ', message)
     write_line(channel, message)
     response = read_line(channel)
     print('recieved: ', response)
