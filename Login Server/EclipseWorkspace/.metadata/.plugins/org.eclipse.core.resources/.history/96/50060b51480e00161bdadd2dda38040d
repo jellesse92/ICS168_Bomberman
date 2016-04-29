@@ -48,7 +48,7 @@ def LogIn_Server(database: dict):
                 client[0].send(queries.validate(database, query[1], query[2]).encode())
                 
             elif query[0] == '2':
-                call = queries.update_stats(database, query[1], query[2], int(query[3]),
+                call = queries.update_stats(database, int(query[1]), int(query[2]), int(query[3]),
                                             int(query[4]), int(query[5]), int(query[6]))
                 client[0].send(call[0].encode())
                 database = call[1]

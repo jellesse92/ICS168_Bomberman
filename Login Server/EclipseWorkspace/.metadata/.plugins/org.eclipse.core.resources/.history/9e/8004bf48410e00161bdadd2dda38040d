@@ -26,7 +26,7 @@ def load_database() -> dict:
             stats = user[2].split(':')
             for stat in stats:
                 stat = int(stat)
-            database[user[0]] = userClass.User(user[0], user[1], list(stats))
+            database[user[0]] = userClass.User(user[0], user[1], tuple(stats))
 
     return database
 

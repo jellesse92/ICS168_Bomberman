@@ -23,6 +23,7 @@ def test_connection() -> Communication:
 def test_communication(channel: Communication, message: str) -> str:
     print('sending: ', message)
     write_line(channel, message)
+    print('sent message')
     response = read_line(channel)
     print('recieved: ', response)
     return response
@@ -47,39 +48,39 @@ def write_line(connection: Communication, line: str) -> None:
 
 ################################################################################
 
-if __name__ == '__main__':
-    channel = test_connection()
-
-    print('Connected!')
-
-    # Create Account:
-    assert test_communication(channel, '0:Luke:123') == 'SUCCESS'
-    assert test_communication(channel, '0:Luke:123') == 'EXISTS'
-
-    print('Create Account Passed!')
-
-    # Log In:
-    assert test_communication(channel, '1:NotLuke:123') == 'FAIL'
-    assert test_communication(channel, '1:Luke:1234') == 'FAIL'
-    assert test_communication(channel, '1:Luke:123') == 'SUCCESS'
-
-    print('Log In Passed!')
-
-    # Update Stats:
-    assert test_communication(channel, '2:NotLuke:123:1:1:1:1') == 'INVALID'
-    assert test_communication(channel, '2:Luke:1234:1:1:1:1') == 'INVALID'
-    assert test_communication(channel, '2:Luke:123:1:1:1:1') == 'SUCCESS'
-
-    print('Update Stats Passed!')
-
-    # Get Stats:
-    assert test_communication(channel, '3:NotLuke:123') == 'INVALID'
-    assert test_communication(channel, '3:Luke:1234') == 'INVALID'
-    assert test_communication(channel, '4:Luke:123') == '1:1:1:1'
-
-    print('Get Stats Passed!')
-
-    print('Success!')
+##if __name__ == '__main__':
+##    channel = test_connection()
+##
+##    print('Connected!')
+##
+##    # Create Account:
+##    assert test_communication(channel, '0:Luke:123') == 'SUCCESS'
+##    assert test_communication(channel, '0:Luke:123') == 'EXISTS'
+##
+##    print('Create Account Passed!')
+##
+##    # Log In:
+##    assert test_communication(channel, '1:NotLuke:123') == 'FAIL'
+##    assert test_communication(channel, '1:Luke:1234') == 'FAIL'
+##    assert test_communication(channel, '1:Luke:123') == 'SUCCESS'
+##
+##    print('Log In Passed!')
+##
+##    # Update Stats:
+##    assert test_communication(channel, '2:NotLuke:123:1:1:1:1') == 'INVALID'
+##    assert test_communication(channel, '2:Luke:1234:1:1:1:1') == 'INVALID'
+##    assert test_communication(channel, '2:Luke:123:1:1:1:1') == 'SUCCESS'
+##
+##    print('Update Stats Passed!')
+##
+##    # Get Stats:
+##    assert test_communication(channel, '3:NotLuke:123') == 'INVALID'
+##    assert test_communication(channel, '3:Luke:1234') == 'INVALID'
+##    assert test_communication(channel, '4:Luke:123') == '1:1:1:1'
+##
+##    print('Get Stats Passed!')
+##
+##    print('Success!')
     
 
 

@@ -29,8 +29,6 @@ def LogIn_Server(database: dict):
         client = soc.accept()
         data = client[0].recv(size)
         
-        print('recieved: ', data)
-        
         if data:
             data = str(data).strip("b\'").strip("\\r\\n\'")
             print("Data: ", data)
@@ -45,12 +43,12 @@ def LogIn_Server(database: dict):
                 dataManage.save_database(database)
                 
             elif query[0] == '1':
-                client[0].send(queries.validate(database, query[1], query[2]).encode())
+                client[0].send(queries.validate(database, query[1], query[2]))
                 
             elif query[0] == '2':
-                call = queries.update_stats(database, query[1], query[2], int(query[3]),
-                                            int(query[4]), int(query[5]), int(query[6]))
-                client[0].send(call[0].encode())
+                call = queries.update_stats(database, query[1], query[2], query[3],
+                                            query[4], query[5], query[6])
+                client.send(call[0].encode())
                 database = call[1]
                 dataManage.save_database(database)
                 

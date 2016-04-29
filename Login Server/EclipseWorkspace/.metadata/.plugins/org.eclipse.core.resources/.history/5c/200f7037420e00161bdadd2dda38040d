@@ -1,7 +1,7 @@
 ################################################################################
 # Program:  Raging Hamsters Login Server
 # Date:     2016 • 05 • 28
-# Module:   userClass
+# Module:   user
 ################################################################################
 
 ################################################################################
@@ -14,11 +14,11 @@ class User:
         self.username = username
         self.password = password
 
+        for stat in stats:
+            stat = int(stat)
         self.stats = stats
 
     def update(self, kills: int, deaths: int, wins: int, games: int):
-        for i in range(len(self.stats)):
-            self.stats[i] = int(self.stats[i])  
         self.stats[0] += kills
         self.stats[1] += deaths
         self.stats[2] += wins
