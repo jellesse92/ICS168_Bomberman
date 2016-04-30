@@ -3,12 +3,22 @@ using System.Collections;
 
 public class BombDrop : MonoBehaviour {
     public GameObject bombPrefab;
+    GameObject networkObject;
 
     int bombs_placed = 0;
+
+    void Start()
+    {
+        networkObject = GameObject.FindGameObjectWithTag("Network");
+    }
     
     void Update () {
         if (Input.GetKeyDown(KeyCode.Space) && GetComponent<PlayerController>().clientControlled) {
             DropBomb();
+            if (GetComponent<PlayerController>().player == 0)   //Player is running the server
+                networkObject.GetComponent<Client>().SendBombDrop();
+            else                                                //Else player is a client
+                networkObject.GetComponent<Server>().SendBombEvent(0);
         }
     }
 

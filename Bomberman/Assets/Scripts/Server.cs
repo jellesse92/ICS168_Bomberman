@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.Networking;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
-using System.Collections.Generic;
+using System;
 
 
 public class Server : MonoBehaviour {
@@ -17,11 +18,27 @@ public class Server : MonoBehaviour {
     public string address;
     bool initialized = false;
 
-	// Use this for initialization
-	void Start () {
+    //In Game Specific Server Parameters
+    public bool gameStarted = false;
+    List<int> playersAvailable = new List<int>(new int[] { 1, 2, 3 });
+    List<int> playerID = new List<int>(new int[] { 0,-1,-1,-1 });
+    _GameController gcScript;                
+
+
+    // Use this for initialization
+    void Start () {
 
         address = Network.player.ipAddress;
-        //text_area = GameObject.Find("TextAA");
+
+        
+        CreateGame();       //SET THIS TO A BUTTON OR SOMETHING
+        if (gameStarted)
+        {
+            gcScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<_GameController>();
+            gcScript.SetPlayer(0);
+        }
+
+
     }
 
     void OnMouseDown()
@@ -48,6 +65,9 @@ public class Server : MonoBehaviour {
         Debug.Log("Server Initialized");
         //Joins its own game.
         //GameObject.Find(<NAME_OF_ATTACHED_OBJECT>).GetComponentOfType<Client>().JoinGame(address);
+
+
+        gameStarted = true;
     }
     void SendGameInformation()
     {
@@ -66,10 +86,82 @@ public class Server : MonoBehaviour {
         foreach (int connectionID in connectionIDs)
         {
             //Debug.Log("ConnectionID: " + connectionID);
-            NetworkTransport.Send(_serverID, connectionID, _channelReliable, buffer, (int)stream.Position, out error);
-            if (error > 0) { Debug.Log("Error (" + ((NetworkError)error).ToString() + ") When Sending Message: " + message); }
+            SendToClient(connectionID, message);
         }
 
+    }
+
+    void SendToClient(int clientID,string message)
+    {
+        byte error;
+        byte[] buffer = new byte[1024];
+        Stream stream = new MemoryStream(buffer);
+        BinaryFormatter bf = new BinaryFormatter();
+        bf.Serialize(stream, message);
+
+        NetworkTransport.Send(_serverID, clientID, _channelReliable, buffer, (int)stream.Position, out error);
+        if (error > 0) { Debug.Log("Error (" + ((NetworkError)error).ToString() + ") When Sending Message: " + message); }
+    }
+
+    //Switch statement to go through if the game has started
+    void NetworkSwitchGame(NetworkEventType networkEvent, int recHostId, int connectionId, byte[] buffer)
+    {
+        switch (networkEvent)
+        {
+            case NetworkEventType.Nothing:
+                break;
+            case NetworkEventType.ConnectEvent:
+                if (recHostId == _serverID)
+                {
+                    //Adds player to game
+                    if(playersAvailable.Count > 0)
+                    {
+                        int player = playersAvailable[0];
+                        gcScript.ActivatePlayer(player);
+                        playersAvailable.Remove(player);
+                        playerID[player] = connectionId;
+                        connectionIDs.Add(connectionId);
+                        SendToClient(connectionId, "Player:" + player);
+                        Debug.Log("Server: Player " + connectionId.ToString() + " connected!");
+                    }
+                    
+                }
+
+                break;
+
+            case NetworkEventType.DataEvent:
+                if (recHostId == _serverID)
+                {
+                    // deserialize data
+                    Stream stream = new MemoryStream(buffer);
+                    BinaryFormatter bf = new BinaryFormatter();
+                    string msg = bf.Deserialize(stream).ToString();
+
+                    InterpretMessage(msg, connectionId);
+
+                    Debug.Log("Server: Received Data from " + connectionId.ToString() + "! Message: " + msg);
+                    Send(msg);
+                }
+                break;
+
+            case NetworkEventType.DisconnectEvent:
+
+                if (recHostId == connectionId)
+                {
+                    Debug.Log("Server: Received disconnect from " + connectionId.ToString());
+                    int player = playerID[connectionId];
+                    playersAvailable.Add(player);
+                    gcScript.DeactivatePlayer(player);
+                    playerID[connectionId] = -1;
+                }
+                break;
+        }
+    }
+
+    void FixedUpdate()
+    {
+        if (gameStarted)
+            Send(CurrentGameState());
     }
 
     // Update is called once per frame
@@ -87,47 +179,99 @@ public class Server : MonoBehaviour {
             do
             {
                 networkEvent = NetworkTransport.Receive(out recHostId, out connectionId, out channelId, buffer, 1024, out dataSize, out error);
-                //if (connectionId != 0) {
-                    //Debug.Log("recHostID: " + recHostId.ToString() + "connectionID: " + connectionId.ToString() + "\n"); }
-                //if (networkEvent.ToString() != "Nothing") { Debug.Log(networkEvent.ToString()+ " recHostID: " + recHostId.ToString() + "connectionID: " + connectionId.ToString() + "\n"); }
-                switch (networkEvent)
+
+                if (gameStarted)
+                    NetworkSwitchGame(networkEvent, recHostId, connectionId,buffer);
+                else
                 {
-                    case NetworkEventType.Nothing:
-                        break;
-                    case NetworkEventType.ConnectEvent:
-              
-                        if (recHostId == _serverID)
-                        {
-                            //adds connection to list of connections messages should be relayed to
-                            connectionIDs.Add(connectionId);
-                            Debug.Log("Server: Player " + connectionId.ToString() + " connected!");
-                        }
+                    switch (networkEvent)
+                    {
+                        case NetworkEventType.Nothing:
+                            break;
+                        case NetworkEventType.ConnectEvent:
 
-                        break;
+                            if (recHostId == _serverID)
+                            {
+                                //adds connection to list of connections messages should be relayed to
+                                connectionIDs.Add(connectionId);
+                                Debug.Log("Server: Player " + connectionId.ToString() + " connected!");
+                            }
 
-                    case NetworkEventType.DataEvent:
-                        if (recHostId == _serverID)
-                        {
-                            // deserialize data
-                            Stream stream = new MemoryStream(buffer);
-                            BinaryFormatter bf = new BinaryFormatter();
-                            string msg = bf.Deserialize(stream).ToString();
+                            break;
 
-                            Debug.Log("Server: Received Data from " + connectionId.ToString() + "! Message: " + msg);
-                            Send(msg);
-                        }
-                        break;
+                        case NetworkEventType.DataEvent:
+                            if (recHostId == _serverID)
+                            {
+                                // deserialize data
+                                Stream stream = new MemoryStream(buffer);
+                                BinaryFormatter bf = new BinaryFormatter();
+                                string msg = bf.Deserialize(stream).ToString();
 
-                    case NetworkEventType.DisconnectEvent:
-                       
-                        if (recHostId == connectionId)
-                        {
-                            Debug.Log("Server: Received disconnect from " + connectionId.ToString());
-                        }
-                        break;
+                                Debug.Log("Server: Received Data from " + connectionId.ToString() + "! Message: " + msg);
+                                Send(msg);
+                            }
+                            break;
+
+                        case NetworkEventType.DisconnectEvent:
+
+                            if (recHostId == connectionId)
+                            {
+                                Debug.Log("Server: Received disconnect from " + connectionId.ToString());
+                            }
+                            break;
+                    }
+
+                //if (connectionId != 0) {
+                //Debug.Log("recHostID: " + recHostId.ToString() + "connectionID: " + connectionId.ToString() + "\n"); }
+                //if (networkEvent.ToString() != "Nothing") { Debug.Log(networkEvent.ToString()+ " recHostID: " + recHostId.ToString() + "connectionID: " + connectionId.ToString() + "\n"); }
+               
                 }
 
             } while (networkEvent != NetworkEventType.Nothing);
         }
+    }
+
+    void InterpretMessage(string msg, int clientId)
+    {
+        
+        //Updates player locations
+        if(msg.Substring(0,4) == "Pos:"){
+            float x, y;
+            string[] temp = msg.Substring(4).Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            float.TryParse(temp[0],out x);
+            float.TryParse(temp[1], out y);
+            gcScript.UpdatePlayerPosition(playerID[clientId], x, y);
+        }
+
+        //Drops bombs for players
+        if(msg == "dropBomb"){
+            gcScript.UpdateBombPlace(playerID[clientId]);
+            SendBombEvent(playerID[clientId]);
+        }
+
+    }
+
+
+    string CurrentGameState()
+    {
+        string state = "0:Pos:";
+
+        //Get Positions of all players
+        for(int i = 0; i < 4; i++)
+        {
+            float x = gcScript.GetPlayerPos(i).x;
+            float y = gcScript.GetPlayerPos(i).y;
+            state += i+":" + x + "," + y + ";";
+        }
+
+        if (state.Length > 1)
+            state = state.Substring(0, state.Length - 2);
+
+        return state;
+    }
+
+    public void SendBombEvent(int player)
+    {
+        Send(player + ":" + "dropBomb");
     }
 }

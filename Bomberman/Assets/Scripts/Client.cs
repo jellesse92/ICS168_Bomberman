@@ -4,6 +4,7 @@ using System.Collections;
 using UnityEngine.Networking;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using System;
 using System.Collections.Generic;
 //come back and add more documentation
 
@@ -13,16 +14,30 @@ public class Client : MonoBehaviour {
     int _channelUnreliable = 01;
     int _hostID = -1;
     int _connID = -1;
-    int port = 7777;
+    int port = 8888;
     bool connected = false;
+    bool connectedToServer = false;
     public int maxConnections = 4;
-    string address;
+    public string address = "192.168.1.74";
 
-	void Start () {
-       // text_area = GameObject.Find("TextAA");
+    //In-Game Related Parameters
+    _GameController gcScript;
+    bool gameStarted = true;
+
+    void Start () {
+        // text_area = GameObject.Find("TextAA");
+
+        //Change when this happens depending on what scene client is instantiated
+        gcScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<_GameController>();
     }
 	
-    void JoinGame(string ip, int port = 8888)
+    public void Join()
+    {
+        JoinGame(address);
+        connectedToServer = true;
+    }
+
+    void JoinGame(string ip, int port_num = 8888)
     {
         address = ip;
         if (!connected)
@@ -46,18 +61,18 @@ public class Client : MonoBehaviour {
 
             byte error;
 
-            _connID = NetworkTransport.Connect(_hostID, address, port, 0, out error);
+            _connID = NetworkTransport.Connect(_hostID, address, port_num, 0, out error);
 
 
             if (error != (byte)NetworkError.Ok)
             {
                 NetworkError nerror = (NetworkError)error;
                 Debug.Log("Error " + nerror.ToString());
-            } 
+            }
+            connected = true;
         }
         else {
-            
-           Send(); 
+            Send(); 
         }
     }
 
@@ -86,10 +101,9 @@ public class Client : MonoBehaviour {
         int dataSize;
         byte[] buffer = new byte[1024];
         byte error;
-        if (connected)
-        {
-            NetworkEventType networkEvent = NetworkEventType.DataEvent;
-            
+
+        NetworkEventType networkEvent = NetworkEventType.DataEvent;
+        if (connected) {
             do
             {
                 networkEvent = NetworkTransport.Receive(out recHostId, out connectionId, out channelId, buffer, 1024, out dataSize, out error);
@@ -103,7 +117,8 @@ public class Client : MonoBehaviour {
                         if (connectionId == _connID)
                         {
                             Debug.Log("Client: Client connected to " + connectionId.ToString() + "!");
-                            connected = true;
+                            connectedToServer = true;
+                            gameStarted = true;
                         }
 
                         break;
@@ -111,7 +126,11 @@ public class Client : MonoBehaviour {
                     case NetworkEventType.DataEvent:
                         if (recHostId != connectionId)
                         {
-                            Debug.Log("Client: Received Data from " + connectionId.ToString() + "!");
+                            Stream stream = new MemoryStream(buffer);
+                            BinaryFormatter bf = new BinaryFormatter();
+                            string msg = bf.Deserialize(stream).ToString();
+
+                            Debug.Log("Client: Received Data from " + connectionId.ToString() + "! Message: " + msg);
                             
                         }
                         break;
@@ -122,12 +141,79 @@ public class Client : MonoBehaviour {
                         {
                             Debug.Log("Client: Disconnected from server!");
                             // Flag to let client know it can no longer send data
-                            connected = false;
+                            gameStarted = false;
                         }
                         break;
                 }
 
             } while (networkEvent != NetworkEventType.Nothing);
+        }
+    }
+
+    void FixedUpdate()
+    {
+        if (gameStarted && connectedToServer)
+        {
+            //Send(GetGameData());
+        }
+    }
+
+    //Gathers game state data to send to server
+    string GetGameData()
+    {
+        string data = "";
+        data += "Pos:" + gcScript.GetPlayerPos(gcScript.ControlledPlayer()).x + "," + gcScript.GetPlayerPos(gcScript.ControlledPlayer()).y;
+        return data;
+    }
+
+    //Sends message for bomb drops
+    public void SendBombDrop()
+    {
+        Send("dropBomb");
+    }
+
+    void InterpretMessage(string msg)
+    {
+        int player = -1;
+        if (msg.Length == 0)
+            return;
+
+        //Set what player the client controls
+        if (msg.Substring(0,msg.Length-2) == "Player:")
+        {
+            int.TryParse(msg.Substring(msg.Length - 1), out player);
+            gcScript.SetPlayer(player);
+            return;
+        }
+
+
+        int.TryParse(msg.Substring(0, 1), out player);
+
+        //Ignore the server trying to tell you what you've already done
+        if (player == gcScript.ControlledPlayer())
+            return;
+
+        //Someone dropped a bomb
+        if (msg.Substring(2) == "dropBomb")
+            gcScript.UpdateBombPlace(player);
+
+        //Server sending everyone's information
+        if(msg.Substring(0,6) == "0:Pos:")
+        {
+            string[] temp = msg.Substring(6).Split(new[] { ';', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (string posData in temp)
+            {
+                int.TryParse(posData.Substring(0, 1), out player);
+
+                float x, y;
+                string[] pos = posData.Substring(2).Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                float.TryParse(pos[0], out x);
+                float.TryParse(pos[1], out y);
+                if(player != gcScript.ControlledPlayer())
+                    gcScript.UpdatePlayerPosition(player, x, y);
+            }
+            
+
         }
     }
 }
