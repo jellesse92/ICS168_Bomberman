@@ -7,19 +7,24 @@ public class BombDrop : MonoBehaviour {
     int bombs_placed = 0;
     
     void Update () {
-        if (Input.GetKeyDown(KeyCode.Space)) {
-            Vector2 pos = transform.position;
-            pos.x = Mathf.Round(pos.x);
-            pos.y = Mathf.Round(pos.y);
+        if (Input.GetKeyDown(KeyCode.Space) && GetComponent<PlayerController>().clientControlled) {
+            DropBomb();
+        }
+    }
 
-            
-            if (GetComponent<PlayerController>().BombLimitReached())
-            {
-                GameObject bomb = (GameObject)Instantiate(bombPrefab, pos, Quaternion.identity);
-                bomb.GetComponent<Bomb>().player = GetComponent<PlayerController>().player;
-                bomb.GetComponent<Bomb>().multiplier = GetComponent<PlayerController>().GetExplosionMulti();
-                GetComponent<PlayerController>().addBomb();
-            }
+    public void DropBomb()
+    {
+        Vector2 pos = transform.position;
+        pos.x = Mathf.Round(pos.x);
+        pos.y = Mathf.Round(pos.y);
+
+
+        if (GetComponent<PlayerController>().BombLimitReached())
+        {
+            GameObject bomb = (GameObject)Instantiate(bombPrefab, pos, Quaternion.identity);
+            bomb.GetComponent<Bomb>().player = GetComponent<PlayerController>().player;
+            bomb.GetComponent<Bomb>().multiplier = GetComponent<PlayerController>().GetExplosionMulti();
+            GetComponent<PlayerController>().addBomb();
         }
     }
    

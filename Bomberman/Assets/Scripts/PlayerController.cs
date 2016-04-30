@@ -13,6 +13,8 @@ public class PlayerController : MonoBehaviour {
     const int DEFAULT_EXPLOSION_MULTIPLIER = 0;
     const int DEFAULT_BOMB_AMOUNT = 1;
 
+    public bool clientControlled = false; 
+
     public int player = -1;
 
     float speed = DEFAULT_SPEED;                                            //Speed player moves at
@@ -42,14 +44,17 @@ public class PlayerController : MonoBehaviour {
 
     void FixedUpdate()
     {
-        // Check Input Axes, then use velocity
-        float h = Input.GetAxisRaw("Horizontal");
-        float v = Input.GetAxisRaw("Vertical");
-        GetComponent<Rigidbody2D>().velocity = new Vector2(h, v) * speed;
+        if (clientControlled)
+        {
+            // Check Input Axes, then use velocity
+            float h = Input.GetAxisRaw("Horizontal");
+            float v = Input.GetAxisRaw("Vertical");
+            GetComponent<Rigidbody2D>().velocity = new Vector2(h, v) * speed;
 
-        // Set Animation Parameters
-        GetComponent<Animator>().SetInteger("X", (int)h);
-        GetComponent<Animator>().SetInteger("Y", (int)v);
+            // Set Animation Parameters
+            GetComponent<Animator>().SetInteger("X", (int)h);
+            GetComponent<Animator>().SetInteger("Y", (int)v);
+        }
     }
 
     //Respawns player at free spawn location
