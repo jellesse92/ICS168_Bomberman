@@ -77,7 +77,7 @@ def LogIn_Server(database: dict):
                 for game in games_list:
                     games_msg += game[0] + ':' + game[1] + ':' + game[2] + ' '
                     print(games_msg)
-                games_msg.strip(' ')
+                games_msg.strip()
                 print("    Sending: ", games_msg)
                 client[0].send(games_msg.encode())
                 
