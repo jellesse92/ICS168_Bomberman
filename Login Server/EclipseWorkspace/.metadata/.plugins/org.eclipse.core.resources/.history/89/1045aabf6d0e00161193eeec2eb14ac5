@@ -26,8 +26,11 @@ def LogIn_Server(database: dict):
 
     # Request Handling:
     while True:
+        games_list = set()
         client = soc.accept()
         data = client[0].recv(size)
+        
+        print('recieved: ', data)
         
         if data:
             data = str(data).strip("b\'").strip("\\r\\n\'")
@@ -35,25 +38,36 @@ def LogIn_Server(database: dict):
             query = data.split(':')
             print('Query: ' + str(query))
             
-            if query[0] == '0':
+            if query[0] == '0': # Add Account
                 call = queries.create_account(database, query[1], query[2])
                 print("Sending: ", call[0])
                 client[0].send(call[0].encode())
                 database = call[1]
                 dataManage.save_database(database)
                 
-            elif query[0] == '1':
-                client[0].send(queries.validate(database, query[1], query[2]))
+            elif query[0] == '1': # Log In
+                client[0].send(queries.validate(database, query[1], query[2]).encode())
                 
-            elif query[0] == '2':
-                call = queries.update_stats(database, query[1], query[2], query[3],
-                                            query[4], query[5], query[6])
-                client.send(call[0].encode())
+            elif query[0] == '2': # Update Stats
+                call = queries.update_stats(database, query[1], query[2], int(query[3]),
+                                            int(query[4]), int(query[5]), int(query[6]))
+                client[0].send(call[0].encode())
                 database = call[1]
                 dataManage.save_database(database)
                 
-            elif query[0] == '3':
+            elif query[0] == '3': # Get Stats
                 client[0].send(queries.get_stats(database, query[1], query[2]).encode())
+                
+            elif query[0] == '4': # Host Game
+                games_list.add((query[0], query[1], query[2]))
+                client[0].send('SUCCESS')
+                
+            elif query[0] == '5': # Get Games
+                games_msg = ''
+                for game in games_list:
+                    games_msg = game[0] + ':' + game[1] + ':' + game[2] + ' '
+                games_msg.strip()
+                client[0].send(games_msg.encode())
                 
         client[0].close()
 

@@ -14,9 +14,6 @@ import dataManage
 # Main Server
 
 def LogIn_Server(database: dict):
-    
-    print('Server starting...')
-    
     # Socket Binding & Listening:
     host = ''
     port = 8888
@@ -26,60 +23,47 @@ def LogIn_Server(database: dict):
     soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     soc.bind((host,port))
     soc.listen(backlog)
-    
-    # Data:
-    games_list = set()
-
-    print('Started!')
 
     # Request Handling:
     while True:
+        games_list = {}
         client = soc.accept()
         data = client[0].recv(size)
         
+        print('recieved: ', data)
+        
         if data:
             data = str(data).strip("b\'").strip("\\r\\n\'")
-            print("Recieved: ", data)
+            print("Data: ", data)
             query = data.split(':')
+            print('Query: ' + str(query))
             
             if query[0] == '0': # Add Account
                 call = queries.create_account(database, query[1], query[2])
-                print("    Sending: ", call[0])
+                print("Sending: ", call[0])
                 client[0].send(call[0].encode())
                 database = call[1]
                 dataManage.save_database(database)
                 
             elif query[0] == '1': # Log In
-                call = queries.validate(database, query[1], query[2])
-                print("    Sending: ", call)
-                client[0].send(call.encode())
+                client[0].send(queries.validate(database, query[1], query[2]).encode())
                 
             elif query[0] == '2': # Update Stats
                 call = queries.update_stats(database, query[1], query[2], int(query[3]),
                                             int(query[4]), int(query[5]), int(query[6]))
-                print("    Sending: ", call[0])
                 client[0].send(call[0].encode())
                 database = call[1]
                 dataManage.save_database(database)
                 
             elif query[0] == '3': # Get Stats
-                call = queries.get_stats(database, query[1], query[2])
-                print("    Sending: ", call)
-                client[0].send(call.encode())
+                client[0].send(queries.get_stats(database, query[1], query[2]).encode())
                 
             elif query[0] == '4': # Host Game
-                games_list.add((query[0], query[1], query[2]))
-                print("    List of Games:", games_list)
-                client[0].send('SUCCESS'.encode())
+                call = host_game(query[0], query[1], query[2]))
+                client[0].send(queries.host_game(query[0], query[1], query[2])[0])
                 
             elif query[0] == '5': # Get Games
-                games_msg = ''
-                for game in games_list:
-                    games_msg += game[0] + ':' + game[1] + ':' + game[2] + ' '
-                    print(games_msg)
-                games_msg.strip()
-                print("    Sending: ", games_msg)
-                client[0].send(games_msg.encode())
+                client[0].send(queries.get_games(query[0]))
                 
         client[0].close()
 

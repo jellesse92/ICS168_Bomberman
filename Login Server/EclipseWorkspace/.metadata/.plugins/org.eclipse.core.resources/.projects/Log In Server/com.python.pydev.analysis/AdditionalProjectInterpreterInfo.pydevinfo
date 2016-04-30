@@ -1,36 +1,36 @@
 -- VERSION_4
 -- START DISKCACHE
 /Users/Lukas/Documents/RagingHamstersBomberman/Login Server/EclipseWorkspace/.metadata/.plugins/org.eclipse.core.resources/.projects/Log In Server/com.python.pydev.analysis/v2_indexcache
-userClass|1461960696000|/Users/Lukas/Documents/RagingHamstersBomberman/Login Server/EclipseWorkspace/Log In Server/userClass.py
-main|1461961444000|/Users/Lukas/Documents/RagingHamstersBomberman/Login Server/EclipseWorkspace/Log In Server/main.py
-queries|1461956989000|/Users/Lukas/Documents/RagingHamstersBomberman/Login Server/EclipseWorkspace/Log In Server/queries.py
+userClass|1461962095000|/Users/Lukas/Documents/RagingHamstersBomberman/Login Server/EclipseWorkspace/Log In Server/userClass.py
 dataManage|1461959262000|/Users/Lukas/Documents/RagingHamstersBomberman/Login Server/EclipseWorkspace/Log In Server/dataManage.py
+queries|1461977386000|/Users/Lukas/Documents/RagingHamstersBomberman/Login Server/EclipseWorkspace/Log In Server/queries.py
 -- END DISKCACHE
 -- START DICTIONARY
-6
-4=userClass
-5=User
-6=User.__init__
-3=main
+5
+3=userClass
+4=User
+5=User.__init__
 1=queries
 2=dataManage
 -- END DICTIONARY
 -- START TREE 1
-8
+10
+!<m|0|
 cre|1|create_account!10@
 get|1|get_stats!10@
+hos|0|
 loa|1|load_database!18@
-log|1|LogIn_Server!26@
+log|0|
 sav|1|save_database!18@
 upd|1|update_stats!10@
-use|1|User!33@
+use|1|User!25@
 val|1|validate!10@
 -- END TREE
 -- START TREE 2
 5
-__i|1|__init__!5&34@
-pas|1|password!6&35@
-sta|1|stats!6&35@
-upd|1|update!5&34@
-use|1|username!6&35@
+__i|1|__init__!4&26@
+pas|1|password!5&27@
+sta|1|stats!5&27@
+upd|1|update!4&26@
+use|1|username!5&27@
 -- END TREE

@@ -26,14 +26,12 @@ def LogIn_Server(database: dict):
     soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     soc.bind((host,port))
     soc.listen(backlog)
-    
-    # Data:
-    games_list = set()
 
     print('Started!')
 
     # Request Handling:
     while True:
+        games_list = set()
         client = soc.accept()
         data = client[0].recv(size)
         
@@ -75,8 +73,7 @@ def LogIn_Server(database: dict):
             elif query[0] == '5': # Get Games
                 games_msg = ''
                 for game in games_list:
-                    games_msg += game[0] + ':' + game[1] + ':' + game[2] + ' '
-                    print(games_msg)
+                    games_msg = game[0] + ':' + game[1] + ':' + game[2] + ' '
                 games_msg.strip()
                 print("    Sending: ", games_msg)
                 client[0].send(games_msg.encode())
