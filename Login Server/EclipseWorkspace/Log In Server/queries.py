@@ -54,7 +54,7 @@ def get_stats(database: dict, username: str, password: str) -> str:
     if username in database:
         if database[username].password == password:
             stats = database[username].stats
-            return (str(stats[0]) + ':' + str(stats[0]) + ':' + \
+            return ('S:' + username + ':' + str(stats[0]) + ':' + str(stats[0]) + ':' + \
                     str(stats[0]) + ':' + str(stats[0]) + ':')
     return 'INVALID'
 

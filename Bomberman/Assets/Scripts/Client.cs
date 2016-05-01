@@ -14,11 +14,11 @@ public class Client : MonoBehaviour {
     int _channelUnreliable = 01;
     int _hostID = -1;
     int _connID = -1;
-    int port = 8888;
+    public int port = 7777;
     bool connected = false;
     bool connectedToServer = false;
     public int maxConnections = 4;
-    public string address = "192.168.1.74";
+    public string address = "127.0.0.1";
 
     //In-Game Related Parameters
     _GameController gcScript;
@@ -29,6 +29,7 @@ public class Client : MonoBehaviour {
 
         //Change when this happens depending on what scene client is instantiated
         gcScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<_GameController>();
+        Join();
     }
 	
     public void Join()
@@ -37,9 +38,10 @@ public class Client : MonoBehaviour {
         connectedToServer = true;
     }
 
-    void JoinGame(string ip, int port_num = 8888)
+    void JoinGame(string ip = "", int port_num = 0)
     {
-        address = ip;
+        if(ip != "") { address = ip; }
+        if (port_num != 0) { port = port_num; }
         if (!connected)
         {
             // global config
@@ -69,7 +71,9 @@ public class Client : MonoBehaviour {
                 NetworkError nerror = (NetworkError)error;
                 Debug.Log("Error " + nerror.ToString());
             }
-            connected = true;
+            else {
+                connected = true;
+            }
         }
         else {
             Send(); 
