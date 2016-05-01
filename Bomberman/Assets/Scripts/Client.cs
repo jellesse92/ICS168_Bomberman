@@ -15,10 +15,11 @@ public class Client : MonoBehaviour {
     int _hostID = -1;
     int _connID = -1;
     public int port = 7777;
+    bool isHost = false;
     bool connected = false;
     bool connectedToServer = false;
     public int maxConnections = 4;
-    public string address = "127.0.0.1";
+    public string address = "128.195.71.46";
 
     //In-Game Related Parameters
     _GameController gcScript;
@@ -38,9 +39,13 @@ public class Client : MonoBehaviour {
         connectedToServer = true;
     }
 
-    void JoinGame(string ip = "", int port_num = 0)
+    public void JoinGame(string ip = "", int port_num = 0)
     {
+        //Allows players to join a game at the given port and ip address.
         if(ip != "") { address = ip; }
+        //may be neccessary later
+        //isHost = GameObject.Find("Network_Controller").GetComponent<Server>().initialized;
+        Debug.Log("Connected == " + connected);
         if (port_num != 0) { port = port_num; }
         if (!connected)
         {
@@ -63,19 +68,17 @@ public class Client : MonoBehaviour {
 
             byte error;
 
-            _connID = NetworkTransport.Connect(_hostID, address, port_num, 0, out error);
+            _connID = NetworkTransport.Connect(_hostID, address, port, 0, out error);
 
 
             if (error != (byte)NetworkError.Ok)
             {
                 NetworkError nerror = (NetworkError)error;
                 Debug.Log("Error " + nerror.ToString());
-            }
-            else {
-                connected = true;
-            }
+            } 
         }
         else {
+            //stops users from connecting multiple times -- allows us to check if its sending messages at all.
             Send(); 
         }
     }
@@ -93,7 +96,8 @@ public class Client : MonoBehaviour {
         {
             NetworkTransport.Send(_hostID, _connID, _channelReliable, buffer, (int)stream.Position, out error);
             if (error > 0) { Debug.Log("Error Sending: " + ((NetworkError)error).ToString()); }
-        } else { Debug.Log("Error, Message Not Sent. Not connected."); }
+        }
+        else { Debug.Log("Error, Message Not Sent. Not connected."); }
        
    
     }

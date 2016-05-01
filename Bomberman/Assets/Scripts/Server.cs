@@ -16,7 +16,7 @@ public class Server : MonoBehaviour {
     public int maxConnections = 4;
     int _serverID = -1;
     public string address;
-    bool initialized = false;
+    public bool initialized = false;
 
     //In Game Specific Server Parameters
     public bool gameStarted = false;
@@ -31,16 +31,20 @@ public class Server : MonoBehaviour {
         address = Network.player.ipAddress;
 
         
-        CreateGame();       //SET THIS TO A BUTTON OR SOMETHING
-        if (gameStarted)
-        {
-            gcScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<_GameController>();
-            gcScript.SetPlayer(0);
-        }
+        //CreateGame();       //SET THIS TO A BUTTON OR SOMETHING
+        //if (gameStarted)
+        //{
+        //    gcScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<_GameController>();
+        //    gcScript.SetPlayer(0);
+        //}
 
 
     }
 
+    void Awake()
+    {
+        DontDestroyOnLoad(transform.gameObject);
+    }
     void OnMouseDown()
     {
         CreateGame();
@@ -59,22 +63,27 @@ public class Server : MonoBehaviour {
         HostTopology hostconfig = new HostTopology(config, maxConnections);
 
         NetworkTransport.Init(gconfig);
-        _serverID = NetworkTransport.AddHost(hostconfig, 8888);
+        _serverID = NetworkTransport.AddHost(hostconfig, 7777);
         if (_serverID < 0) { Debug.Log("Server socket creation failed!"); }
         initialized = true;
         Debug.Log("Server Initialized");
         //Joins its own game.
         //GameObject.Find(<NAME_OF_ATTACHED_OBJECT>).GetComponentOfType<Client>().JoinGame(address);
 
-
         gameStarted = true;
+        if (gameStarted)
+        {
+            gcScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<_GameController>();
+            gcScript.SetPlayer(0);
+        }
+
     }
     void SendGameInformation()
     {
         //something to send game information to online server.
     }
 
-    void Send(string message = "Hello")
+    public void Send(string message = "Hello")
     {
         //Relays messages to all connected clients
         byte error;
