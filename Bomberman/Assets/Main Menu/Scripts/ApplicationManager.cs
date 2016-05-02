@@ -1,11 +1,27 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using System.Collections;
-using UnityEngine.Networking;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.IO;
 using System;
+using System.Net;
+using System.Net.Sockets;
+using System.Threading;
+using System.Text;
 using System.Collections.Generic;
+
+/***
+        Socket code credit to: https://msdn.microsoft.com/en-us/library/bew39x2a%28v=vs.110%29.aspx
+***/
+
+public class StateObject
+{
+    // Client socket.
+    public Socket workSocket = null;
+    // Size of receive buffer.
+    public const int BufferSize = 256;
+    // Receive buffer.
+    public byte[] buffer = new byte[BufferSize];
+    // Received data string.
+    public StringBuilder sb = new StringBuilder();
+}
 
 
 public class GameInfo
@@ -44,137 +60,153 @@ public class Stats
 }
 public class ApplicationManager : MonoBehaviour {
 
-    int _channelReliable = -1;
-    int _channelUnreliable = 01;
-    int _hostID = -1;
-    int _connID = -1;
     bool logged_in = true;
     bool connectedToServer = false;
     public bool log_in_error = false;
     public bool data_error = false;
     public bool connected = false;
-    public int maxConnections = 1000;
     public int port = 8888;
     public string address = "128.195.67.168";
     string _lastSentMsg;
     List<GameInfo> gamesList;
     List<Stats> playerStats; //For Later in the game, get stats for all players.
-    
+
+
+    private static ManualResetEvent connectDone = new ManualResetEvent(false);
+    private static ManualResetEvent sendDone = new ManualResetEvent(false);
+    private static ManualResetEvent receiveDone = new ManualResetEvent(false);
+
+    //Response from server
+    private static String response = String.Empty;
+
+    void ConnectClient()
+    {
+        try
+        {
+            IPAddress ipAddress = IPAddress.Parse(address);
+            IPEndPoint remoteEP = new IPEndPoint(ipAddress, port);
+
+            Socket clientSocket = new Socket(AddressFamily.InterNetwork,SocketType.Stream, ProtocolType.Tcp);
+
+            clientSocket.BeginConnect(remoteEP,new AsyncCallback(ConnectCallback), clientSocket);
+            connectDone.WaitOne();
+
+            //Sending to server
+            Send(clientSocket, "This is a test<EOF>");
+            sendDone.WaitOne();
+
+            //Recieving from server
+            Receive(clientSocket);
+            receiveDone.WaitOne();
+
+            Debug.Log("Response received: " + response);
+
+            // Release the socket.
+            clientSocket.Shutdown(SocketShutdown.Both);
+            clientSocket.Close();
+
+        }
+        catch(Exception e)
+        {
+            Debug.Log("Error: " + e);
+        }
+           
+    }
+
+
+    private static void ConnectCallback(IAsyncResult ar)
+    {
+        try
+        {
+            Socket clientSocket = (Socket)ar.AsyncState;
+            clientSocket.EndConnect(ar);
+            connectDone.Set();
+        }
+        catch (Exception e)
+        {
+            Debug.Log("Error: " + e);
+        }
+    }
+
+    //For sending data to server
+    private static void Send(Socket client, String data)
+    {
+        // Convert the string data to byte data using ASCII encoding.
+        byte[] byteData = Encoding.ASCII.GetBytes(data);
+
+        // Begin sending the data to the remote device.
+        client.BeginSend(byteData, 0, byteData.Length, 0,
+            new AsyncCallback(SendCallback), client);
+    }
+
+    private static void SendCallback(IAsyncResult ar)
+    {
+        try
+        {
+            Socket client = (Socket)ar.AsyncState;
+            int bytesSent = client.EndSend(ar);
+            sendDone.Set();
+        }
+        catch (Exception e)
+        {
+            Debug.Log("Error: " + e);
+        }
+    }
+
+    //For recieving data from server
+    private static void Receive(Socket client)
+    {
+        try
+        {
+            StateObject state = new StateObject();
+            state.workSocket = client;
+            client.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(ReceiveCallback), state);
+        }
+        catch (Exception e)
+        {
+            Debug.Log("Error: " + e);
+        }
+    }
+
+    private static void ReceiveCallback(IAsyncResult ar)
+    {
+        try
+        {
+            StateObject state = (StateObject)ar.AsyncState;
+            Socket client = state.workSocket;
+
+            int bytesRead = client.EndReceive(ar);
+
+            if (bytesRead > 0)
+            {
+                state.sb.Append(Encoding.ASCII.GetString(state.buffer, 0, bytesRead));
+                client.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(ReceiveCallback), state);
+            }
+            else {
+                if (state.sb.Length > 1){
+                    response = state.sb.ToString();
+                }
+                receiveDone.Set();
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.Log("Error: " + e);
+        }
+    }
 
     void Start()
     {
         DontDestroyOnLoad(transform.gameObject);
-        if (!connected)
-        {
-            // global config
-            GlobalConfig gconfig = new GlobalConfig();
-            gconfig.ReactorModel = ReactorModel.FixRateReactor;
-            gconfig.ThreadAwakeTimeout = 10;
-
-
-            ConnectionConfig config = new ConnectionConfig();
-            _channelReliable = config.AddChannel(QosType.Reliable);
-            _channelUnreliable = config.AddChannel(QosType.Unreliable);
-
-            HostTopology hostconfig = new HostTopology(config, maxConnections);
-
-
-            NetworkTransport.Init(gconfig);
-            _hostID = NetworkTransport.AddHost(hostconfig);
-
-
-            byte error;
-
-            _connID = NetworkTransport.Connect(_hostID, address, port, 0, out error);
-
-
-            if (error != (byte)NetworkError.Ok)
-            {
-                NetworkError nerror = (NetworkError)error;
-                Debug.Log("Error " + nerror.ToString());
-            }
-            connected = true;
-        }
-    }
-
-    public void Send(string message = "")
-    {
-        //sends information to server only if client is connected.
-        byte error;
-        byte[] buffer = new byte[1024];
-        Stream stream = new MemoryStream(buffer);
-        BinaryFormatter bf = new BinaryFormatter();
-        bf.Serialize(stream, message);
-
-        if (connected)
-        {
-            NetworkTransport.Send(_hostID, _connID, _channelReliable, buffer, (int)stream.Position, out error);
-            if (error > 0) { Debug.Log("Error Sending: " + ((NetworkError)error).ToString()); }
-            else
-            {
-                _lastSentMsg = message;
-            }
-            
-        }
-        else { Debug.Log("Error, Message Not Sent. Not connected."); }
+        ConnectClient();
 
     }
+
+
 
     void Update()
     {
-        int recHostId;
-        int connectionId;
-        int channelId;
-        int dataSize;
-        byte[] buffer = new byte[1024];
-        byte error;
 
-        NetworkEventType networkEvent = NetworkEventType.DataEvent;
-        if (connected)
-        {
-            Send("0:house:cat");
-            do
-            {
-                networkEvent = NetworkTransport.Receive(out recHostId, out connectionId, out channelId, buffer, 1024, out dataSize, out error);
-                //Debugging to check and compare connection ids
-                //if (networkEvent.ToString() != "Nothing") { Debug.Log(networkEvent.ToString() + "   recHostID: " + recHostId.ToString() + "connectionID: " + connectionId.ToString() + "-Client \n"); }
-                switch (networkEvent)
-                {
-                    case NetworkEventType.Nothing:
-                        break;
-                    case NetworkEventType.ConnectEvent:
-                        if (connectionId == _connID)
-                        {
-                            Debug.Log("Client: Client connected to " + connectionId.ToString() + "!");
-                            connected = true;
-                        }
-
-                        break;
-
-                    case NetworkEventType.DataEvent:
-                        if (recHostId != connectionId)
-                        {
-                            Stream stream = new MemoryStream(buffer);
-                            BinaryFormatter bf = new BinaryFormatter();
-                            string msg = bf.Deserialize(stream).ToString();
-                            parseMessage(msg);
-                            Debug.Log("Client: Received Data from " + connectionId.ToString() + "! Message: " + msg);
-
-                        }
-                        break;
-
-                    case NetworkEventType.DisconnectEvent:
-                        // Client received disconnect event
-                        if (connectionId == _connID)
-                        {
-                            Debug.Log("Client: Disconnected from server!");
-                            // Flag to let client know it can no longer send data
-                        }
-                        break;
-                }
-
-            } while (networkEvent != NetworkEventType.Nothing);
-        }
     }
 
     void parseMessage(string msg)
