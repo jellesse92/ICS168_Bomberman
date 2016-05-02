@@ -19,7 +19,7 @@ public class Client : MonoBehaviour {
     bool connected = false;
     bool connectedToServer = false;
     public int maxConnections = 4;
-    public string address = "72.211.206.39";
+    public string address = "192.168.0.4";
 
     //In-Game Related Parameters
     _GameController gcScript;
@@ -76,7 +76,7 @@ public class Client : MonoBehaviour {
                 NetworkError nerror = (NetworkError)error;
                 Debug.Log("Error " + nerror.ToString());
             }
-            connected = true;
+            //connected = true;
         }
         else {
             //stops users from connecting multiple times -- allows us to check if its sending messages at all.
@@ -112,7 +112,7 @@ public class Client : MonoBehaviour {
         byte error;
 
         NetworkEventType networkEvent = NetworkEventType.DataEvent;
-        if (connected) {
+        //if (connected) {
             do
             {
                 networkEvent = NetworkTransport.Receive(out recHostId, out connectionId, out channelId, buffer, 1024, out dataSize, out error);
@@ -127,6 +127,7 @@ public class Client : MonoBehaviour {
                         {
                             Debug.Log("Client: Client connected to " + connectionId.ToString() + "!");
                             connectedToServer = true;
+                        connected = true;
                             gameStarted = true;
                         }
 
@@ -149,6 +150,7 @@ public class Client : MonoBehaviour {
                         if (connectionId == _connID)
                         {
                             Debug.Log("Client: Disconnected from server!");
+                        connected = false;
                             // Flag to let client know it can no longer send data
                             gameStarted = false;
                         }
@@ -156,7 +158,7 @@ public class Client : MonoBehaviour {
                 }
 
             } while (networkEvent != NetworkEventType.Nothing);
-        }
+       // }
     }
 
     void FixedUpdate()

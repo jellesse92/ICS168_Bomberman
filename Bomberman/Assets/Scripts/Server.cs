@@ -87,12 +87,6 @@ public class Server : MonoBehaviour {
     public void Send(string message = "Hello")
     {
         //Relays messages to all connected clients
-        byte error;
-        byte[] buffer = new byte[1024];
-        Stream stream = new MemoryStream(buffer);
-        BinaryFormatter bf = new BinaryFormatter();
-        bf.Serialize(stream, message);
-
         foreach (int connectionID in connectionIDs)
         {
             //Debug.Log("ConnectionID: " + connectionID);
