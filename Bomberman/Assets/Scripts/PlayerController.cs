@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour {
     const float DEFAULT_SPEED = 6f;
     const int DEFAULT_EXPLOSION_MULTIPLIER = 0;
     const int DEFAULT_BOMB_AMOUNT = 1;
+	public AudioClip playerHitSound;
 
     public bool clientControlled = false; 
 
@@ -65,6 +66,7 @@ public class PlayerController : MonoBehaviour {
 
     public void Damage()
     {
+		AudioSource.PlayClipAtPoint (playerHitSound, transform.position);
         Respawn();
 
         //Restore when activating mode with Lives

@@ -2,6 +2,7 @@
 using System.Collections;
 
 public class PickUpScript : MonoBehaviour {
+	public AudioClip pickupNoise;
 
 	// Use this for initialization
 	void Awake () {
@@ -12,6 +13,7 @@ public class PickUpScript : MonoBehaviour {
     {
         if (col.gameObject.tag == "Player")
         {
+			AudioSource.PlayClipAtPoint(pickupNoise, transform.position);
             col.gameObject.GetComponent<PlayerController>().PickUp(gameObject.tag);
             gameObject.SetActive(false);
         }

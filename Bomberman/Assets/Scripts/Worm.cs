@@ -3,6 +3,7 @@ using System.Collections;
 
 public class Worm : MonoBehaviour {
     public float speed = 2;
+	public AudioClip monsterHitSound;
 
     // Use this for initialization
     void Start () {
@@ -19,6 +20,7 @@ public class Worm : MonoBehaviour {
     {
         if(gco.gameObject.tag == "Player")
         {
+			AudioSource.PlayClipAtPoint (monsterHitSound, transform.position);
             gco.gameObject.GetComponent<PlayerController>().Damage();
         }
     }

@@ -3,6 +3,7 @@ using System.Collections;
 
 public class BombDrop : MonoBehaviour {
     public GameObject bombPrefab;
+	public AudioClip dropNoise;
     GameObject networkObject;
 
     int bombs_placed = 0;
@@ -35,6 +36,7 @@ public class BombDrop : MonoBehaviour {
             bomb.GetComponent<Bomb>().player = GetComponent<PlayerController>().player;
             bomb.GetComponent<Bomb>().multiplier = GetComponent<PlayerController>().GetExplosionMulti();
             GetComponent<PlayerController>().addBomb();
+			AudioSource.PlayClipAtPoint(dropNoise, transform.position);
         }
     }
    
