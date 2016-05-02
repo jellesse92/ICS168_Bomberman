@@ -30,7 +30,7 @@ public class Client : MonoBehaviour {
 
         //Change when this happens depending on what scene client is instantiated
         gcScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<_GameController>();
-        Join();
+        //Join();
     }
 	
     public void Join()
@@ -76,7 +76,7 @@ public class Client : MonoBehaviour {
                 NetworkError nerror = (NetworkError)error;
                 Debug.Log("Error " + nerror.ToString());
             }
-            //connected = true;
+            connected = true;
         }
         else {
             //stops users from connecting multiple times -- allows us to check if its sending messages at all.
@@ -93,7 +93,7 @@ public class Client : MonoBehaviour {
         BinaryFormatter bf = new BinaryFormatter();
         bf.Serialize(stream, message);
 
-        if (connected)
+        if (connectedToServer)
         {
             NetworkTransport.Send(_hostID, _connID, _channelReliable, buffer, (int)stream.Position, out error);
             if (error > 0) { Debug.Log("Error Sending: " + ((NetworkError)error).ToString()); }
@@ -112,7 +112,7 @@ public class Client : MonoBehaviour {
         byte error;
 
         NetworkEventType networkEvent = NetworkEventType.DataEvent;
-        //if (connected) {
+        if (connected) {
             do
             {
                 networkEvent = NetworkTransport.Receive(out recHostId, out connectionId, out channelId, buffer, 1024, out dataSize, out error);
@@ -141,7 +141,8 @@ public class Client : MonoBehaviour {
                             string msg = bf.Deserialize(stream).ToString();
 
                             Debug.Log("Client: Received Data from " + connectionId.ToString() + "! Message: " + msg);
-                            
+                            InterpretMessage(msg);
+
                         }
                         break;
 
@@ -158,14 +159,14 @@ public class Client : MonoBehaviour {
                 }
 
             } while (networkEvent != NetworkEventType.Nothing);
-       // }
+        }
     }
 
     void FixedUpdate()
     {
         if (gameStarted && connectedToServer)
         {
-            //Send(GetGameData());
+            Send(GetGameData());
         }
     }
 
@@ -185,17 +186,28 @@ public class Client : MonoBehaviour {
 
     void InterpretMessage(string msg)
     {
+    
         int player = -1;
         if (msg.Length == 0)
             return;
 
         //Set what player the client controls
-        if (msg.Substring(0,msg.Length-2) == "Player:")
+        if(msg[0] == 'P')
         {
+            Debug.Log("got it");
             int.TryParse(msg.Substring(msg.Length - 1), out player);
+            Debug.Log("Testing: " + player);
             gcScript.SetPlayer(player);
             return;
         }
+        //if (msg.Substring(0,msg.Length-2) == "Player:")
+        //{
+        //    Debug.Log("got it");
+        //    int.TryParse(msg.Substring(msg.Length - 1), out player);
+        //    Debug.Log("Testing: "+ player);
+        //    gcScript.SetPlayer(player);
+        //    return;
+        //} 
 
 
         int.TryParse(msg.Substring(0, 1), out player);

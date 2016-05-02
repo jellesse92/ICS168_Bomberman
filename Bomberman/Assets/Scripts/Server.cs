@@ -89,7 +89,8 @@ public class Server : MonoBehaviour {
         //Relays messages to all connected clients
         foreach (int connectionID in connectionIDs)
         {
-            //Debug.Log("ConnectionID: " + connectionID);
+            Debug.Log("ConnectionID: " + connectionID);
+            Debug.Log(message);
             SendToClient(connectionID, message);
         }
 
@@ -176,14 +177,15 @@ public class Server : MonoBehaviour {
         int dataSize;
         byte[] buffer = new byte[1024];
         byte error;
-
-        NetworkEventType networkEvent = NetworkEventType.DataEvent;
         if (initialized)
         {
+            NetworkEventType networkEvent = NetworkEventType.DataEvent;
+        //Debug.Log("Initialized == " + initialized);
+
             do
             {
                 networkEvent = NetworkTransport.Receive(out recHostId, out connectionId, out channelId, buffer, 1024, out dataSize, out error);
-
+                Debug.Log(networkEvent.ToString());
                 if (gameStarted)
                     NetworkSwitchGame(networkEvent, recHostId, connectionId,buffer);
                 else
