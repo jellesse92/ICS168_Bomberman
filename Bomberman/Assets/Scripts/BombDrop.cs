@@ -16,10 +16,15 @@ public class BombDrop : MonoBehaviour {
     void Update () {
         if (Input.GetKeyDown(KeyCode.Space) && GetComponent<PlayerController>().clientControlled) {
             DropBomb();
-            if (GetComponent<PlayerController>().player == 0)   //Player is running the server
-                networkObject.GetComponent<Client>().SendBombDrop();
-            else                                                //Else player is a client
+            if (GetComponent<PlayerController>().player == 1)   //Player is running the server
+            {
                 networkObject.GetComponent<Server>().SendBombEvent(0);
+            }
+            else                                                //Else player is a client
+            {
+                Debug.Log(GetComponent<PlayerController>().player);
+                networkObject.GetComponent<Client>().SendBombDrop();
+            }
         }
     }
 

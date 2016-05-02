@@ -14,11 +14,12 @@ public class Client : MonoBehaviour {
     int _channelUnreliable = 01;
     int _hostID = -1;
     int _connID = -1;
-    int port = 8888;
+    public int port = 7777;
+    bool isHost = false;
     bool connected = false;
     bool connectedToServer = false;
     public int maxConnections = 4;
-    public string address = "192.168.1.74";
+    public string address = "192.168.0.4";
 
     //In-Game Related Parameters
     _GameController gcScript;
@@ -29,6 +30,7 @@ public class Client : MonoBehaviour {
 
         //Change when this happens depending on what scene client is instantiated
         gcScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<_GameController>();
+        //Join();
     }
 	
     public void Join()
@@ -37,9 +39,14 @@ public class Client : MonoBehaviour {
         connectedToServer = true;
     }
 
-    void JoinGame(string ip, int port_num = 8888)
+    public void JoinGame(string ip = "", int port_num = 0)
     {
-        address = ip;
+        //Allows players to join a game at the given port and ip address.
+        if(ip != "") { address = ip; }
+        //may be neccessary later
+        //isHost = GameObject.Find("Network_Controller").GetComponent<Server>().initialized;
+        Debug.Log("Connected == " + connected);
+        if (port_num != 0) { port = port_num; }
         if (!connected)
         {
             // global config
@@ -61,7 +68,7 @@ public class Client : MonoBehaviour {
 
             byte error;
 
-            _connID = NetworkTransport.Connect(_hostID, address, port_num, 0, out error);
+            _connID = NetworkTransport.Connect(_hostID, address, port, 0, out error);
 
 
             if (error != (byte)NetworkError.Ok)
@@ -72,6 +79,7 @@ public class Client : MonoBehaviour {
             connected = true;
         }
         else {
+            //stops users from connecting multiple times -- allows us to check if its sending messages at all.
             Send(); 
         }
     }
@@ -85,11 +93,12 @@ public class Client : MonoBehaviour {
         BinaryFormatter bf = new BinaryFormatter();
         bf.Serialize(stream, message);
 
-        if (connected)
+        if (connectedToServer)
         {
             NetworkTransport.Send(_hostID, _connID, _channelReliable, buffer, (int)stream.Position, out error);
             if (error > 0) { Debug.Log("Error Sending: " + ((NetworkError)error).ToString()); }
-        } else { Debug.Log("Error, Message Not Sent. Not connected."); }
+        }
+        else { Debug.Log("Error, Message Not Sent. Not connected."); }
        
    
     }
@@ -118,6 +127,7 @@ public class Client : MonoBehaviour {
                         {
                             Debug.Log("Client: Client connected to " + connectionId.ToString() + "!");
                             connectedToServer = true;
+                        connected = true;
                             gameStarted = true;
                         }
 
@@ -131,7 +141,8 @@ public class Client : MonoBehaviour {
                             string msg = bf.Deserialize(stream).ToString();
 
                             Debug.Log("Client: Received Data from " + connectionId.ToString() + "! Message: " + msg);
-                            
+                            InterpretMessage(msg);
+
                         }
                         break;
 
@@ -140,6 +151,7 @@ public class Client : MonoBehaviour {
                         if (connectionId == _connID)
                         {
                             Debug.Log("Client: Disconnected from server!");
+                        connected = false;
                             // Flag to let client know it can no longer send data
                             gameStarted = false;
                         }
@@ -154,7 +166,7 @@ public class Client : MonoBehaviour {
     {
         if (gameStarted && connectedToServer)
         {
-            //Send(GetGameData());
+            Send(GetGameData());
         }
     }
 
@@ -174,14 +186,16 @@ public class Client : MonoBehaviour {
 
     void InterpretMessage(string msg)
     {
+    
         int player = -1;
         if (msg.Length == 0)
             return;
 
-        //Set what player the client controls
-        if (msg.Substring(0,msg.Length-2) == "Player:")
+        if (msg.Substring(0, msg.Length - 1) == "Player:")
         {
+            //Debug.Log("got it");
             int.TryParse(msg.Substring(msg.Length - 1), out player);
+            //Debug.Log("Testing: " + player);
             gcScript.SetPlayer(player);
             return;
         }
@@ -195,7 +209,10 @@ public class Client : MonoBehaviour {
 
         //Someone dropped a bomb
         if (msg.Substring(2) == "dropBomb")
+        {
+            Debug.Log(player);
             gcScript.UpdateBombPlace(player);
+        }
 
         //Server sending everyone's information
         if(msg.Substring(0,6) == "0:Pos:")

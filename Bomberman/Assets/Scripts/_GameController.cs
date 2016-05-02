@@ -3,14 +3,13 @@ using System.Collections;
 
 public class _GameController : MonoBehaviour {
 
-    public GameObject[] players;                                //Tracks player game objects
+    public GameObject[] players;    //Tracks player game objects
     int controlledPlayer = -1;                                  //Keeps track of what player current client is
 
 
 	// Use this for initialization
 	void Start () {
-
-	}
+    }
 
     //Activates given player number
     public void ActivatePlayer(int num)
@@ -27,8 +26,10 @@ public class _GameController : MonoBehaviour {
     //Sets which player is controlled by client
     public void SetPlayer(int n)
     {
-        players[n].GetComponent<PlayerController>().clientControlled = true;
+        Debug.Log("Setting Player: " + n);
         ActivatePlayer(n);
+        players[n].GetComponent<PlayerController>().clientControlled = true;
+
         controlledPlayer = n;
     }
 
@@ -46,6 +47,7 @@ public class _GameController : MonoBehaviour {
 
     public Vector2 GetPlayerPos(int player)
     {
+        //Debug.Log(player);
         return new Vector2(players[player].transform.position.x, players[player].transform.position.y);
     }
 

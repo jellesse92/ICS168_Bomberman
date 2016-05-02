@@ -16,7 +16,8 @@ public class Server : MonoBehaviour {
     public int maxConnections = 4;
     int _serverID = -1;
     public string address;
-    bool initialized = false;
+    public bool initialized = false;
+    public int port = 7777;
 
     //In Game Specific Server Parameters
     public bool gameStarted = false;
@@ -31,18 +32,23 @@ public class Server : MonoBehaviour {
         address = Network.player.ipAddress;
 
         
-        CreateGame();       //SET THIS TO A BUTTON OR SOMETHING
-        if (gameStarted)
-        {
-            gcScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<_GameController>();
-            gcScript.SetPlayer(0);
-        }
+        //CreateGame();       //SET THIS TO A BUTTON OR SOMETHING
+        //if (gameStarted)
+        //{
+        //    gcScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<_GameController>();
+        //    gcScript.SetPlayer(0);
+        //}
 
 
     }
 
+    void Awake()
+    {
+        DontDestroyOnLoad(transform.gameObject);
+    }
     void OnMouseDown()
     {
+        Debug.Log("Creating Game");
         CreateGame();
     }
 
@@ -59,33 +65,33 @@ public class Server : MonoBehaviour {
         HostTopology hostconfig = new HostTopology(config, maxConnections);
 
         NetworkTransport.Init(gconfig);
-        _serverID = NetworkTransport.AddHost(hostconfig, 8888);
+        _serverID = NetworkTransport.AddHost(hostconfig, port);
         if (_serverID < 0) { Debug.Log("Server socket creation failed!"); }
         initialized = true;
         Debug.Log("Server Initialized");
         //Joins its own game.
         //GameObject.Find(<NAME_OF_ATTACHED_OBJECT>).GetComponentOfType<Client>().JoinGame(address);
 
-
         gameStarted = true;
+        if (gameStarted)
+        {
+            gcScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<_GameController>();
+            gcScript.SetPlayer(0);
+        }
+
     }
     void SendGameInformation()
     {
         //something to send game information to online server.
     }
 
-    void Send(string message = "Hello")
+    public void Send(string message = "Hello")
     {
         //Relays messages to all connected clients
-        byte error;
-        byte[] buffer = new byte[1024];
-        Stream stream = new MemoryStream(buffer);
-        BinaryFormatter bf = new BinaryFormatter();
-        bf.Serialize(stream, message);
-
         foreach (int connectionID in connectionIDs)
         {
-            //Debug.Log("ConnectionID: " + connectionID);
+            Debug.Log("ConnectionID: " + connectionID);
+            //Debug.Log(message);
             SendToClient(connectionID, message);
         }
 
@@ -172,14 +178,15 @@ public class Server : MonoBehaviour {
         int dataSize;
         byte[] buffer = new byte[1024];
         byte error;
-
-        NetworkEventType networkEvent = NetworkEventType.DataEvent;
         if (initialized)
         {
+            NetworkEventType networkEvent = NetworkEventType.DataEvent;
+        //Debug.Log("Initialized == " + initialized);
+
             do
             {
                 networkEvent = NetworkTransport.Receive(out recHostId, out connectionId, out channelId, buffer, 1024, out dataSize, out error);
-
+                Debug.Log(networkEvent.ToString());
                 if (gameStarted)
                     NetworkSwitchGame(networkEvent, recHostId, connectionId,buffer);
                 else
@@ -245,6 +252,7 @@ public class Server : MonoBehaviour {
 
         //Drops bombs for players
         if(msg == "dropBomb"){
+            //Debug.Log("Dropped Bomb: " + playerID[clientId]);
             gcScript.UpdateBombPlace(playerID[clientId]);
             SendBombEvent(playerID[clientId]);
         }
@@ -272,6 +280,7 @@ public class Server : MonoBehaviour {
 
     public void SendBombEvent(int player)
     {
+        Debug.Log("Sending Bomb");
         Send(player + ":" + "dropBomb");
     }
 }

@@ -18,7 +18,7 @@ def LogIn_Server(database: dict):
     print('Server starting...')
     
     # Socket Binding & Listening:
-    host = ''
+    host = '128.195.67.168'
     port = 8888
     backlog = 5
     size = 1024
@@ -73,7 +73,7 @@ def LogIn_Server(database: dict):
                 client[0].send('SUCCESS'.encode())
                 
             elif query[0] == '5': # Get Games
-                games_msg = ''
+                games_msg = 'G:'
                 for game in games_list:
                     games_msg += game[0] + ':' + game[1] + ':' + game[2] + ' '
                     print(games_msg)
