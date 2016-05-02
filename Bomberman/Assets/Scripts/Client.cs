@@ -19,7 +19,7 @@ public class Client : MonoBehaviour {
     bool connected = false;
     bool connectedToServer = false;
     public int maxConnections = 4;
-    public string address = "192.168.0.4";
+    public string address = "192.168.43.115";
 
     //In-Game Related Parameters
     _GameController gcScript;
