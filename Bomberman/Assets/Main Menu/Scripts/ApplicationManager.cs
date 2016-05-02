@@ -79,7 +79,8 @@ public class ApplicationManager : MonoBehaviour {
     //Response from server
     private static String response = String.Empty;
 
-    void ConnectClient()
+    //Send message to server and get server response
+    string GetServerResponse(string msg)
     {
         try
         {
@@ -92,25 +93,26 @@ public class ApplicationManager : MonoBehaviour {
             connectDone.WaitOne();
 
             //Sending to server
-            Send(clientSocket, "This is a test<EOF>");
+            Send(clientSocket, msg);
             sendDone.WaitOne();
 
             //Recieving from server
             Receive(clientSocket);
             receiveDone.WaitOne();
 
-            Debug.Log("Response received: " + response);
-
             // Release the socket.
             clientSocket.Shutdown(SocketShutdown.Both);
             clientSocket.Close();
+
+            return response;
 
         }
         catch(Exception e)
         {
             Debug.Log("Error: " + e);
         }
-           
+
+        return "";
     }
 
 
@@ -198,7 +200,7 @@ public class ApplicationManager : MonoBehaviour {
     void Start()
     {
         DontDestroyOnLoad(transform.gameObject);
-        ConnectClient();
+
 
     }
 
