@@ -21,7 +21,7 @@ public class Temp_script : MonoBehaviour {
         } else
         {
             Debug.Log("Attempting to connect");
-            GameObject.Find("Network_Controller").GetComponent<Client>().JoinGame("128.195.71.46", 7777);
+            GameObject.Find("Network_Controller").GetComponent<Client>().JoinGame("72.211.206.39", 7777);
         }
     }
 }

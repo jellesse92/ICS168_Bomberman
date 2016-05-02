@@ -17,6 +17,7 @@ public class Server : MonoBehaviour {
     int _serverID = -1;
     public string address;
     public bool initialized = false;
+    public int port = 7777;
 
     //In Game Specific Server Parameters
     public bool gameStarted = false;
@@ -63,7 +64,7 @@ public class Server : MonoBehaviour {
         HostTopology hostconfig = new HostTopology(config, maxConnections);
 
         NetworkTransport.Init(gconfig);
-        _serverID = NetworkTransport.AddHost(hostconfig, 7777);
+        _serverID = NetworkTransport.AddHost(hostconfig, port);
         if (_serverID < 0) { Debug.Log("Server socket creation failed!"); }
         initialized = true;
         Debug.Log("Server Initialized");

@@ -19,7 +19,7 @@ public class Client : MonoBehaviour {
     bool connected = false;
     bool connectedToServer = false;
     public int maxConnections = 4;
-    public string address = "128.195.71.46";
+    public string address = "72.211.206.39";
 
     //In-Game Related Parameters
     _GameController gcScript;
@@ -75,7 +75,8 @@ public class Client : MonoBehaviour {
             {
                 NetworkError nerror = (NetworkError)error;
                 Debug.Log("Error " + nerror.ToString());
-            } 
+            }
+            connected = true;
         }
         else {
             //stops users from connecting multiple times -- allows us to check if its sending messages at all.
