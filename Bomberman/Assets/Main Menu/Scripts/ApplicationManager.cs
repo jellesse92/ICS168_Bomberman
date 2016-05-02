@@ -71,6 +71,8 @@ public class ApplicationManager : MonoBehaviour {
     List<GameInfo> gamesList;
     List<Stats> playerStats; //For Later in the game, get stats for all players.
 
+    bool initialized = false;
+
 
     private static ManualResetEvent connectDone = new ManualResetEvent(false);
     private static ManualResetEvent sendDone = new ManualResetEvent(false);
@@ -80,7 +82,7 @@ public class ApplicationManager : MonoBehaviour {
     private static String response = String.Empty;
 
     //Send message to server and get server response
-    string GetServerResponse(string msg)
+    public string GetServerResponse(string msg)
     {
         try
         {
@@ -201,13 +203,6 @@ public class ApplicationManager : MonoBehaviour {
     {
         DontDestroyOnLoad(transform.gameObject);
 
-
-    }
-
-
-
-    void Update()
-    {
 
     }
 

@@ -27,6 +27,13 @@ public class PanelManager : MonoBehaviour {
 	const string k_OpenTransitionName = "Open";
 	const string k_ClosedStateName = "Closed";
 
+    private ApplicationManager appManageScript;
+
+    void Start()
+    {
+        appManageScript = GameObject.Find("ApplicationManager").GetComponent<ApplicationManager>();
+    }
+
 	public void OnPlay()
 	{
 		Application.LoadLevel (1);
@@ -94,7 +101,10 @@ public class PanelManager : MonoBehaviour {
 		password = inputPassword.text;
 		repassword = inputRepassword.text;
 
-		if ((password != "") && (repassword != "") && (password == repassword))
+        string serverMsg = "0:" + username + ":" + password;
+
+		if ((password != "") && (repassword != "") && (password == repassword) &&
+            appManageScript.GetServerResponse(serverMsg) == "SUCCESS")
 		{
 			//Connect to server. Ask if okay.
 			loggedIn = true;
@@ -112,7 +122,9 @@ public class PanelManager : MonoBehaviour {
 		username = loginUsername.text;
 		password = loginPassword.text;
 
-		if (password != "") 
+        string serverMsg = "1:" + username + ":" + password;
+
+        if (password != "" && appManageScript.GetServerResponse(serverMsg) == "SUCCESS") 
 		{
 			//Connect to server. Ask if okay.
 			loggedIn = true;
