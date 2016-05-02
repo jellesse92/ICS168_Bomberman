@@ -47,7 +47,7 @@ public class _GameController : MonoBehaviour {
 
     public Vector2 GetPlayerPos(int player)
     {
-        Debug.Log(player);
+        //Debug.Log(player);
         return new Vector2(players[player].transform.position.x, players[player].transform.position.y);
     }
 

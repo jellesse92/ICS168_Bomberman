@@ -48,6 +48,7 @@ public class Server : MonoBehaviour {
     }
     void OnMouseDown()
     {
+        Debug.Log("Creating Game");
         CreateGame();
     }
 
@@ -90,7 +91,7 @@ public class Server : MonoBehaviour {
         foreach (int connectionID in connectionIDs)
         {
             Debug.Log("ConnectionID: " + connectionID);
-            Debug.Log(message);
+            //Debug.Log(message);
             SendToClient(connectionID, message);
         }
 
@@ -251,6 +252,7 @@ public class Server : MonoBehaviour {
 
         //Drops bombs for players
         if(msg == "dropBomb"){
+            //Debug.Log("Dropped Bomb: " + playerID[clientId]);
             gcScript.UpdateBombPlace(playerID[clientId]);
             SendBombEvent(playerID[clientId]);
         }
@@ -278,6 +280,7 @@ public class Server : MonoBehaviour {
 
     public void SendBombEvent(int player)
     {
+        Debug.Log("Sending Bomb");
         Send(player + ":" + "dropBomb");
     }
 }

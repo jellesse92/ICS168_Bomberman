@@ -191,23 +191,14 @@ public class Client : MonoBehaviour {
         if (msg.Length == 0)
             return;
 
-        //Set what player the client controls
-        if(msg[0] == 'P')
+        if (msg.Substring(0, msg.Length - 1) == "Player:")
         {
-            Debug.Log("got it");
+            //Debug.Log("got it");
             int.TryParse(msg.Substring(msg.Length - 1), out player);
-            Debug.Log("Testing: " + player);
+            //Debug.Log("Testing: " + player);
             gcScript.SetPlayer(player);
             return;
         }
-        //if (msg.Substring(0,msg.Length-2) == "Player:")
-        //{
-        //    Debug.Log("got it");
-        //    int.TryParse(msg.Substring(msg.Length - 1), out player);
-        //    Debug.Log("Testing: "+ player);
-        //    gcScript.SetPlayer(player);
-        //    return;
-        //} 
 
 
         int.TryParse(msg.Substring(0, 1), out player);
@@ -218,7 +209,10 @@ public class Client : MonoBehaviour {
 
         //Someone dropped a bomb
         if (msg.Substring(2) == "dropBomb")
+        {
+            Debug.Log(player);
             gcScript.UpdateBombPlace(player);
+        }
 
         //Server sending everyone's information
         if(msg.Substring(0,6) == "0:Pos:")
