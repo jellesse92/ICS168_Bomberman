@@ -94,13 +94,19 @@ public class ApplicationManager : MonoBehaviour {
             clientSocket.BeginConnect(remoteEP,new AsyncCallback(ConnectCallback), clientSocket);
             connectDone.WaitOne();
 
+            Debug.Log("DEBUG OF SALVATION!");
+
             //Sending to server
             Send(clientSocket, msg);
             sendDone.WaitOne();
 
+            Debug.Log("DEBUG OF SALVATION!");
+
             //Recieving from server
             Receive(clientSocket);
             receiveDone.WaitOne();
+
+            Debug.Log("DEBUG OF SALVATION!");
 
             // Release the socket.
             clientSocket.Shutdown(SocketShutdown.Both);
