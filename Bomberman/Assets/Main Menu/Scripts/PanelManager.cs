@@ -36,7 +36,9 @@ public class PanelManager : MonoBehaviour {
 
 	public void OnPlay()
 	{
-		Application.LoadLevel (1);
+        string serverMsg = "4:" + username + ":" + appManageScript.address + ":" + appManageScript.port.ToString();
+        if(appManageScript.GetServerResponse(serverMsg) == "SUCCESS")
+            Application.LoadLevel (1);
 	}
 
 	public void OnEnable()
@@ -117,10 +119,12 @@ public class PanelManager : MonoBehaviour {
 		}
 	}
 
+
+    
 	public void LogIn()
 	{
-		username = loginUsername.text;
-		password = loginPassword.text;
+		password = loginUsername.text;
+		username = loginPassword.text;
 
         string serverMsg = "1:" + username + ":" + password;
 

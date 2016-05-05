@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Text;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 /***
         Socket code credit to: https://msdn.microsoft.com/en-us/library/bew39x2a%28v=vs.110%29.aspx
@@ -72,6 +73,8 @@ public class ApplicationManager : MonoBehaviour {
     List<Stats> playerStats; //For Later in the game, get stats for all players.
 
     bool initialized = false;
+
+    public Text ipText;         //Displays ip address for game creation
 
 
     private static ManualResetEvent connectDone = new ManualResetEvent(false);
@@ -208,7 +211,7 @@ public class ApplicationManager : MonoBehaviour {
     void Start()
     {
         DontDestroyOnLoad(transform.gameObject);
-
+        ipText.text = address;
 
     }
 
