@@ -9,6 +9,14 @@ public class _GameController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        
+        if ( GameObject.Find("Network_Controller").GetComponent<Host>().isHost  == true)
+        {
+            GameObject.Find("Network_Controller").GetComponent<Server>().CreateGame();
+        } else
+        {
+            GameObject.Find("Network_Controller").GetComponent<Client>().JoinGame();
+        }
     }
 
     //Activates given player number

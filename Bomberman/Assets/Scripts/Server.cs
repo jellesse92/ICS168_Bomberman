@@ -42,6 +42,10 @@ public class Server : MonoBehaviour {
 
     }
 
+    void SetHost()
+    {
+        GameObject.Find("Network_Controller").GetComponent<Host>().setHost();
+    }
     void Awake()
     {
         DontDestroyOnLoad(transform.gameObject);

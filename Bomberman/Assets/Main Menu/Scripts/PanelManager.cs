@@ -39,6 +39,7 @@ public class PanelManager : MonoBehaviour {
         string serverMsg = "4:" + username + ":" + appManageScript.address + ":" + appManageScript.port.ToString();
         if(appManageScript.GetServerResponse(serverMsg) == "SUCCESS")
             Application.LoadLevel (1);
+            
 	}
 
 	public void OnEnable()
