@@ -29,12 +29,18 @@ public class Client : MonoBehaviour {
         // text_area = GameObject.Find("TextAA");
 
         //Change when this happens depending on what scene client is instantiated
-        gcScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<_GameController>();
+        //gcScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<_GameController>();
         //Join();
     }
-	
+
+    void Awake()
+    {
+        DontDestroyOnLoad(transform.gameObject);
+    }
+
     public void Join()
     {
+        gcScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<_GameController>();
         JoinGame(address);
         connectedToServer = true;
     }
