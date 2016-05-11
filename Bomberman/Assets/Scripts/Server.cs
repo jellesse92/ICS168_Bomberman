@@ -19,6 +19,7 @@ public class Server : MonoBehaviour {
     public bool initialized = false;
     public int port = 7777;
 
+
     //In Game Specific Server Parameters
     public bool gameStarted = false;
     List<int> playersAvailable = new List<int>(new int[] { 1, 2, 3 });
@@ -257,6 +258,12 @@ public class Server : MonoBehaviour {
             SendBombEvent(playerID[clientId]);
         }
 
+		//Death and Score update
+		if (msg.Substring(0,4) == "Death") {
+			gcScript.UpdateScores(playerID[clientId], int(msg.Substring (5,6)));
+
+		}
+
     }
 
 
@@ -283,4 +290,14 @@ public class Server : MonoBehaviour {
         Debug.Log("Sending Bomb");
         Send(player + ":" + "dropBomb");
     }
+	public void SendDeathEvent(int player)
+	{
+		int[] scoreList = new int[];
+		Debug.Log ("Sending Death");
+		foreach(GameObject pScore in gcScript.players){
+			pScore.GetComponent<PlayerController>().score 
+		}
+		Send ("Scores:");
+
+	}
 }

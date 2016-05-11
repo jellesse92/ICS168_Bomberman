@@ -45,6 +45,12 @@ public class _GameController : MonoBehaviour {
         players[player].GetComponent<BombDrop>().DropBomb();
     }
 
+	public void UpdateScores(int player, int killer)
+	{
+		players [player].GetComponent<PlayerController> ().lives--;
+		players [killer].GetComponent<PlayerController> ().score++;
+	}
+
     public Vector2 GetPlayerPos(int player)
     {
         //Debug.Log(player);
