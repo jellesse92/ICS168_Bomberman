@@ -3,6 +3,9 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
+using System.Text;
+using System;
 
 public class PanelManager : MonoBehaviour {
 
@@ -27,14 +30,40 @@ public class PanelManager : MonoBehaviour {
 	const string k_OpenTransitionName = "Open";
 	const string k_ClosedStateName = "Closed";
 
+    const string SALT_VALUE = ":123";
+
     private ApplicationManager appManageScript;
 
     void Start()
     {
         appManageScript = GameObject.Find("ApplicationManager").GetComponent<ApplicationManager>();
+
+
     }
 
-	public void OnPlay()
+    /*
+        PASSWORD ENCRYPTION
+        Code from: https://msdn.microsoft.com/en-us/library/system.security.cryptography.md5%28v=vs.110%29.aspx
+    */
+
+    static string GetMd5Hash(MD5 md5Hash, string input)
+    {
+        byte[] data = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(input));
+        StringBuilder sBuilder = new StringBuilder();
+        for (int i = 0; i < data.Length; i++)
+        {
+            sBuilder.Append(data[i].ToString("x2"));
+        }
+        return sBuilder.ToString();
+    }
+
+    /*
+        PASSWORD ENCRYPTION END
+    */
+
+
+
+    public void OnPlay()
 	{
         string serverMsg = "4:" + username + ":" + appManageScript.address + ":" + appManageScript.port.ToString();
         if(appManageScript.GetServerResponse(serverMsg) == "SUCCESS")
@@ -103,8 +132,15 @@ public class PanelManager : MonoBehaviour {
 		username = inputUsername.text;
 		password = inputPassword.text;
 		repassword = inputRepassword.text;
+        string serverMsg = "";
 
-        string serverMsg = "0:" + username + ":" + password;
+        using (MD5 md5Hash = MD5.Create())
+        {
+            serverMsg = "0:" + GetMd5Hash(md5Hash, username + SALT_VALUE) + ":" + GetMd5Hash(md5Hash, password + SALT_VALUE);
+        }
+
+
+        //serverMsg = "0:" + username + ":" + password;
 
 		if ((password != "") && (repassword != "") && (password == repassword) &&
             appManageScript.GetServerResponse(serverMsg) == "SUCCESS")
@@ -126,8 +162,12 @@ public class PanelManager : MonoBehaviour {
 	{
 		password = loginUsername.text;
 		username = loginPassword.text;
+        string serverMsg = "";
 
-        string serverMsg = "1:" + username + ":" + password;
+        using (MD5 md5Hash = MD5.Create())
+        {
+            serverMsg = "1:" + GetMd5Hash(md5Hash, username + SALT_VALUE) + ":" + GetMd5Hash(md5Hash, password + SALT_VALUE);
+        }
 
         if (password != "" && appManageScript.GetServerResponse(serverMsg) == "SUCCESS") 
 		{
