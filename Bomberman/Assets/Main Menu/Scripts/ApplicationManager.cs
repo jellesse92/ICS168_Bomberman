@@ -66,8 +66,8 @@ public class ApplicationManager : MonoBehaviour {
     public bool log_in_error = false;
     public bool data_error = false;
     public bool connected = false;
-    public int port = 8888;
-    public string address = "128.195.67.168";
+    public int port = 7777;
+    public string address = "52.26.63.128";
     string _lastSentMsg;
     List<GameInfo> gamesList;
     List<Stats> playerStats; //For Later in the game, get stats for all players.
@@ -83,6 +83,11 @@ public class ApplicationManager : MonoBehaviour {
 
     //Response from server
     private static String response = String.Empty;
+
+    void Awake()
+    {
+        DontDestroyOnLoad(transform.gameObject);
+    }
 
     //Send message to server and get server response
     public string GetServerResponse(string msg)
