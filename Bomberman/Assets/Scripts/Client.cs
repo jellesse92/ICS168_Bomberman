@@ -40,7 +40,6 @@ public class Client : MonoBehaviour {
 
     public void Join()
     {
-        gcScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<_GameController>();
         JoinGame(address);
         connectedToServer = true;
     }
@@ -83,6 +82,8 @@ public class Client : MonoBehaviour {
                 Debug.Log("Error " + nerror.ToString());
             }
             connected = true;
+            gcScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<_GameController>();
+
         }
         else {
             //stops users from connecting multiple times -- allows us to check if its sending messages at all.
