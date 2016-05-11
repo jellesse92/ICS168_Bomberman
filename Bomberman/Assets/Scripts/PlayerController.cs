@@ -5,6 +5,7 @@ public class PlayerController : MonoBehaviour {
 
     //TEMPORARY FUNCTIONALITY
     int lives = 3;              //Amount of lives player has
+    public int score = 0;       //Player's score 
     int bombs = 0;              //Number of bombs player has dropped
 
     //PLAYER DEFAULT STATS
