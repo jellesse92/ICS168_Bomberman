@@ -191,6 +191,11 @@ public class Client : MonoBehaviour {
         Send("dropBomb");
     }
 
+	public void SendDeath(int killer)
+	{
+		Send ("Death:" + killer);
+	}
+
     void InterpretMessage(string msg)
     {
     
@@ -220,6 +225,17 @@ public class Client : MonoBehaviour {
             Debug.Log(player);
             gcScript.UpdateBombPlace(player);
         }
+
+
+		//Someone died
+		if (msg.Substring (0,7) == "Scores:") {
+			string[] temp = msg.Substring (7).Split(new[] { ':', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+			for(int i = 0; i < gcScript.players.Length; i++){
+				int score = gcScript.players[i].GetComponent<PlayerController>().score;
+				int.TryParse (temp[i], out score);
+				gcScript.players[i].GetComponent<PlayerController>().score = score;
+			}
+		}
 
         //Server sending everyone's information
         if(msg.Substring(0,6) == "0:Pos:")
