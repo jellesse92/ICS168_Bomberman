@@ -147,7 +147,7 @@ public class Client : MonoBehaviour {
                             BinaryFormatter bf = new BinaryFormatter();
                             string msg = bf.Deserialize(stream).ToString();
 
-                            Debug.Log("Client: Received Data from " + connectionId.ToString() + "! Message: " + msg);
+                            //Debug.Log("Client: Received Data from " + connectionId.ToString() + "! Message: " + msg);
                             InterpretMessage(msg);
 
                         }

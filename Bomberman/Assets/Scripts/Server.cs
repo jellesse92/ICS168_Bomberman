@@ -129,10 +129,9 @@ public class Server : MonoBehaviour {
                         gcScript.ActivatePlayer(pl);
                         playersAvailable.Remove(pl);
                         playerID[pl] = connectionId;
-                        Send("Activate:" + pl);
-
                         connectionIDs.Add(connectionId);
                         SendToClient(connectionId, "Player:" + pl);
+                        Send("Activate:" + pl);
                         Debug.Log("Server: Player " + pl + " connected!");
                     }
                     
