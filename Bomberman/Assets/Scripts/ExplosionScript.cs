@@ -7,6 +7,7 @@ public class ExplosionScript : MonoBehaviour {
     public GameObject[] ExplosionParticles;
     public int multiplier = 1;
 	public AudioClip explosionSound;
+    
 
 	public void Resize(float life)
     {

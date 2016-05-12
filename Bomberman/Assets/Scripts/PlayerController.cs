@@ -83,7 +83,7 @@ public class PlayerController : MonoBehaviour {
 
     void OnParticleCollision(GameObject obj)
     {
-        if (obj.tag == "Explosion")
+        if (obj.tag == "Explosion" && obj.transform.parent.GetComponent<ExplosionScript>().player != -1)
         {
             Damage();
             Debug.Log("Died to Player: " + obj.transform.parent.GetComponent<ExplosionScript>().player);

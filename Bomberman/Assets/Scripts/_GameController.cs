@@ -44,6 +44,7 @@ public class _GameController : MonoBehaviour {
     //Updates uncontrolled player positions
     public void UpdatePlayerPosition(int player, float x, float y)
     {
+        Debug.Log(player);
         players[player].transform.position = new Vector2(x, y);
     }
 

@@ -150,21 +150,20 @@ public class Server : MonoBehaviour {
 
                     InterpretMessage(msg, connectionId);
 
-                    Debug.Log("Server: Received Data from " + connectionId.ToString() + "! Message: " + msg);
+                    //Debug.Log("Server: Received Data from " + connectionId.ToString() + "! Message: " + msg);
                     Send(msg);
                 }
                 break;
 
             case NetworkEventType.DisconnectEvent:
 
-                if (recHostId == connectionId)
-                {
-                    Debug.Log("Server: Received disconnect from " + connectionId.ToString());
-                    int player = playerID[connectionId];
-                    playersAvailable.Add(player);
-                    gcScript.DeactivatePlayer(player);
-                    playerID[connectionId] = -1;
-                }
+                Debug.Log("Server: Received disconnect from " + connectionId.ToString());
+                int player = playerID.IndexOf(connectionId);
+                connectionIDs.Remove(connectionId);
+                playersAvailable.Add(player);
+                gcScript.DeactivatePlayer(player);
+                playerID[player] = -1;
+
                 break;
         }
     }
@@ -226,10 +225,11 @@ public class Server : MonoBehaviour {
 
                         case NetworkEventType.DisconnectEvent:
 
-                            if (recHostId == connectionId)
-                            {
-                                Debug.Log("Server: Received disconnect from " + connectionId.ToString());
-                            }
+                            Debug.Log("Server: Received disconnect from " + connectionId.ToString());
+                            int player = playerID[connectionId];
+                            playersAvailable.Add(player);
+                            gcScript.DeactivatePlayer(player);
+                            playerID[connectionId] = -1;
                             break;
                     }
 
@@ -253,8 +253,12 @@ public class Server : MonoBehaviour {
             float.TryParse(temp[0],out x);
             float.TryParse(temp[1], out y);
             gcScript.UpdatePlayerPosition(playerID[clientId], x, y);
+        } else
+        {
+            Debug.Log(msg);
         }
 
+       
         //Drops bombs for players
         if(msg == "dropBomb"){
             //Debug.Log("Dropped Bomb: " + playerID[clientId]);
