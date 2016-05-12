@@ -66,7 +66,7 @@ public class PanelManager : MonoBehaviour {
     public void OnPlay()
 	{
         string serverMsg = "4:" + username + ":" + appManageScript.address + ":" + appManageScript.port.ToString();
-        if(appManageScript.GetServerResponse(serverMsg) == "SUCCESS")
+        if(appManageScript.GetServerResponse(serverMsg).Substring(0, 7) == "SUCCESS")
             Application.LoadLevel (1);
             
 	}
@@ -143,7 +143,7 @@ public class PanelManager : MonoBehaviour {
         //serverMsg = "0:" + username + ":" + password;
 
 		if ((password != "") && (repassword != "") && (password == repassword) &&
-            appManageScript.GetServerResponse(serverMsg) == "SUCCESS")
+            appManageScript.GetServerResponse(serverMsg).Substring(0, 7) == "SUCCESS")
 		{
 			//Connect to server. Ask if okay.
 			loggedIn = true;
@@ -169,7 +169,7 @@ public class PanelManager : MonoBehaviour {
             serverMsg = "1:" + GetMd5Hash(md5Hash, username + SALT_VALUE) + ":" + GetMd5Hash(md5Hash, password + SALT_VALUE);
         }
 
-        if (password != "" && appManageScript.GetServerResponse(serverMsg) == "SUCCESS") 
+        if (password != "" && appManageScript.GetServerResponse(serverMsg).Substring(0, 7) == "SUCCESS") 
 		{
 			//Connect to server. Ask if okay.
 			loggedIn = true;
