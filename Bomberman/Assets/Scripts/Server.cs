@@ -127,13 +127,13 @@ public class Server : MonoBehaviour {
                     //Adds player to game
                     if(playersAvailable.Count > 0)
                     {
-                        int player = playersAvailable[0];
-                        gcScript.ActivatePlayer(player);
-                        playersAvailable.Remove(player);
-                        playerID[player] = connectionId;
+                        int pl = playersAvailable[0];
+                        gcScript.ActivatePlayer(pl);
+                        playersAvailable.Remove(pl);
+                        playerID[pl] = connectionId;
                         connectionIDs.Add(connectionId);
-                        SendToClient(connectionId, "Player:" + player);
-                        Debug.Log("Server: Player " + connectionId.ToString() + " connected!");
+                        SendToClient(connectionId, "Player:" + pl);
+                        Debug.Log("Server: Player " + pl + " connected!");
                     }
                     
                 }
@@ -158,11 +158,11 @@ public class Server : MonoBehaviour {
             case NetworkEventType.DisconnectEvent:
 
                 Debug.Log("Server: Received disconnect from " + connectionId.ToString());
-                int player = playerID.IndexOf(connectionId);
+                int p = playerID.IndexOf(connectionId);
                 connectionIDs.Remove(connectionId);
-                playersAvailable.Add(player);
-                gcScript.DeactivatePlayer(player);
-                playerID[player] = -1;
+                playersAvailable.Add(p);
+                gcScript.DeactivatePlayer(p);
+                playerID[p] = -1;
 
                 break;
         }
@@ -252,7 +252,8 @@ public class Server : MonoBehaviour {
             string[] temp = msg.Substring(4).Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
             float.TryParse(temp[0],out x);
             float.TryParse(temp[1], out y);
-            gcScript.UpdatePlayerPosition(playerID[clientId], x, y);
+
+            gcScript.UpdatePlayerPosition(playerID.IndexOf(clientId), x, y);
         } else
         {
             Debug.Log(msg);
