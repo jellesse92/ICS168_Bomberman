@@ -264,7 +264,9 @@ public class Server : MonoBehaviour {
 
 		//Death and Score update
 		if (msg.Substring(0,4) == "Death") {
-			gcScript.UpdateScores(playerID[clientId], int(msg.Substring (5,6)));
+            int temp = -1;
+            int.TryParse(msg.Substring(5, 2), out temp);
+			gcScript.UpdateScores(playerID[clientId], temp);
 
 		}
 
@@ -296,12 +298,12 @@ public class Server : MonoBehaviour {
     }
 	public void SendDeathEvent(int player)
 	{
-		int[] scoreList = new int[];
+        string result = "Scores";
 		Debug.Log ("Sending Death");
 		foreach(GameObject pScore in gcScript.players){
-			pScore.GetComponent<PlayerController>().score 
+            result += (":" + pScore.GetComponent<PlayerController>().score);
 		}
-		Send ("Scores:");
+		Send ("Scores:" + result);
 
 	}
 }

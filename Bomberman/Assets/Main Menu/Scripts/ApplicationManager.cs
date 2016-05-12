@@ -12,17 +12,6 @@ using UnityEngine.UI;
         Socket code credit to: https://msdn.microsoft.com/en-us/library/bew39x2a%28v=vs.110%29.aspx
 ***/
 
-public class StateObject
-{
-    // Client socket.
-    public Socket workSocket = null;
-    // Size of receive buffer.
-    public const int BufferSize = 256;
-    // Receive buffer.
-    public byte[] buffer = new byte[BufferSize];
-    // Received data string.
-    public StringBuilder sb = new StringBuilder();
-}
 
 
 public class GameInfo
@@ -77,14 +66,12 @@ public class ApplicationManager : MonoBehaviour {
     public Text ipText;         //Displays ip address for game creation
 
 
-    private static ManualResetEvent connectDone = new ManualResetEvent(false);
-    private static ManualResetEvent sendDone = new ManualResetEvent(false);
-    private static ManualResetEvent receiveDone = new ManualResetEvent(false);
 
     //Response from server
     private static String response = String.Empty;
 
     void Awake()
+
     {
         DontDestroyOnLoad(transform.gameObject);
     }
@@ -92,126 +79,22 @@ public class ApplicationManager : MonoBehaviour {
     //Send message to server and get server response
     public string GetServerResponse(string msg)
     {
-        try
-        {
-            IPAddress ipAddress = IPAddress.Parse(address);
-            IPEndPoint remoteEP = new IPEndPoint(ipAddress, port);
+        System.Net.Sockets.TcpClient clientSocket = new System.Net.Sockets.TcpClient();
+        clientSocket.Connect(address, port);
+        NetworkStream serverStream = clientSocket.GetStream();
 
-            Socket clientSocket = new Socket(AddressFamily.InterNetwork,SocketType.Stream, ProtocolType.Tcp);
+        byte[] outStream = System.Text.Encoding.ASCII.GetBytes(msg + "$");
+        serverStream.Write(outStream, 0, outStream.Length);
+        serverStream.Flush();
 
-            clientSocket.BeginConnect(remoteEP,new AsyncCallback(ConnectCallback), clientSocket);
-            connectDone.WaitOne();
+        byte[] inStream = new byte[10025];
+        serverStream.Read(inStream, 0, 256);
+        string returndata = System.Text.Encoding.ASCII.GetString(inStream);
 
-            Debug.Log("DEBUG OF SALVATION!");
-
-            //Sending to server
-            Send(clientSocket, msg);
-            sendDone.WaitOne();
-
-            Debug.Log("DEBUG OF SALVATION!");
-
-            //Recieving from server
-            Receive(clientSocket);
-            receiveDone.WaitOne();
-
-            Debug.Log("DEBUG OF SALVATION!");
-
-            // Release the socket.
-            clientSocket.Shutdown(SocketShutdown.Both);
-            clientSocket.Close();
-
-            return response;
-
-        }
-        catch(Exception e)
-        {
-            Debug.Log("Error: " + e);
-        }
-
-        return "";
+        return returndata;
     }
 
 
-    private static void ConnectCallback(IAsyncResult ar)
-    {
-        try
-        {
-            Socket clientSocket = (Socket)ar.AsyncState;
-            clientSocket.EndConnect(ar);
-            connectDone.Set();
-        }
-        catch (Exception e)
-        {
-            Debug.Log("Error: " + e);
-        }
-    }
-
-    //For sending data to server
-    private static void Send(Socket client, String data)
-    {
-        // Convert the string data to byte data using ASCII encoding.
-        byte[] byteData = Encoding.ASCII.GetBytes(data);
-
-        // Begin sending the data to the remote device.
-        client.BeginSend(byteData, 0, byteData.Length, 0,
-            new AsyncCallback(SendCallback), client);
-    }
-
-    private static void SendCallback(IAsyncResult ar)
-    {
-        try
-        {
-            Socket client = (Socket)ar.AsyncState;
-            int bytesSent = client.EndSend(ar);
-            sendDone.Set();
-        }
-        catch (Exception e)
-        {
-            Debug.Log("Error: " + e);
-        }
-    }
-
-    //For recieving data from server
-    private static void Receive(Socket client)
-    {
-        try
-        {
-            StateObject state = new StateObject();
-            state.workSocket = client;
-            client.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(ReceiveCallback), state);
-        }
-        catch (Exception e)
-        {
-            Debug.Log("Error: " + e);
-        }
-    }
-
-    private static void ReceiveCallback(IAsyncResult ar)
-    {
-        try
-        {
-            StateObject state = (StateObject)ar.AsyncState;
-            Socket client = state.workSocket;
-
-            int bytesRead = client.EndReceive(ar);
-
-            if (bytesRead > 0)
-            {
-                state.sb.Append(Encoding.ASCII.GetString(state.buffer, 0, bytesRead));
-                client.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(ReceiveCallback), state);
-            }
-            else {
-                if (state.sb.Length > 1){
-                    response = state.sb.ToString();
-                }
-                receiveDone.Set();
-            }
-        }
-        catch (Exception e)
-        {
-            Debug.Log("Error: " + e);
-        }
-    }
 
     void Start()
     {
