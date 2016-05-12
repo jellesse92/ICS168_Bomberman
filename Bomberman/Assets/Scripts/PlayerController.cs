@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
 
@@ -13,16 +14,20 @@ public class PlayerController : MonoBehaviour {
     const float DEFAULT_SPEED = 6f;
     const int DEFAULT_EXPLOSION_MULTIPLIER = 0;
     const int DEFAULT_BOMB_AMOUNT = 1;
+
 	public AudioClip playerHitSound;
+    public Text scoreText;
 
     public bool clientControlled = false; 
-
     public int player = -1;
 
+    //PLAYER STATS
     float speed = DEFAULT_SPEED;                                            //Speed player moves at
     int explosionMultiplier = DEFAULT_EXPLOSION_MULTIPLIER;                 //For increasing explosion size
     int maxBombsAllowed = DEFAULT_BOMB_AMOUNT;                              //Max amount of bombs player can place 
     public GameObject spawnLocation;                                        //Location player set to spawn at
+
+    //EXTERNAL SCRIPTS
     GameController gcScript;                                                //For repeated access of game controller script
 
     public int getBombs()
@@ -57,6 +62,8 @@ public class PlayerController : MonoBehaviour {
             GetComponent<Animator>().SetInteger("X", (int)h);
             GetComponent<Animator>().SetInteger("Y", (int)v);
         }
+        scoreText.text = score.ToString();
+
     }
 
     //Respawns player at free spawn location

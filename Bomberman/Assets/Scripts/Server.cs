@@ -95,8 +95,6 @@ public class Server : MonoBehaviour {
         //Relays messages to all connected clients
         foreach (int connectionID in connectionIDs)
         {
-            Debug.Log("ConnectionID: " + connectionID);
-            //Debug.Log(message);
             SendToClient(connectionID, message);
         }
 
@@ -190,7 +188,6 @@ public class Server : MonoBehaviour {
             do
             {
                 networkEvent = NetworkTransport.Receive(out recHostId, out connectionId, out channelId, buffer, 1024, out dataSize, out error);
-                Debug.Log(networkEvent.ToString());
                 if (gameStarted)
                     NetworkSwitchGame(networkEvent, recHostId, connectionId,buffer);
                 else
