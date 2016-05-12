@@ -14,7 +14,7 @@ public class Client : MonoBehaviour {
     int _channelUnreliable = 01;
     int _hostID = -1;
     int _connID = -1;
-    public int port = 7777;
+    public int port = 8888;
     bool isHost = false;
     bool connected = false;
     bool connectedToServer = false;

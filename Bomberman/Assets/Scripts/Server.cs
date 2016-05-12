@@ -17,7 +17,7 @@ public class Server : MonoBehaviour {
     int _serverID = -1;
     public string address;
     public bool initialized = false;
-    public int port = 7777;
+    public int port = 8888;
 
 
     //In Game Specific Server Parameters
