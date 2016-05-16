@@ -128,11 +128,18 @@ public class Server : MonoBehaviour {
                     if(playersAvailable.Count > 0)
                     {
                         int pl = playersAvailable[0];
+                        Send("Active:" + pl);
                         gcScript.ActivatePlayer(pl);
                         playersAvailable.Remove(pl);
                         playerID[pl] = connectionId;
                         connectionIDs.Add(connectionId);
                         SendToClient(connectionId, "Player:" + pl);
+                        for (int i = 0; i < 4; i++)
+                        {
+                            if (playerID[i] != pl && playerID[i] != -1)
+                                SendToClient(connectionId, "Active: " + playerID[i]);
+              
+                        }
                         Debug.Log("Server: Player " + pl + " connected!");
                     }
                     
@@ -163,6 +170,7 @@ public class Server : MonoBehaviour {
                 playersAvailable.Add(p);
                 gcScript.DeactivatePlayer(p);
                 playerID[p] = -1;
+                Send("Deactivate:" + p);
 
                 break;
         }

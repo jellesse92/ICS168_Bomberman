@@ -218,7 +218,12 @@ public class Client : MonoBehaviour {
             int.TryParse(msg.Substring(msg.Length - 1), out newPlayer);
             gcScript.ActivatePlayer(newPlayer);
         }
-
+        if(msg.Substring(0, 11) == "Deactivate:")
+        {
+            int newPlayer = -2;
+            int.TryParse(msg.Substring(msg.Length - 1), out newPlayer);
+            gcScript.DeactivatePlayer(player);
+        }
         int.TryParse(msg.Substring(0, 1), out player);
 
         //Ignore the server trying to tell you what you've already done
