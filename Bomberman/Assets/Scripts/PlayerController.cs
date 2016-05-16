@@ -47,6 +47,7 @@ public class PlayerController : MonoBehaviour {
     {
         Respawn();
         gcScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<_GameController>();
+        UpdateScoreDisplay();
     }
 
     void FixedUpdate()
@@ -143,6 +144,11 @@ public class PlayerController : MonoBehaviour {
     public int GetExplosionMulti()
     {
         return explosionMultiplier;
+    }
+
+    public void UpdateScoreDisplay()
+    {
+        scoreText.text = score.ToString();
     }
 
 }

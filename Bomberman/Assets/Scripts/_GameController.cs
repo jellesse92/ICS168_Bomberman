@@ -60,7 +60,9 @@ public class _GameController : MonoBehaviour {
 	{
 		players [player].GetComponent<PlayerController> ().lives--;
 		players [killer].GetComponent<PlayerController> ().score++;
-	}
+        players[killer].GetComponent<PlayerController>().UpdateScoreDisplay();
+
+    }
 
     public Vector2 GetPlayerPos(int player)
     {
