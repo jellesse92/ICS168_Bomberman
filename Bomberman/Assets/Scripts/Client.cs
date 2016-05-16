@@ -262,5 +262,15 @@ public class Client : MonoBehaviour {
 
         }
     }
+
+    public void Disconnect()
+    {
+        byte error;
+        NetworkTransport.Disconnect(_hostID, _connID, out error);
+        if (error != (byte)NetworkError.Ok)
+        {
+            Debug.Log(error.ToString());
+        }
+    }
 }
 

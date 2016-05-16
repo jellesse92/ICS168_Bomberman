@@ -308,4 +308,14 @@ public class Server : MonoBehaviour {
 		Send ("Scores:" + result);
 
 	}
+
+    public void Disconnect()
+    {
+        byte error;
+        NetworkTransport.DisconnectNetworkHost(_serverID, out error);
+        if (error != (byte)NetworkError.Ok)
+        {
+            Debug.Log(error.ToString());
+        }
+    }
 }
