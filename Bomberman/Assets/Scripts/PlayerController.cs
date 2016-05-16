@@ -62,8 +62,6 @@ public class PlayerController : MonoBehaviour {
             GetComponent<Animator>().SetInteger("X", (int)h);
             GetComponent<Animator>().SetInteger("Y", (int)v);
         }
-        scoreText.text = score.ToString();
-
     }
 
     //Respawns player at free spawn location
@@ -146,4 +144,5 @@ public class PlayerController : MonoBehaviour {
     {
         return explosionMultiplier;
     }
+
 }
