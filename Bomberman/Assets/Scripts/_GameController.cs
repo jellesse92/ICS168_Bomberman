@@ -6,16 +6,20 @@ public class _GameController : MonoBehaviour {
     public GameObject[] players;    //Tracks player game objects
     int controlledPlayer = -1;                                  //Keeps track of what player current client is
 
+    GameObject networkObject;
+    bool isHost = false;
 
 	// Use this for initialization
 	void Start () {
-        
-        if ( GameObject.Find("Network_Controller").GetComponent<Host>().isHost  == true)
+        networkObject = GameObject.Find("Network_Controller");
+        isHost = networkObject.GetComponent<Host>().isHost;
+
+        if (isHost)
         {
-            GameObject.Find("Network_Controller").GetComponent<Server>().CreateGame();
+            networkObject.GetComponent<Server>().CreateGame();
         } else
         {
-            GameObject.Find("Network_Controller").GetComponent<Client>().JoinGame();
+            networkObject.GetComponent<Client>().JoinGame();
         }
     }
 
@@ -74,4 +78,12 @@ public class _GameController : MonoBehaviour {
     {
         return controlledPlayer;
     }
+
+    public void ReportDeath(int killer)
+    {
+        if (!isHost)
+            networkObject.GetComponent<Client>().SendDeath(killer);
+    }
+
+
 }
