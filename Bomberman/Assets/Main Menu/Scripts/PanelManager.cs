@@ -127,7 +127,7 @@ public class PanelManager : MonoBehaviour {
 		m_Open = null;
 	}
 
-	public void CreateAccount()
+	public void CreateAccount(GameObject error)
 	{
 		username = inputUsername.text;
 		password = inputPassword.text;
@@ -148,17 +148,18 @@ public class PanelManager : MonoBehaviour {
 			//Connect to server. Ask if okay.
 			loggedIn = true;
 			Debug.Log (loggedIn);
+			error.SetActive(false);
 			CloseCurrent();
 		} 
 		else 
 		{
-			// Give user an Error Message explaining to them how to properly create an account.
+			error.SetActive(true);
 		}
 	}
 
 
     
-	public void LogIn()
+	public void LogIn(GameObject error)
 	{
 		password = loginUsername.text;
 		username = loginPassword.text;
@@ -174,8 +175,14 @@ public class PanelManager : MonoBehaviour {
 			//Connect to server. Ask if okay.
 			loggedIn = true;
 			Debug.Log (loggedIn);
+			error.SetActive(false);
 			CloseCurrent ();
 		}
+		else 
+		{
+			error.SetActive(true);
+		}
+
 	}
 
 	public void OpenIfLoggedIn (Animator anim)
