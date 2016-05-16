@@ -7,8 +7,7 @@ public class Host : MonoBehaviour {
     public bool isHost = false;
 	// Use this for initialization
 	void Start () {
-        cl = GameObject.Find("Network_Controller").GetComponent<Client>();
-        sv = GameObject.Find("Network_Controller").GetComponent<Server>();
+       
 	}
 	
 	// Update is called once per frame
@@ -22,6 +21,13 @@ public class Host : MonoBehaviour {
     
     public void disconnect()
     {
+        cl = GameObject.Find("Network_Controller").GetComponent<Client>();
+        sv = GameObject.Find("Network_Controller").GetComponent<Server>();
+
+        //
+        //Call Disconnect Message Here
+        //
+
         if (isHost)
         {
             sv.Disconnect();
