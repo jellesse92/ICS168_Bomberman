@@ -59,9 +59,9 @@ public class _GameController : MonoBehaviour {
 	public void UpdateScores(int player, int killer)
 	{
 		players [player].GetComponent<PlayerController> ().lives--;
-		players [killer].GetComponent<PlayerController> ().score++;
+        if(killer != player)
+		    players [killer].GetComponent<PlayerController> ().score++;
         players[killer].GetComponent<PlayerController>().UpdateScoreDisplay();
-
     }
 
     public Vector2 GetPlayerPos(int player)
