@@ -282,9 +282,9 @@ public class Server : MonoBehaviour {
         }
 
 		//Death and Score update
-		if (msg.Substring(0,4) == "Death") {
+		if (msg.Substring(0,5) == "Death") {
             int temp = -1;
-            int.TryParse(msg.Substring(5, 2), out temp);
+            int.TryParse(msg.Substring(6, 1), out temp);
 			gcScript.UpdateScores(playerID[clientId], temp);
             scoreChanged = true;
 		}
