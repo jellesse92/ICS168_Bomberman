@@ -138,7 +138,6 @@ public class Server : MonoBehaviour {
                         {
                             if (playerID[i] != pl && playerID[i] != -1)
                                 SendToClient(connectionId, "Active: " + playerID[i]);
-              
                         }
                         Debug.Log("Server: Player " + pl + " connected!");
                     }

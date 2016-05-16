@@ -212,13 +212,13 @@ public class Client : MonoBehaviour {
             return;
         }
 
-        if(msg.Substring(0,7) == "Active:")
+        if(msg.Substring(0, msg.Length - 1) == "Active:")
         {
             int newPlayer = 0;
             int.TryParse(msg.Substring(msg.Length - 1), out newPlayer);
             gcScript.ActivatePlayer(newPlayer);
         }
-        if(msg.Substring(0, 11) == "Deactivate:")
+        if(msg.Substring(0, msg.Length - 1) == "Deactivate:")
         {
             int newPlayer = -2;
             int.TryParse(msg.Substring(msg.Length - 1), out newPlayer);
