@@ -131,7 +131,6 @@ public class Server : MonoBehaviour {
                         playerID[pl] = connectionId;
                         connectionIDs.Add(connectionId);
                         SendToClient(connectionId, "Player:" + pl);
-                        Send("Activate:" + pl);
                         Debug.Log("Server: Player " + pl + " connected!");
                     }
                     
