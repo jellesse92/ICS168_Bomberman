@@ -24,7 +24,9 @@ public class Server : MonoBehaviour {
     public bool gameStarted = false;
     List<int> playersAvailable = new List<int>(new int[] { 1, 2, 3 });
     List<int> playerID = new List<int>(new int[] { 0,-1,-1,-1 });
-    _GameController gcScript;                
+    _GameController gcScript;
+
+    bool scoreChanged = false;  
 
 
     // Use this for initialization
@@ -169,7 +171,14 @@ public class Server : MonoBehaviour {
     void FixedUpdate()
     {
         if (gameStarted)
+        {
             Send(CurrentGameState());
+            if (scoreChanged)
+            {
+                SendDeathEvent();
+                scoreChanged = false;
+            }
+        }
     }
 
     // Update is called once per frame
@@ -269,7 +278,7 @@ public class Server : MonoBehaviour {
             int temp = -1;
             int.TryParse(msg.Substring(5, 2), out temp);
 			gcScript.UpdateScores(playerID[clientId], temp);
-
+            scoreChanged = true;
 		}
 
     }
@@ -298,7 +307,7 @@ public class Server : MonoBehaviour {
         Debug.Log("Sending Bomb");
         Send(player + ":" + "dropBomb");
     }
-	public void SendDeathEvent(int player)
+	public void SendDeathEvent()
 	{
         string result = "Scores";
 		Debug.Log ("Sending Death");
