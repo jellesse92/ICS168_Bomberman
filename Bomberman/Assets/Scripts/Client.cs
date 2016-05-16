@@ -239,6 +239,7 @@ public class Client : MonoBehaviour {
 			for(int i = 0; i < gcScript.players.Length; i++){
 				int score = gcScript.players[i].GetComponent<PlayerController>().score;
 				int.TryParse (temp[i], out score);
+                Debug.Log("TEMP: " + temp[i] + "= Score: " + score);
 				gcScript.players[i].GetComponent<PlayerController>().score = score;
 			}
 		}
