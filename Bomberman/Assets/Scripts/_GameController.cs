@@ -38,7 +38,6 @@ public class _GameController : MonoBehaviour {
     //Sets which player is controlled by client
     public void SetPlayer(int n)
     {
-        Debug.Log("Setting Player: " + n);
         ActivatePlayer(n);
         players[n].GetComponent<PlayerController>().clientControlled = true;
 

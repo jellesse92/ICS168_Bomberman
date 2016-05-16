@@ -12,7 +12,7 @@ public class Explosion : MonoBehaviour {
             Destroy(co.gameObject);
             if(co.gameObject.tag == "Monster") {
                 Debug.Log("Player " + player + " Scored!");
-                GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().PlayerScored(player);
+                //GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().PlayerScored(player);
 
             }
         }
