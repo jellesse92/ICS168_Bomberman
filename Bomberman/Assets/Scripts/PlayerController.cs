@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour {
     public GameObject spawnLocation;                                        //Location player set to spawn at
 
     //EXTERNAL SCRIPTS
-    GameController gcScript;                                                //For repeated access of game controller script
+    _GameController gcScript;                                                //For repeated access of game controller script
 
     public int getBombs()
     {
@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviour {
     void Awake()
     {
         Respawn();
-        gcScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+        gcScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<_GameController>();
     }
 
     void FixedUpdate()
@@ -93,6 +93,7 @@ public class PlayerController : MonoBehaviour {
         if (obj.tag == "Explosion" && obj.transform.parent.GetComponent<ExplosionScript>().player != -1)
         {
             Damage();
+            gcScript.ReportDeath(obj.transform.parent.GetComponent<ExplosionScript>().player);
             Debug.Log("Died to Player: " + obj.transform.parent.GetComponent<ExplosionScript>().player);
         }
     }
