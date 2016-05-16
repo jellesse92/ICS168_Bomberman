@@ -22,7 +22,6 @@ public class BombDrop : MonoBehaviour {
             }
             else                                                //Else player is a client
             {
-                Debug.Log(GetComponent<PlayerController>().player);
                 networkObject.GetComponent<Client>().SendBombDrop();
             }
         }
