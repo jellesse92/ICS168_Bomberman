@@ -314,6 +314,7 @@ public class Server : MonoBehaviour {
 		foreach(GameObject pScore in gcScript.players){
             result += (":" + pScore.GetComponent<PlayerController>().score);
 		}
+        Debug.Log("SERVER_SCORES: " + result);
 		Send ("Scores:" + result);
 
 	}
