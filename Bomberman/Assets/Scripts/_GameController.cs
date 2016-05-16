@@ -82,7 +82,9 @@ public class _GameController : MonoBehaviour {
     public void ReportDeath(int killer)
     {
         if (!isHost)
-            networkObject.GetComponent<Client>().SendDeath(killer-1);
+            networkObject.GetComponent<Client>().SendDeath(killer - 1);
+        else
+            UpdateScores(0, killer-1);
     }
 
 
