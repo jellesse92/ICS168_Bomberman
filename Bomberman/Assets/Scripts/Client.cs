@@ -220,9 +220,11 @@ public class Client : MonoBehaviour {
         }
         if(msg.Substring(0, msg.Length - 1) == "Deactivate:")
         {
-            int newPlayer = -2;
+            int newPlayer = 0;
             int.TryParse(msg.Substring(msg.Length - 1), out newPlayer);
-            gcScript.DeactivatePlayer(player);
+            Debug.Log("Player: " + player);
+            Debug.Log(msg);
+            gcScript.DeactivatePlayer(newPlayer);
         }
         int.TryParse(msg.Substring(0, 1), out player);
 
