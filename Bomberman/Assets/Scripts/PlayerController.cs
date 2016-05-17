@@ -175,6 +175,7 @@ public class PlayerController : MonoBehaviour {
 
     public void UpdatePosition(float x, float y)
     {
+        
         newPosition = new Vector2(x, y);
         if(Vector2.Distance(newPosition, lastPosition) > ALLOWED_DISTANCE)
         {
@@ -182,6 +183,7 @@ public class PlayerController : MonoBehaviour {
             StartCoroutine("ActivateLagParticle");
         }
         lastPosition = new Vector2(x, y);
+        transform.position = lastPosition;
         
     }
 

@@ -47,7 +47,8 @@ public class _GameController : MonoBehaviour {
     //Updates uncontrolled player positions
     public void UpdatePlayerPosition(int player, float x, float y)
     {
-        players[player].GetComponent<PlayerController>().UpdatePosition(x, y);
+        if(players[player].activeSelf)
+            players[player].GetComponent<PlayerController>().UpdatePosition(x, y);
     }
 
     //Update Bomb Placement for uncontrolled player
