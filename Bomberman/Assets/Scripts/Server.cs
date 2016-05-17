@@ -137,7 +137,7 @@ public class Server : MonoBehaviour {
                         for (int i = 0; i < 4; i++)
                         {
                             if (playerID[i] != pl && playerID[i] != -1)
-                                SendToClient(connectionId, "Active: " + playerID[i]);
+                                SendToClient(connectionId, "Active:" + playerID[i]);
                         }
                         Debug.Log("Server: Player " + pl + " connected!");
                     }
@@ -170,7 +170,7 @@ public class Server : MonoBehaviour {
                 gcScript.DeactivatePlayer(p);
                 playerID[p] = -1;
                 Send("Deactivate:" + p);
-
+                Debug.Log("Deactivating Player : " + p);
                 break;
         }
     }
