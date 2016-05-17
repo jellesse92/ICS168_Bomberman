@@ -4,6 +4,9 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
 
+    //LATENCY EFFECT
+    const float ALLOWED_DISTANCE = 1.5f;        //Radius from original position allowed before lag effect displays
+
     //TEMPORARY FUNCTIONALITY
     public int lives = 3;              //Amount of lives player has
     public int score = 0;       //Player's score 
@@ -53,6 +56,7 @@ public class PlayerController : MonoBehaviour {
     {
         invincible = false;
         Respawn();
+        transform.GetChild(0).gameObject.SetActive(false);
         gcScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<_GameController>();
         UpdateScoreDisplay();
     }
@@ -165,5 +169,12 @@ public class PlayerController : MonoBehaviour {
         yield return new WaitForSeconds(INVINC_TIME);
         invincible = false;
     }
+
+    void UpdatePosition()
+    {
+
+    }
+
+    
 
 }
