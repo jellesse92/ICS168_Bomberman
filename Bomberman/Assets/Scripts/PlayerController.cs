@@ -12,20 +12,26 @@ public class PlayerController : MonoBehaviour {
     //PLAYER DEFAULT STATS
     const float POWER_UP_TIME = 5.0f;
     const float DEFAULT_SPEED = 6f;
+    const float INVINC_TIME = 3f;
     const int DEFAULT_EXPLOSION_MULTIPLIER = 0;
     const int DEFAULT_BOMB_AMOUNT = 1;
 
+    //GUI and Sound
 	public AudioClip playerHitSound;
     public Text scoreText;
 
+    //PLAYER INFORMATION
     public bool clientControlled = false; 
     public int player = -1;
 
     //PLAYER STATS
     float speed = DEFAULT_SPEED;                                            //Speed player moves at
+    bool invincible = false;                                                //Player invincibility
     int explosionMultiplier = DEFAULT_EXPLOSION_MULTIPLIER;                 //For increasing explosion size
     int maxBombsAllowed = DEFAULT_BOMB_AMOUNT;                              //Max amount of bombs player can place 
     public GameObject spawnLocation;                                        //Location player set to spawn at
+
+
 
     //EXTERNAL SCRIPTS
     _GameController gcScript;                                                //For repeated access of game controller script
@@ -45,8 +51,10 @@ public class PlayerController : MonoBehaviour {
 
     void Awake()
     {
+        invincible = false;
         Respawn();
         gcScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<_GameController>();
+        UpdateScoreDisplay();
     }
 
     void FixedUpdate()
@@ -73,6 +81,7 @@ public class PlayerController : MonoBehaviour {
     public void Damage()
     {
 		AudioSource.PlayClipAtPoint (playerHitSound, transform.position);
+        StartCoroutine("StartInvincibility");
         Respawn();
 
         //Restore when activating mode with Lives
@@ -88,7 +97,7 @@ public class PlayerController : MonoBehaviour {
 
     void OnParticleCollision(GameObject obj)
     {
-        if (obj.tag == "Explosion" && obj.transform.parent.GetComponent<ExplosionScript>().player != -1)
+        if (!invincible && obj.tag == "Explosion" && obj.transform.parent.GetComponent<ExplosionScript>().player != -1)
         {
             Damage();
             gcScript.ReportDeath(obj.transform.parent.GetComponent<ExplosionScript>().player);
@@ -143,6 +152,18 @@ public class PlayerController : MonoBehaviour {
     public int GetExplosionMulti()
     {
         return explosionMultiplier;
+    }
+
+    public void UpdateScoreDisplay()
+    {
+        scoreText.text = score.ToString();
+    }
+
+    IEnumerator StartInvincibility()
+    {
+        invincible = true;
+        yield return new WaitForSeconds(INVINC_TIME);
+        invincible = false;
     }
 
 }

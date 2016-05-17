@@ -317,11 +317,10 @@ public class Server : MonoBehaviour {
 	public void SendDeathEvent()
 	{
         string result = "Scores";
-		Debug.Log ("Sending Death");
 		foreach(GameObject pScore in gcScript.players){
             result += (":" + pScore.GetComponent<PlayerController>().score);
 		}
-		Send ("Scores:" + result);
+		Send (result);
 
 	}
 

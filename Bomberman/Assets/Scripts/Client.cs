@@ -240,12 +240,13 @@ public class Client : MonoBehaviour {
 
 		//Someone died
 		if (msg.Substring (0,7) == "Scores:") {
-			string[] temp = msg.Substring (7).Split(new[] { ':', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+			string[] temp = msg.Substring(7).Split(new[] { ':', ' ' }, StringSplitOptions.RemoveEmptyEntries);
 			for(int i = 0; i < gcScript.players.Length; i++){
 				int.TryParse (temp[i], out gcScript.players[i].GetComponent<PlayerController>().score);
-                Debug.Log("TEMP: " + temp[i] + "= Score: " + gcScript.players[i].GetComponent<PlayerController>().score);
-                gcScript.players[i].GetComponent<PlayerController>().scoreText.text = gcScript.players[i].GetComponent<PlayerController>().score.ToString();
-			}
+                Debug.Log("PLAYER: " + (i + 1) + "TEMP: " + temp[i] + "= Score: " + gcScript.players[i].GetComponent<PlayerController>().score);
+                gcScript.players[i].GetComponent<PlayerController>().UpdateScoreDisplay();
+
+            }
 		}
 
         //Server sending everyone's information

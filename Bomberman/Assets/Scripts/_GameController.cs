@@ -59,8 +59,10 @@ public class _GameController : MonoBehaviour {
 	public void UpdateScores(int player, int killer)
 	{
 		players [player].GetComponent<PlayerController> ().lives--;
-		players [killer].GetComponent<PlayerController> ().score++;
-	}
+        if(killer != player)
+		    players [killer].GetComponent<PlayerController> ().score++;
+        players[killer].GetComponent<PlayerController>().UpdateScoreDisplay();
+    }
 
     public Vector2 GetPlayerPos(int player)
     {
@@ -80,7 +82,9 @@ public class _GameController : MonoBehaviour {
     public void ReportDeath(int killer)
     {
         if (!isHost)
-            networkObject.GetComponent<Client>().SendDeath(killer);
+            networkObject.GetComponent<Client>().SendDeath(killer - 1);
+        else
+            UpdateScores(0, killer-1);
     }
 
 
