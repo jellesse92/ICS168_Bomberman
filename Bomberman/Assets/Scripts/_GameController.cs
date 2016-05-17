@@ -60,6 +60,11 @@ public class _GameController : MonoBehaviour {
 	public void UpdateScores(int player, int killer)
 	{
 		players [player].GetComponent<PlayerController> ().lives--;
+        if (player == controlledPlayer && players[player].GetComponent<PlayerController>().lives <= 0)
+        {
+            gameObject.GetComponent<GameEndUIController>().ActivateLoseScreen();
+            DeactivatePlayer(player);
+        }
         if(killer != player)
 		    players [killer].GetComponent<PlayerController> ().score++;
         players[killer].GetComponent<PlayerController>().UpdateScoreDisplay();
@@ -86,6 +91,11 @@ public class _GameController : MonoBehaviour {
             networkObject.GetComponent<Client>().SendDeath(killer - 1);
         else
             UpdateScores(0, killer-1);
+    }
+
+    public bool isHosting()
+    {
+        return isHost;
     }
 
 

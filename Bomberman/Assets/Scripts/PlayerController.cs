@@ -202,6 +202,11 @@ public class PlayerController : MonoBehaviour {
         transform.GetChild(0).gameObject.SetActive(false);
     }
 
+    public void ActivateLoseScreen()
+    {
+
+    }
+
     
 
 }
