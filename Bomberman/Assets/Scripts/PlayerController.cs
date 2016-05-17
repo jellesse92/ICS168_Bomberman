@@ -6,6 +6,8 @@ public class PlayerController : MonoBehaviour {
 
     //LATENCY EFFECT
     const float ALLOWED_DISTANCE = 1.5f;        //Radius from original position allowed before lag effect displays
+    Vector2 lastPosition;                       //Last position recorded for non-client controlled player
+    Vector2 newPosition;                        //Position to move towards 
 
     //TEMPORARY FUNCTIONALITY
     public int lives = 3;              //Amount of lives player has
@@ -56,6 +58,7 @@ public class PlayerController : MonoBehaviour {
     {
         invincible = false;
         Respawn();
+        lastPosition = new Vector2(transform.position.x, transform.position.y);
         transform.GetChild(0).gameObject.SetActive(false);
         gcScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<_GameController>();
         UpdateScoreDisplay();
@@ -170,9 +173,31 @@ public class PlayerController : MonoBehaviour {
         invincible = false;
     }
 
-    void UpdatePosition()
+    public void UpdatePosition(float x, float y)
     {
+        newPosition = new Vector2(x, y);
+        if(Vector2.Distance(newPosition, lastPosition) > ALLOWED_DISTANCE)
+        {
+            StopCoroutine("ActivateLagParticle");
+            StartCoroutine("ActivateLagParticle");
+        }
+        lastPosition = new Vector2(x, y);
+        
+    }
 
+    IEnumerator MoveToNewPosition()
+    {
+        transform.position = Vector2.Lerp(lastPosition, newPosition, .5f);
+        yield return new WaitForSeconds(.1f);
+        transform.position = Vector2.Lerp(lastPosition, newPosition, 1f);
+
+    }
+
+    IEnumerator ActivateLagParticle()
+    {
+        transform.GetChild(0).gameObject.SetActive(true);
+        yield return new WaitForSeconds(2f);
+        transform.GetChild(0).gameObject.SetActive(false);
     }
 
     
