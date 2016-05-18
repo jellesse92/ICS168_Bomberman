@@ -107,8 +107,7 @@ public class PlayerController : MonoBehaviour {
         if (!invincible && obj.tag == "Explosion" && obj.transform.parent.GetComponent<ExplosionScript>().player != -1)
         {
             Damage();
-            gcScript.ReportDeath(obj.transform.parent.GetComponent<ExplosionScript>().player);
-            Debug.Log("Died to Player: " + obj.transform.parent.GetComponent<ExplosionScript>().player);
+            gcScript.ReportDeath(player, obj.transform.parent.GetComponent<ExplosionScript>().player);
         }
     }
 

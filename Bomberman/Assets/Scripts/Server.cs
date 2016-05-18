@@ -333,4 +333,9 @@ public class Server : MonoBehaviour {
             Debug.Log(error.ToString());
         }
     }
+
+    public void SetScoreChanged()
+    {
+        scoreChanged = true;
+    }
 }
