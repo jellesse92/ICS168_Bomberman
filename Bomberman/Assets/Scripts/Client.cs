@@ -26,6 +26,9 @@ public class Client : MonoBehaviour {
     GameEndUIController guiScript;
     bool gameStarted = true;
 
+    //Syncing
+    float timeToReport;
+
     void Start () {
         // text_area = GameObject.Find("TextAA");
 
@@ -177,6 +180,7 @@ public class Client : MonoBehaviour {
     {
         if (gameStarted && connectedToServer)
         {
+            timeToReport = Time.time;
             Send(GetGameData());
         }
     }
@@ -185,7 +189,7 @@ public class Client : MonoBehaviour {
     string GetGameData()
     {
         string data = "";
-        data += "Pos:" + gcScript.GetPlayerPos(gcScript.ControlledPlayer()).x + "," + gcScript.GetPlayerPos(gcScript.ControlledPlayer()).y;
+        data += "Pos:" + gcScript.GetPlayerPos(gcScript.ControlledPlayer()).x + "," + gcScript.GetPlayerPos(gcScript.ControlledPlayer()).y + "," + timeToReport;
         return data;
     }
 

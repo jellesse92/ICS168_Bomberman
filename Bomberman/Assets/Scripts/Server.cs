@@ -24,6 +24,7 @@ public class Server : MonoBehaviour {
     public bool gameStarted = false;
     List<int> playersAvailable = new List<int>(new int[] { 1, 2, 3 });
     List<int> playerID = new List<int>(new int[] { 0,-1,-1,-1 });
+    float[] lastTimeRecorded = { -1f, -1f, -1f, -1f };
     _GameController gcScript;
 
     bool scoreChanged = false;  
@@ -111,7 +112,7 @@ public class Server : MonoBehaviour {
         bf.Serialize(stream, message);
 
         NetworkTransport.Send(_serverID, clientID, _channelReliable, buffer, (int)stream.Position, out error);
-        if (error > 0) { Debug.Log("Error (" + ((NetworkError)error).ToString() + ") When Sending Message: " + message); }
+        //if (error > 0) { Debug.Log("Error (" + ((NetworkError)error).ToString() + ") When Sending Message: " + message); }
     }
 
     //Switch statement to go through if the game has started
@@ -261,12 +262,20 @@ public class Server : MonoBehaviour {
         
         //Updates player locations
         if(msg.Substring(0,4) == "Pos:"){
-            float x, y;
+            float x, y, time;
             string[] temp = msg.Substring(4).Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
             float.TryParse(temp[0],out x);
             float.TryParse(temp[1], out y);
+            float.TryParse(temp[2], out time);
 
-            gcScript.UpdatePlayerPosition(playerID.IndexOf(clientId), x, y);
+            int pID = playerID.IndexOf(clientId);
+
+            if(lastTimeRecorded[pID] < time)
+            {
+                gcScript.UpdatePlayerPosition(pID, x, y);
+                lastTimeRecorded[pID] = time;
+            }
+
         } else
         {
             Debug.Log(msg);

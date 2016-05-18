@@ -59,7 +59,7 @@ public class _GameController : MonoBehaviour {
 
 	public void UpdateScores(int player, int killer)
 	{
-		players [player].GetComponent<PlayerController> ().lives--;
+		//players [player].GetComponent<PlayerController> ().lives--;
         if (player == controlledPlayer && players[player].GetComponent<PlayerController>().lives <= 0)
         {
             gameObject.GetComponent<GameEndUIController>().ActivateLoseScreen();

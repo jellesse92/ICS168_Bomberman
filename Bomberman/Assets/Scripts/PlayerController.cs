@@ -89,7 +89,9 @@ public class PlayerController : MonoBehaviour {
     {
 		AudioSource.PlayClipAtPoint (playerHitSound, transform.position);
         StartCoroutine("StartInvincibility");
+        lives--;
         Respawn();
+
 
         //Restore when activating mode with Lives
         /*
