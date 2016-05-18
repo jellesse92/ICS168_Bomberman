@@ -27,6 +27,7 @@ public class _GameController : MonoBehaviour {
     public void ActivatePlayer(int num)
     {
         players[num].SetActive(true);
+        StartCoroutine(players[num].GetComponent<PlayerController>().RespawnWait());
     }
 
     //Deactivates disconnected player

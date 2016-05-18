@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour {
     int maxBombsAllowed = DEFAULT_BOMB_AMOUNT;                              //Max amount of bombs player can place 
     public GameObject spawnLocation;                                        //Location player set to spawn at
 
+    bool respawning = false;
 
 
     //EXTERNAL SCRIPTS
@@ -82,6 +83,7 @@ public class PlayerController : MonoBehaviour {
     //Respawns player at free spawn location
     void Respawn()
     {
+        StartCoroutine("RespawnWait");
         transform.position = new Vector2(spawnLocation.transform.position.x, spawnLocation.transform.position.y);
     }
 
@@ -176,23 +178,57 @@ public class PlayerController : MonoBehaviour {
 
     public void UpdatePosition(float x, float y)
     {
-        
+        lastPosition = new Vector2(transform.position.x, transform.position.y);
         newPosition = new Vector2(x, y);
-        if(Vector2.Distance(newPosition, lastPosition) > ALLOWED_DISTANCE)
+        StopCoroutine("MoveToNewPosition");
+
+        if(!respawning && Vector2.Distance(newPosition, lastPosition) > ALLOWED_DISTANCE)
         {
             StopCoroutine("ActivateLagParticle");
             StartCoroutine("ActivateLagParticle");
+            StartCoroutine("MoveToNewPosition");
         }
-        lastPosition = new Vector2(x, y);
-        transform.position = lastPosition;
+        else
+        {
+            transform.position = newPosition;
+        }
+
         
     }
 
     IEnumerator MoveToNewPosition()
     {
-        transform.position = Vector2.Lerp(lastPosition, newPosition, .5f);
+        lastPosition = new Vector2(transform.position.x, transform.position.y);
+        transform.position = (newPosition - lastPosition).normalized + lastPosition;
         yield return new WaitForSeconds(.1f);
-        transform.position = Vector2.Lerp(lastPosition, newPosition, 1f);
+        lastPosition = new Vector2(transform.position.x, transform.position.y);
+        transform.position = (newPosition - lastPosition).normalized + lastPosition;
+        yield return new WaitForSeconds(.1f);
+        lastPosition = new Vector2(transform.position.x, transform.position.y);
+        transform.position = (newPosition - lastPosition).normalized + lastPosition;
+        yield return new WaitForSeconds(.1f);
+        lastPosition = new Vector2(transform.position.x, transform.position.y);
+        transform.position = (newPosition - lastPosition).normalized + lastPosition;
+        yield return new WaitForSeconds(.1f);
+        lastPosition = new Vector2(transform.position.x, transform.position.y);
+        transform.position = (newPosition - lastPosition).normalized + lastPosition;
+        yield return new WaitForSeconds(.1f);
+        lastPosition = new Vector2(transform.position.x, transform.position.y);
+        transform.position = (newPosition - lastPosition).normalized + lastPosition;
+        yield return new WaitForSeconds(.1f);
+        lastPosition = new Vector2(transform.position.x, transform.position.y);
+        transform.position = (newPosition - lastPosition).normalized + lastPosition;
+        yield return new WaitForSeconds(.1f);
+        lastPosition = new Vector2(transform.position.x, transform.position.y);
+        transform.position = (newPosition - lastPosition).normalized + lastPosition;
+        yield return new WaitForSeconds(.1f);
+        lastPosition = new Vector2(transform.position.x, transform.position.y);
+        transform.position = (newPosition - lastPosition).normalized + lastPosition;
+        yield return new WaitForSeconds(.1f);
+
+
+        lastPosition = new Vector2(transform.position.x, transform.position.y);
+        transform.position = (newPosition - lastPosition).normalized + lastPosition;
 
     }
 
@@ -201,6 +237,14 @@ public class PlayerController : MonoBehaviour {
         transform.GetChild(0).gameObject.SetActive(true);
         yield return new WaitForSeconds(2f);
         transform.GetChild(0).gameObject.SetActive(false);
+    }
+
+    //Don't attempt to interpolate while spawning
+    public IEnumerator RespawnWait()
+    {
+        respawning = true;
+        yield return new WaitForSeconds(5f);
+        respawning = false;
     }
 
     public void ActivateLoseScreen()

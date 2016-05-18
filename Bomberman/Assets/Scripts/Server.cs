@@ -181,11 +181,8 @@ public class Server : MonoBehaviour {
         if (gameStarted)
         {
             Send(CurrentGameState());
-            if (scoreChanged)
-            {
-                SendDeathEvent();
-                scoreChanged = false;
-            }
+            SendDeathEvent();
+
         }
     }
 
