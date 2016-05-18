@@ -131,6 +131,7 @@ public class Server : MonoBehaviour {
                         int pl = playersAvailable[0];
                         Send("Active:" + pl);
                         gcScript.ActivatePlayer(pl);
+                        gcScript.PlayerJoined();
                         playersAvailable.Remove(pl);
                         playerID[pl] = connectionId;
                         connectionIDs.Add(connectionId);

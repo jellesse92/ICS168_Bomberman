@@ -25,6 +25,18 @@ public class _GameController : MonoBehaviour {
         }
     }
 
+    void FixedUpdate()
+    {
+        if(GetActivePlayers() == 1)
+        {
+            if (isHost && playersJoined)
+                gameObject.GetComponent<GameEndUIController>().ActivateWinScreen();
+            else if (players[controlledPlayer].activeSelf && !isHost)
+                gameObject.GetComponent<GameEndUIController>().ActivateWinScreen();
+        }
+        
+    }
+
     //Activates given player number
     public void ActivatePlayer(int num)
     {
