@@ -6,13 +6,33 @@ public class GameEndUIController : MonoBehaviour {
 
     public GameObject GameEndPanel;
     public Text GameEndText;
+    public Text GameEndSubText;
     public GameObject LoseScreen;
+    public GameObject DisconnectScreen;
+    public GameObject WinScreen;
 
     public void ActivateLoseScreen()
     {
         GameEndPanel.SetActive(true);
-        GameEndText.text = "You raging now?";
+        GameEndText.text = "GAME OVER";
+        GameEndSubText.text = "You raging now?";
         LoseScreen.SetActive(true);
+    }
+
+    public void ActivateDisconnectScreen()
+    {
+        GameEndPanel.SetActive(true);
+        GameEndText.text = "DISCONNECTED";
+        GameEndSubText.text = "You raging now?";
+        DisconnectScreen.SetActive(true);
+    }
+
+    public void ActivateWinScreen()
+    {
+        GameEndPanel.SetActive(true);
+        GameEndText.text = "YOU WIN";
+        GameEndSubText.text = "You're the last ham standing!";
+        WinScreen.SetActive(true);
     }
 
     public void DeactivatePanel()
@@ -22,9 +42,9 @@ public class GameEndUIController : MonoBehaviour {
 
     public void ReturnToMain()
     {
-        if (!gameObject.GetComponent<_GameController>().isHosting())
+        if (!gameObject.GetComponent<_GameController>().isHosting() || gameObject.GetComponent<_GameController>().GetActivePlayers() <= 1)
             Application.LoadLevel(0);
         else
-            GameEndText.text = "You're the host. You're not going anywhere that easily.";
+            GameEndSubText.text = "You're the host. You're not going anywhere that easily.";
     }
 }

@@ -23,6 +23,7 @@ public class Client : MonoBehaviour {
 
     //In-Game Related Parameters
     _GameController gcScript;
+    GameEndUIController guiScript;
     bool gameStarted = true;
 
     void Start () {
@@ -83,6 +84,7 @@ public class Client : MonoBehaviour {
             }
             connected = true;
             gcScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<_GameController>();
+            guiScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameEndUIController>();
 
         }
         else {
@@ -158,9 +160,11 @@ public class Client : MonoBehaviour {
                         if (connectionId == _connID)
                         {
                             Debug.Log("Client: Disconnected from server!");
-                        connected = false;
+                            connected = false;
                             // Flag to let client know it can no longer send data
                             gameStarted = false;
+                            guiScript.ActivateDisconnectScreen();
+
                         }
                         break;
                 }

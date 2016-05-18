@@ -65,6 +65,7 @@ public class _GameController : MonoBehaviour {
             gameObject.GetComponent<GameEndUIController>().ActivateLoseScreen();
             DeactivatePlayer(player);
         }
+
         if(killer != player)
 		    players [killer].GetComponent<PlayerController> ().score++;
         players[killer].GetComponent<PlayerController>().UpdateScoreDisplay();
@@ -103,6 +104,17 @@ public class _GameController : MonoBehaviour {
     public bool isHosting()
     {
         return isHost;
+    }
+
+    public int  GetActivePlayers()
+    {
+        int active = 0;
+        foreach (GameObject p in players)
+        {
+            if (p.activeSelf)
+                active++;
+        }
+        return active;
     }
 
 
