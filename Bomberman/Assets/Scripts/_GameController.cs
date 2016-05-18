@@ -29,12 +29,16 @@ public class _GameController : MonoBehaviour {
     {
         if(GetActivePlayers() == 1)
         {
-            if (isHost && playersJoined && players[controlledPlayer].activeSelf)
-                gameObject.GetComponent<GameEndUIController>().ActivateWinScreen();
-            else if (!isHost && players[controlledPlayer].activeSelf)
+            if(controlledPlayer != -1)
             {
-                gameObject.GetComponent<GameEndUIController>().ActivateWinScreen();
+                if (isHost && playersJoined && players[controlledPlayer].activeSelf)
+                    gameObject.GetComponent<GameEndUIController>().ActivateWinScreen();
+                else if (!isHost && players[controlledPlayer].activeSelf)
+                {
+                    gameObject.GetComponent<GameEndUIController>().ActivateWinScreen();
+                }
             }
+
                 
         }
         
