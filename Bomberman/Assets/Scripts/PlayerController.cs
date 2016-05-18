@@ -92,7 +92,16 @@ public class PlayerController : MonoBehaviour {
 		AudioSource.PlayClipAtPoint (playerHitSound, transform.position);
         StartCoroutine("StartInvincibility");
         lives--;
-        Respawn();
+        if(lives > 0)
+            Respawn();
+        else
+        {
+            if(player != 1 && clientControlled)
+            {
+                gcScript.ActivateLose(player);
+            }
+            gameObject.SetActive(false);
+        }
 
 
         //Restore when activating mode with Lives
@@ -246,12 +255,5 @@ public class PlayerController : MonoBehaviour {
         yield return new WaitForSeconds(5f);
         respawning = false;
     }
-
-    public void ActivateLoseScreen()
-    {
-
-    }
-
     
-
 }

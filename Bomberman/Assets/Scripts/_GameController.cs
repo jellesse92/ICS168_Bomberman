@@ -5,6 +5,8 @@ public class _GameController : MonoBehaviour {
 
     public GameObject[] players;    //Tracks player game objects
     int controlledPlayer = -1;                                  //Keeps track of what player current client is
+    bool playersJoined = false;
+
 
     GameObject networkObject;
     bool isHost = false;
@@ -118,5 +120,14 @@ public class _GameController : MonoBehaviour {
         return active;
     }
 
+    public void ActivateLose(int p)
+    {
+        gameObject.GetComponent<GameEndUIController>().ActivateLoseScreen();
+        DeactivatePlayer(p);
+    }
 
+    public void PlayerJoined()
+    {
+        playersJoined = true;
+    }
 }
