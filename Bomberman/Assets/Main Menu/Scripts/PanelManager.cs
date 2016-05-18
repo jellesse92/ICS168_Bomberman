@@ -33,10 +33,17 @@ public class PanelManager : MonoBehaviour {
     const string SALT_VALUE = ":123";
 
     private ApplicationManager appManageScript;
+    GameObject playPanel;
 
     void Start()
     {
         appManageScript = GameObject.Find("ApplicationManager").GetComponent<ApplicationManager>();
+
+        playPanel = GameObject.FindGameObjectWithTag("PlayButton");
+        playPanel.transform.GetChild(0).GetComponent<Image>().material.color = Color.grey;
+        playPanel.transform.GetChild(0).GetChild(0).GetComponent<Text>().color = Color.grey;
+        //playPanel.
+
 
 
     }
@@ -83,6 +90,10 @@ public class PanelManager : MonoBehaviour {
 
 	public void OpenPanel (Animator anim)
 	{
+        if (anim.name == "Play" && !loggedIn)
+        {
+            return;
+        }
 		if (m_Open == anim)
 			return;
 
@@ -147,7 +158,10 @@ public class PanelManager : MonoBehaviour {
 		{
 			//Connect to server. Ask if okay.
 			loggedIn = true;
-			Debug.Log (loggedIn);
+            appManageScript.username = username;
+            playPanel.transform.GetChild(0).GetComponent<Image>().material.color = Color.white;
+            playPanel.transform.GetChild(0).GetChild(0).GetComponent<Text>().color = Color.white;
+            Debug.Log (loggedIn);
 			error.SetActive(false);
 			CloseCurrent();
 		} 
@@ -174,7 +188,10 @@ public class PanelManager : MonoBehaviour {
 		{
 			//Connect to server. Ask if okay.
 			loggedIn = true;
-			Debug.Log (loggedIn);
+            appManageScript.username = username;
+            playPanel.transform.GetChild(0).GetComponent<Image>().material.color = Color.white;
+            playPanel.transform.GetChild(0).GetChild(0).GetComponent<Text>().color = Color.white;
+            Debug.Log (loggedIn);
 			error.SetActive(false);
 			CloseCurrent ();
 		}

@@ -57,6 +57,7 @@ public class ApplicationManager : MonoBehaviour {
     public bool connected = false;
     public int port = 7777;
     public string address = "52.26.63.128";
+    public string username = "";
     string _lastSentMsg;
     List<GameInfo> gamesList;
     List<Stats> playerStats; //For Later in the game, get stats for all players.
