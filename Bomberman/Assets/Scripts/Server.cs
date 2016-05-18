@@ -179,7 +179,7 @@ public class Server : MonoBehaviour {
 
     void FixedUpdate()
     {
-        if (gameStarted)
+        if (gameStarted && initialized)
         {
             Send(CurrentGameState());
             SendDeathEvent();
@@ -334,11 +334,15 @@ public class Server : MonoBehaviour {
     public void Disconnect()
     {
         byte error;
+        initialized = false;
+        gameStarted = false;
+        //NetworkTransport.
         NetworkTransport.DisconnectNetworkHost(_serverID, out error);
         if (error != (byte)NetworkError.Ok)
         {
             Debug.Log(error.ToString());
         }
+        
     }
 
     public void SetScoreChanged()

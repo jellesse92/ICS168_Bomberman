@@ -28,16 +28,16 @@ public class Host : MonoBehaviour {
         //Call Disconnect Message Here
         //
 
-        if (isHost)
+        if (sv.initialized)
         {
             sv.Disconnect();
+           
         }
         else
         {
             cl.Disconnect();
         }
 
-        
         Application.LoadLevel(0);
 
     }
