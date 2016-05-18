@@ -90,7 +90,7 @@ public class PanelManager : MonoBehaviour {
 
 	public void OpenPanel (Animator anim)
 	{
-        if (anim.name == "Play" && !loggedIn)
+        if (anim.name == "Play" && appManageScript.logged_in == false)
         {
             return;
         }
@@ -157,7 +157,7 @@ public class PanelManager : MonoBehaviour {
             appManageScript.GetServerResponse(serverMsg).Substring(0, 7) == "SUCCESS")
 		{
 			//Connect to server. Ask if okay.
-			loggedIn = true;
+			appManageScript.logged_in = true;
             appManageScript.username = username;
             playPanel.transform.GetChild(0).GetComponent<Image>().material.color = Color.white;
             playPanel.transform.GetChild(0).GetChild(0).GetComponent<Text>().color = Color.white;
@@ -186,8 +186,8 @@ public class PanelManager : MonoBehaviour {
 
         if (password != "" && appManageScript.GetServerResponse(serverMsg).Substring(0, 7) == "SUCCESS") 
 		{
-			//Connect to server. Ask if okay.
-			loggedIn = true;
+            //Connect to server. Ask if okay.
+            appManageScript.logged_in = true;
             appManageScript.username = username;
             playPanel.transform.GetChild(0).GetComponent<Image>().material.color = Color.white;
             playPanel.transform.GetChild(0).GetChild(0).GetComponent<Text>().color = Color.white;

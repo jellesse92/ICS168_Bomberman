@@ -50,12 +50,13 @@ public class Stats
 }
 public class ApplicationManager : MonoBehaviour {
 
-    bool logged_in = true;
+    public bool logged_in = false;
     bool connectedToServer = false;
     public bool log_in_error = false;
     public bool data_error = false;
     public bool connected = false;
     public int port = 7777;
+    string myip = Network.player.ipAddress;
     public string address = "52.26.63.128";
     public string username = "";
     string _lastSentMsg;
@@ -100,7 +101,9 @@ public class ApplicationManager : MonoBehaviour {
     void Start()
     {
         DontDestroyOnLoad(transform.gameObject);
-        ipText.text = address;
+        myip = Network.player.ipAddress.ToString();
+        ipText.text = myip;
+
 
     }
 
