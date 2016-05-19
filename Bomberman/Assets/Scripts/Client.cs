@@ -128,8 +128,6 @@ public class Client : MonoBehaviour {
             do
             {
                 networkEvent = NetworkTransport.Receive(out recHostId, out connectionId, out channelId, buffer, 1024, out dataSize, out error);
-                //Debugging to check and compare connection ids
-                //if (networkEvent.ToString() != "Nothing") { Debug.Log(networkEvent.ToString() + "   recHostID: " + recHostId.ToString() + "connectionID: " + connectionId.ToString() + "-Client \n"); }
                 switch (networkEvent)
                 {
                     case NetworkEventType.Nothing:
@@ -213,9 +211,7 @@ public class Client : MonoBehaviour {
 
         if (msg.Substring(0, msg.Length - 1) == "Player:")
         {
-            //Debug.Log("got it");
             int.TryParse(msg.Substring(msg.Length - 1), out player);
-            //Debug.Log("Testing: " + player);
             gcScript.SetPlayer(player);
             return;
         }
