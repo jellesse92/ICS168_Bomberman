@@ -27,9 +27,6 @@ public class Server : MonoBehaviour {
     float[] lastTimeRecorded = { -1f, -1f, -1f, -1f };
     _GameController gcScript;
 
-    bool scoreChanged = false;  
-
-
     // Use this for initialization
     void Start () {
 
@@ -292,7 +289,6 @@ public class Server : MonoBehaviour {
             int temp = -1;
             int.TryParse(msg.Substring(6, 1), out temp);
 			gcScript.UpdateScores(playerID[clientId], temp);
-            scoreChanged = true;
 		}
 
     }
@@ -345,8 +341,4 @@ public class Server : MonoBehaviour {
         
     }
 
-    public void SetScoreChanged()
-    {
-        scoreChanged = true;
-    }
 }

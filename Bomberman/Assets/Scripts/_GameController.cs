@@ -117,7 +117,6 @@ public class _GameController : MonoBehaviour {
         if (isHost)
         {
             UpdateScores(victim - 1, killer - 1);
-            networkObject.GetComponent<Server>().SetScoreChanged();
         }
             
     }
