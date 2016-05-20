@@ -46,12 +46,22 @@ def initiateConnection(conn):
          conn[0].send(to_return.encode())
       #code below here!!!!
       elif query[0] == '6': # Start Game
-         continue
+         to_return = start_game(query[1])
+         conn[0].send(to_return.encode())
       elif query[0] == '7': # Delete Game
-         continue
+         to_return = destroy_game(query[1])
+         conn[0].send(to_return.encode())
       elif query[0] == '8': # Disconnect Player
          to_return = log_out(query[1])
+         conn[0].send(to_return.encode())
       elif query[0] == '9': # Invite Player
+          #Only receive inviterusername:inviteeusername:ip:port call can invite on the username, and if it responds
+          #true, find the username in clients who sent it.connection and send it
+          if(can_invite(query[1]):
+             to_return = "I:" + query[1] + ":"+ query[3] + ":" + query[4]
+             clients[query[2]].conn.send(to_Return.encode())
+             
+                  #Im pretty much exactly positive I did this one wrong but?
          pass
       elif query[0] == 'A': #Send Active Game Stats to the Database
          #format: #0::1::2::
