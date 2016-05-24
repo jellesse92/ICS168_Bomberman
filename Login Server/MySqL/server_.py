@@ -9,9 +9,11 @@ from collections import namedtuple
 host = '172.31.39.29'
 port = 7777
 backlog = 1000
-size = 1024
+size = 10
+incoming = ""
 
 print("Creating Socket")
+
 soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 soc.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 soc.bind((host,port))
@@ -21,24 +23,32 @@ print("Socket Initialized, Searching for connections")
 clients = {}
 _mthreads = []
 
-to_return = ""
-
 ClientConnection = namedtuple('ClientConnection', 'username, conn')
 
+def receiveall(data: str)->str:
+   to_return = ""
+   if ";" in data:
+      temp = incoming.split(";")
+      to_return = incoming+temp[0]
+      incoming = temp[1]
+   return to_return
+   
 def initiateConnection(conn: tuple):
    print("Client Connected!")
-   try:
-      #conn.send("Connection Verified")
-      while True:
-         data = conn.recv(size)
-         data = str(data).strip("b\'").strip("\\r\\n\'")
+##   try:
+   #conn.send("Connection Verified")
+   while True:
+      data = conn.recv(size)
+      data = receiveall(str(data).strip("b\'").strip("\\r\\n\'"))
+      if data != "":
          query = data.split(':')
-
+         
          if query[0] == '0': # Add Account
             clients[query[1]] = ClientConnection(query[1], conn) #adds connection to connection list
             to_return = create_account(query[1], query[2])
             conn.sendall(to_return.encode())
             print("SENT: " + to_return)
+            continue
          elif query[0] == '1': #Log In
             clients[query[1]] = ClientConnection(query[1], conn)
             to_return = log_in(query[1], query[2])
@@ -83,26 +93,22 @@ def initiateConnection(conn: tuple):
 
          elif query[0] == 'B': #Have user Leave Game Early
             leave_game(query[1])
-         print(to_return)
-   except:
-      print("Remote Client Disconnected")
-      for c in clients:
-         if c.conn == conn:
-            log_out(c.username)
-      client.close()
-      return
+##   except:
+##      print("Remote Client Disconnected")
+##      client.close()
+##      return
          
+
 while True:
    try:
-      print("trying this.")
       client, addr = soc.accept()
-      #initiateConnection(client)
-      start_new_thread(initiateConnection, (client,))
+      initiateConnection(client)
+      #start_new_thread(initiateConnection, (client,))
    except:
       soc.close()
       client.close()
       break
-
+   
 
 
 

@@ -30,7 +30,8 @@ def log_in(username: str, password: str) -> str:
    userInfo = (username, password, "OFFLINE")
    accQuery = ("SELECT username, password FROM users " "WHERE username = %s AND password = %s AND status=%s")
    cursor.execute(accQuery, userInfo)
-   if len(cursor.fetchall()) > 0:
+   response = cursor.fetchall()
+   if len(response) == 0:
       cursor.close()
       return "FAIL"
    else:
