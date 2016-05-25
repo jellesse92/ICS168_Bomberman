@@ -138,6 +138,7 @@ public class _GameController : MonoBehaviour {
 
     public void ActivateGameOver()
     {
+        Time.timeScale = 0f;
         gameObject.GetComponent<GameEndUIController>().ActivateLoseScreen();
     }
 
@@ -160,7 +161,6 @@ public class _GameController : MonoBehaviour {
             {
                 ActivateGameOver();
                 networkObject.GetComponent<Server>().SendGameEnd();
-                Time.timeScale = 0f;
             }
         }
     }
