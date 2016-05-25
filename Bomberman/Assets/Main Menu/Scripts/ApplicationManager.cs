@@ -56,7 +56,7 @@ public class ApplicationManager : MonoBehaviour {
     public bool data_error = false;
     public bool connected = false;
     public int port = 7777;
-    string myip = "";
+    public string myip = "";
     public string address = "52.26.63.128";
     public string username = "";
     string _lastSentMsg;

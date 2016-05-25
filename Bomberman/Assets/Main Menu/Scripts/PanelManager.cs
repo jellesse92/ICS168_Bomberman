@@ -34,11 +34,12 @@ public class PanelManager : MonoBehaviour {
 
     private ApplicationManager appManageScript;
     GameObject playPanel;
+    private Host serverInfo;
 
     void Start()
     {
         appManageScript = GameObject.Find("ApplicationManager").GetComponent<ApplicationManager>();
-
+        serverInfo = GameObject.Find("Network_Controller").GetComponent<Host>();
         playPanel = GameObject.FindGameObjectWithTag("PlayButton");
         playPanel.transform.GetChild(0).GetComponent<Image>().material.color = Color.grey;
         playPanel.transform.GetChild(0).GetChild(0).GetComponent<Text>().color = Color.grey;
@@ -72,9 +73,19 @@ public class PanelManager : MonoBehaviour {
 
     public void OnPlay()
 	{
-        string serverMsg = "4:" + username + ":" + appManageScript.address + ":" + appManageScript.port.ToString();
-        if(appManageScript.GetServerResponse(serverMsg).Substring(0, 7) == "SUCCESS")
-            Application.LoadLevel (1);
+        if (serverInfo.isHost)
+        {
+            string serverMsg = "4:" + appManageScript.username + ":" + appManageScript.myip + ":" + appManageScript.port.ToString();
+            string resp = appManageScript.GetServerResponse(serverMsg).Substring(0, 7);
+            Debug.Log("Host Response: " + resp);
+            if ( resp == "SUCCESS")
+                Application.LoadLevel(1);
+        } else
+        {
+            Application.LoadLevel(1);
+        }
+
+        
             
 	}
 
