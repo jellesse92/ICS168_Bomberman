@@ -1,12 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class _GameController : MonoBehaviour {
 
     public GameObject[] players;    //Tracks player game objects
-    int controlledPlayer = -1;                                  //Keeps track of what player current client is
-    bool playersJoined = false;
+    int controlledPlayer = -1;      //Keeps track of what player current client is
+    bool playersJoined = false;     //Checks if player joined game for if host
 
+    //Timer Stuff
+    public Text timerText;          //Text for timer
+    float timeRemaining = 120.0f;   //Starting time
 
     GameObject networkObject;
     bool isHost = false;
@@ -23,6 +27,12 @@ public class _GameController : MonoBehaviour {
         {
             networkObject.GetComponent<Client>().JoinGame();
         }
+    }
+
+    void Update()
+    {
+        RunTimer();
+        Debug.Log(timeRemaining);
     }
 
     void FixedUpdate()
@@ -138,5 +148,10 @@ public class _GameController : MonoBehaviour {
     public void PlayerJoined()
     {
         playersJoined = true;
+    }
+
+    void RunTimer()
+    {
+        timeRemaining -= Time.deltaTime;
     }
 }
