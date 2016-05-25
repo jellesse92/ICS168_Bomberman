@@ -147,7 +147,7 @@ public class PanelManager : MonoBehaviour {
 
         using (MD5 md5Hash = MD5.Create())
         {
-            serverMsg = "0:" + GetMd5Hash(md5Hash, username + SALT_VALUE) + ":" + GetMd5Hash(md5Hash, password + SALT_VALUE);
+            serverMsg = "0:" + username + ":" + GetMd5Hash(md5Hash, password + SALT_VALUE);
         }
 
 
@@ -161,8 +161,7 @@ public class PanelManager : MonoBehaviour {
             appManageScript.username = username;
             playPanel.transform.GetChild(0).GetComponent<Image>().material.color = Color.white;
             playPanel.transform.GetChild(0).GetChild(0).GetComponent<Text>().color = Color.white;
-            Debug.Log (loggedIn);
-			error.SetActive(false);
+            error.SetActive(false);
 			CloseCurrent();
 		} 
 		else 
@@ -181,7 +180,7 @@ public class PanelManager : MonoBehaviour {
 
         using (MD5 md5Hash = MD5.Create())
         {
-            serverMsg = "1:" + GetMd5Hash(md5Hash, username + SALT_VALUE) + ":" + GetMd5Hash(md5Hash, password + SALT_VALUE);
+            serverMsg = "1:" + username + ":" + GetMd5Hash(md5Hash, password + SALT_VALUE);
         }
 
         if (password != "" && appManageScript.GetServerResponse(serverMsg).Substring(0, 7) == "SUCCESS") 
@@ -191,7 +190,7 @@ public class PanelManager : MonoBehaviour {
             appManageScript.username = username;
             playPanel.transform.GetChild(0).GetComponent<Image>().material.color = Color.white;
             playPanel.transform.GetChild(0).GetChild(0).GetComponent<Text>().color = Color.white;
-            Debug.Log (loggedIn);
+            //Debug.Log (loggedIn);
 			error.SetActive(false);
 			CloseCurrent ();
 		}

@@ -63,6 +63,9 @@ public class ApplicationManager : MonoBehaviour {
     List<GameInfo> gamesList;
     List<Stats> playerStats; //For Later in the game, get stats for all players.
 
+    System.Net.Sockets.TcpClient clientSocket;
+    NetworkStream serverStream;
+
     bool initialized = false;
 
     public Text ipText;         //Displays ip address for game creation
@@ -81,9 +84,6 @@ public class ApplicationManager : MonoBehaviour {
     //Send message to server and get server response
     public string GetServerResponse(string msg)
     {
-        System.Net.Sockets.TcpClient clientSocket = new System.Net.Sockets.TcpClient();
-        clientSocket.Connect(address, port);
-        NetworkStream serverStream = clientSocket.GetStream();
 
         byte[] outStream = System.Text.Encoding.ASCII.GetBytes(msg + "$");
         serverStream.Write(outStream, 0, outStream.Length);
@@ -100,6 +100,9 @@ public class ApplicationManager : MonoBehaviour {
 
     void Start()
     {
+        clientSocket = new System.Net.Sockets.TcpClient();
+        clientSocket.Connect(address, port);
+        serverStream = clientSocket.GetStream();
         DontDestroyOnLoad(transform.gameObject);
         myip = Network.player.ipAddress.ToString();
         ipText.text = myip;
@@ -151,10 +154,25 @@ public class ApplicationManager : MonoBehaviour {
    
     public void Quit () 
 	{
+        LSDisconnect();
 		#if UNITY_EDITOR
 		UnityEditor.EditorApplication.isPlaying = false;
 		#else
 		Application.Quit();
 		#endif
 	}
+
+    public void LSDisconnect()
+    {
+        if (logged_in)
+        {
+            Debug.Log(username);
+            Debug.Log(GetServerResponse("8:" + username));
+        }
+        else
+        {
+            Debug.Log(GetServerResponse("Q:QUIT"));
+        }
+    }
+
 }
