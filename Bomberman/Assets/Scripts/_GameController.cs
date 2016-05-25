@@ -38,7 +38,7 @@ public class _GameController : MonoBehaviour {
     void Update()
     {
         RunTimer();
-        Debug.Log(timeRemaining);
+        Debug.Log((int)(timeRemaining/60) + ":"  + (int)(timeRemaining % 60));
     }
 
     void FixedUpdate()
@@ -159,5 +159,6 @@ public class _GameController : MonoBehaviour {
     void RunTimer()
     {
         timeRemaining -= Time.deltaTime;
+        timerText.text = (int)(timeRemaining / 60) + ":" + (int)(timeRemaining % 60);
     }
 }
