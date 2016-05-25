@@ -10,7 +10,7 @@ public class _GameController : MonoBehaviour {
 
     //Timer Stuff
     public Text timerText;          //Text for timer
-    float timeRemaining = 120.0f;   //Starting time
+    float timeRemaining = 20.0f;   //Starting time
 
     GameObject networkObject;
     bool isHost = false;
@@ -38,7 +38,6 @@ public class _GameController : MonoBehaviour {
     void Update()
     {
         RunTimer();
-        Debug.Log((int)(timeRemaining/60) + ":"  + (int)(timeRemaining % 60));
     }
 
     void FixedUpdate()
@@ -96,13 +95,6 @@ public class _GameController : MonoBehaviour {
 
 	public void UpdateScores(int player, int killer)
 	{
-		//players [player].GetComponent<PlayerController> ().lives--;
-        if (player == controlledPlayer && players[player].GetComponent<PlayerController>().lives <= 0)
-        {
-            gameObject.GetComponent<GameEndUIController>().ActivateLoseScreen();
-            DeactivatePlayer(player);
-        }
-
         if(killer != player)
 		    players [killer].GetComponent<PlayerController> ().score++;
         players[killer].GetComponent<PlayerController>().UpdateScoreDisplay();
@@ -110,7 +102,6 @@ public class _GameController : MonoBehaviour {
 
     public Vector2 GetPlayerPos(int player)
     {
-        //Debug.Log(player);
         if (player != -1)
         {
             return new Vector2(players[player].transform.position.x, players[player].transform.position.y);
@@ -145,10 +136,9 @@ public class _GameController : MonoBehaviour {
         return active;
     }
 
-    public void ActivateLose(int p)
+    public void ActivateGameOver()
     {
         gameObject.GetComponent<GameEndUIController>().ActivateLoseScreen();
-        DeactivatePlayer(p);
     }
 
     public void PlayerJoined()
@@ -158,7 +148,21 @@ public class _GameController : MonoBehaviour {
 
     void RunTimer()
     {
-        timeRemaining -= Time.deltaTime;
-        timerText.text = (int)(timeRemaining / 60) + ":" + (int)(timeRemaining % 60);
+        if(timeRemaining > 0)
+        {
+            timeRemaining -= Time.deltaTime;
+            timerText.text = "0" + (int)(timeRemaining / 60) + ":" + ((int)(timeRemaining % 60)).ToString("D2");
+        }
+        else
+        {
+            timerText.text = "00:00";
+            if (isHost)
+            {
+                ActivateGameOver();
+                networkObject.GetComponent<Server>().SendGameEnd();
+                Time.timeScale = 0f;
+            }
+        }
     }
+
 }

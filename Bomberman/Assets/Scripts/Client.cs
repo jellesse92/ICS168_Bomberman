@@ -209,6 +209,12 @@ public class Client : MonoBehaviour {
         if (msg.Length == 0)
             return;
 
+        if(msg == "GAME_END")
+        {
+            gcScript.ActivateGameOver();
+        }
+
+
         if (msg.Substring(0, msg.Length - 1) == "Player:")
         {
             int.TryParse(msg.Substring(msg.Length - 1), out player);

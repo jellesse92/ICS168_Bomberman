@@ -327,6 +327,12 @@ public class Server : MonoBehaviour {
 
 	}
 
+    public void SendGameEnd()
+    {
+        SendDeathEvent();
+        Send("GAME_END");
+    }
+
     public void Disconnect()
     {
         byte error;
