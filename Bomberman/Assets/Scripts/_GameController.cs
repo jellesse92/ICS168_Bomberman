@@ -15,9 +15,12 @@ public class _GameController : MonoBehaviour {
     GameObject networkObject;
     bool isHost = false;
 
+    ApplicationManager appManageScript;
+
 	// Use this for initialization
 	void Start () {
         networkObject = GameObject.Find("Network_Controller");
+        appManageScript = GameObject.Find("ApplicationManager").GetComponent<ApplicationManager>();
         isHost = networkObject.GetComponent<Host>().isHost;
 
         if (isHost)
@@ -25,6 +28,9 @@ public class _GameController : MonoBehaviour {
             networkObject.GetComponent<Server>().CreateGame();
         } else
         {
+            string joinup = "5:" + appManageScript.username + ":" + networkObject.GetComponent<Client>().address + ":" + networkObject.GetComponent<Client>().port.ToString();
+            Debug.Log(joinup);
+            string resp = appManageScript.GetServerResponse(joinup);
             networkObject.GetComponent<Client>().JoinGame();
         }
     }
