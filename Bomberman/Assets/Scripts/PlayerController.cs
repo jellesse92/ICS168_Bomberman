@@ -103,16 +103,6 @@ public class PlayerController : MonoBehaviour {
             gameObject.SetActive(false);
         }
 
-
-        //Restore when activating mode with Lives
-        /*
-        //TEMPORARY ASPECT
-        lives--;
-        if (lives < 0) { 
-            gcScript.PlayerDied(0);
-            gameObject.SetActive(false);
-        }
-        */
     }
 
     void OnParticleCollision(GameObject obj)
