@@ -162,6 +162,11 @@ public class ApplicationManager : MonoBehaviour {
 		#endif
 	}
 
+    void OnApplicationQuit()
+    {
+        LSDisconnect();
+    }
+
     public void LSDisconnect()
     {
         if (logged_in)

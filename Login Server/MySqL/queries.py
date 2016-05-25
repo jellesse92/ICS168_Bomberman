@@ -51,17 +51,12 @@ def log_in(username: str, password: str) -> str:
 
 #Log user out from Server
 def log_out(username: str):
-   cursor = gameconnection.cursor()
-   userInfo = ("OFFLINE",username)
-   try:
-      cursor.execute("UPDATE users SET status=%s WHERE username=%s", userInfo)
-      gameconnection.commit()
-   except:
-      print("Error (Log_out): Failed to Log out User")
-      cursor.close()
+   to_return = _changePlayerStatus("OFFLINE", username)
+   if to_return == 0:
+      return "FAIL"
    else:
-      cursor.close()
       return "SUCCESS"
+  
    
 
 def update_stats(user: str, k: int, d: int, w: int, g: int) -> str:

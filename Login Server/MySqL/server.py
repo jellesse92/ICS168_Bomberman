@@ -19,14 +19,30 @@ soc.listen(backlog)
 
 print("Socket Initialized, Searching for connections")
 clients = {}
-_mthreads = []
 
-to_return = ""
+to_return = "EMPTY"
 
 ClientConnection = namedtuple('ClientConnection', 'username, conn')
 
+def disconnect(conn):
+   print("Remote Client Disconnected")
+   try:
+      nc = ""
+      for k, v in clients:
+         print(c)
+         if v.conn == conn:
+            log_out(k)
+            nc = k
+      if nc != "":
+         del clients[nc]
+      return "X"
+   except:
+      conn.close()
+      return "X"
+   
 def initiateConnection(conn: tuple):
    print("Client Connected!")
+   to_return = "EMPTY"
    try:
       #conn.send("Connection Verified")
       while True:
@@ -63,10 +79,13 @@ def initiateConnection(conn: tuple):
             to_return = destroy_game(query[1])
             conn.send(to_return.encode())
          elif query[0] == '8': # Disconnect Player
-            to_return = log_out(query[1])
+            print("Player Disconnecting... " + query[1][:-1])
+            to_return = log_out(query[1][:-1])
+            print("Returning.... " + to_return)
             conn.send(to_return.encode())
-            conn.close()
-            return;
+            exit()
+            #to_return = disconnect(conn)
+            print("closing connection")
          elif query[0] == '9': # Invite Player
             if can_invite(query[1]):
                 to_return = "I:" + query[1] + ":"+ query[3] + ":" + query[4]
@@ -80,18 +99,18 @@ def initiateConnection(conn: tuple):
                    data = query.split("_")
                    gamestats[i] = (data[1], data[2])
             conn.send(send_game_stats(query[1], gamestats))
-
          elif query[0] == 'B': #Have user Leave Game Early
             leave_game(query[1])
+         elif query[0] == 'Q':
+            print("received quit")
+            conn.send(query[1].encode())
+            print("Calling disconnect...")
+            to_return = disconnect(conn)
+            
          print(to_return)
    except:
-      print("Remote Client Disconnected")
-      for c in clients:
-         if c.conn == conn:
-            log_out(c.username)
-      client.close()
-      return
-         
+      to_return = disconnect(conn)
+   
 while True:
    try:
       print("trying this.")
