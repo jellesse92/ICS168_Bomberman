@@ -9,9 +9,8 @@ public class Host : MonoBehaviour {
     public int serverport;
 	// Use this for initialization
 	void Start () {
-		
-       
-	}
+        serverport = GameObject.Find("Network_Controller").GetComponent<Server>().port;
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -21,10 +20,7 @@ public class Host : MonoBehaviour {
     {
         isHost = true;
     }
-    public void getServerPort()
-    {
-        serverport = GameObject.Find("Network_Controller").GetComponent<Server>().port;
-    }
+
     public void disconnect()
     {
         cl = GameObject.Find("Network_Controller").GetComponent<Client>();
