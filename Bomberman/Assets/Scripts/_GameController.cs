@@ -138,8 +138,30 @@ public class _GameController : MonoBehaviour {
 
     public void ActivateGameOver()
     {
+        int finalScore = players[controlledPlayer].GetComponent<PlayerController>().score;
+        bool foundTie = false;
+
         Time.timeScale = 0f;
-        gameObject.GetComponent<GameEndUIController>().ActivateLoseScreen();
+        
+
+        for(int i = 0; i < 4; i++)
+        {
+            if(i != controlledPlayer)
+            {
+                if(players[i].GetComponent<PlayerController>().score > finalScore)
+                {
+                    gameObject.GetComponent<GameEndUIController>().ActivateLoseScreen();
+                    break;
+                }
+                if (players[i].GetComponent<PlayerController>().score == finalScore)
+                    foundTie = true;
+            }
+        }
+
+        if (!foundTie)
+            gameObject.GetComponent<GameEndUIController>().ActivateWinScreen();
+        else
+            gameObject.GetComponent<GameEndUIController>().ActivateLoseScreen();
     }
 
     public void PlayerJoined()
