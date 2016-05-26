@@ -75,7 +75,7 @@ public class PanelManager : MonoBehaviour {
 	{
         if (serverInfo.isHost)
         {
-            string serverMsg = "4:" + appManageScript.username + ":" + appManageScript.myip + ":" + appManageScript.port.ToString();
+            string serverMsg = "4:" + appManageScript.username + ":" + appManageScript.myip + ":" + serverInfo.serverport.ToString();
             string resp = appManageScript.GetServerResponse(serverMsg).Substring(0, 7);
             Debug.Log("Host Response: " + resp);
             if ( resp == "SUCCESS")

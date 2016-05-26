@@ -6,6 +6,7 @@ public class Host : MonoBehaviour {
     Server sv;
 	private ApplicationManager appManageScript;
     public bool isHost = false;
+    public int serverport;
 	// Use this for initialization
 	void Start () {
 		
@@ -20,7 +21,10 @@ public class Host : MonoBehaviour {
     {
         isHost = true;
     }
-    
+    public void getServerPort()
+    {
+        serverport = GameObject.Find("Network_Controller").GetComponent<Server>().port;
+    }
     public void disconnect()
     {
         cl = GameObject.Find("Network_Controller").GetComponent<Client>();
