@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour {
 
     //PLAYER DEFAULT STATS
     const float POWER_UP_TIME = 5.0f;
-    const float DEFAULT_SPEED = 6f;
+    const float DEFAULT_SPEED = 4f;
     const float INVINC_TIME = 3f;
     const int DEFAULT_EXPLOSION_MULTIPLIER = 0;
     const int DEFAULT_BOMB_AMOUNT = 1;
