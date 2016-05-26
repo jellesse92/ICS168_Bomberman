@@ -346,6 +346,7 @@ public class Server : MonoBehaviour {
         {
             Debug.Log(error.ToString());
         }
+
         
     }
 

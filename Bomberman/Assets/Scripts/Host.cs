@@ -4,9 +4,11 @@ using System.Collections;
 public class Host : MonoBehaviour {
     Client cl;
     Server sv;
+	private ApplicationManager appManageScript;
     public bool isHost = false;
 	// Use this for initialization
 	void Start () {
+		
        
 	}
 	
@@ -23,6 +25,7 @@ public class Host : MonoBehaviour {
     {
         cl = GameObject.Find("Network_Controller").GetComponent<Client>();
         sv = GameObject.Find("Network_Controller").GetComponent<Server>();
+		appManageScript = GameObject.Find("ApplicationManager").GetComponent<ApplicationManager>();
 
         //
         //Call Disconnect Message Here
@@ -30,6 +33,8 @@ public class Host : MonoBehaviour {
 
         if (sv.initialized)
         {
+			Debug.Log (appManageScript.myip);
+			appManageScript.GetServerResponse ("7:" + appManageScript.myip);
             sv.Disconnect();
            
         }
