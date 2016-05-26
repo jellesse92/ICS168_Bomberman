@@ -6,12 +6,22 @@ public class BlockScript : MonoBehaviour {
     const float EXP_TIME = 3.0f;
 
     bool isPickUp = false;
+    string tag = "";
+    Sprite sprite;
     public Sprite[] pickUpSprite;
 
+    void Start()
+    {
+        ResetProperties();
+    }
+
     void OnParticleCollision(GameObject obj){
-        if(obj.tag == "Explosion" && !isPickUp){
-            Randomize();
+        if (obj.tag == "Explosion" && !isPickUp)
+        {
+            MakePickUp();
         }
+        else if (isPickUp)
+            WaitToDisable();
     }
 
     void OnTriggerEnter2D(Collider2D col)
@@ -24,34 +34,40 @@ public class BlockScript : MonoBehaviour {
         }
     }
 
-    void Randomize()
+    public void SetTag(int n)
     {
-        int ran = Random.Range(0, 4);
-
-        switch (ran)
+        switch (n)
         {
             case 0:
-                MakePickUp("BuffExplosion", pickUpSprite[1]);
+                tag = "BuffExplosion";
+                sprite = pickUpSprite[1];
                 break;
             case 1:
-                MakePickUp("BuffLimit", pickUpSprite[2]);
+                tag = "BuffLimit";
+                sprite = pickUpSprite[2];
                 break;
             case 2:
             case 3:
-                MakePickUp("BuffSpeed", pickUpSprite[3]);
+                tag = "BuffSpeed";
+                sprite = pickUpSprite[3];
                 break;
             default:
-                StartCoroutine(WaitToDisable());
                 break;
         }
+        Debug.Log("New Tag: " + tag);
     }
 
-    void MakePickUp(string name, Sprite spr)
+    void MakePickUp()
     {
-        transform.tag = name;
-        gameObject.GetComponent<SpriteRenderer>().sprite = spr;
-        gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
-        isPickUp = true;
+        if (tag == "")
+            StartCoroutine("WaitToDisable");
+        else
+        {
+            transform.tag = tag;
+            gameObject.GetComponent<SpriteRenderer>().sprite = sprite;
+            gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
+            isPickUp = true;
+        }
     }
 
     void ResetProperties()
@@ -60,6 +76,8 @@ public class BlockScript : MonoBehaviour {
         gameObject.GetComponent<BoxCollider2D>().isTrigger = false;
         gameObject.GetComponent<SpriteRenderer>().sprite = pickUpSprite[0];
         isPickUp = false;
+        tag = "";
+        sprite = pickUpSprite[0];
     }
 
     IEnumerator WaitToDisable()

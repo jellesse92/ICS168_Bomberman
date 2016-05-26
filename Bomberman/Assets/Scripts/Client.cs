@@ -221,6 +221,12 @@ public class Client : MonoBehaviour {
             gcScript.SetTimeRemaining(t);
         }
 
+        if(msg.Length > 5 && msg.Substring(0,5) == "Pick:")
+        {
+            string assignments = msg.Substring(5);
+            gcScript.SetPickUps(assignments);
+        }
+
         if (msg.Substring(0, msg.Length - 1) == "Player:")
         {
             int.TryParse(msg.Substring(msg.Length - 1), out player);
