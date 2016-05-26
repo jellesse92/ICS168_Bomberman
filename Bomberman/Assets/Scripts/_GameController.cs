@@ -26,7 +26,12 @@ public class _GameController : MonoBehaviour {
 
     ApplicationManager appManageScript;
 
-	// Use this for initialization
+    // Use this for initialization
+    void OnApplicationQuit()
+    {
+        networkObject.GetComponent<Host>().disconnect();
+    }
+
 	void Start () {
         networkObject = GameObject.Find("Network_Controller");
         appManageScript = GameObject.Find("ApplicationManager").GetComponent<ApplicationManager>();
