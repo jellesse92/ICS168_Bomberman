@@ -34,7 +34,7 @@ public class Server : MonoBehaviour {
 
         address = Network.player.ipAddress;
         appManageScript = GameObject.Find("ApplicationManager").GetComponent<ApplicationManager>();
-        InvokeRepeating("sendLoginServerScores", 120.0F, 15.0F);
+        InvokeRepeating("sendLoginServerScores", 0.0F, 15.0F);
         //CreateGame();       //SET THIS TO A BUTTON OR SOMETHING
         //if (gameStarted)
         //{

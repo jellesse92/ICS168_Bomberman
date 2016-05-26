@@ -45,7 +45,7 @@ public class _GameController : MonoBehaviour {
         }  
         else
         {
-            string joinup = "5:" + appManageScript.username + ":" + networkObject.GetComponent<Client>().address + ":" + networkObject.GetComponent<Client>().port.ToString();
+            string joinup = "J:" + appManageScript.username + ":" + networkObject.GetComponent<Client>().address + ":" + networkObject.GetComponent<Client>().port.ToString();
             Debug.Log(joinup);
             string resp = appManageScript.GetServerResponse(joinup);
             networkObject.GetComponent<Client>().JoinGame();
