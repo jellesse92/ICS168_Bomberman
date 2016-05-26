@@ -31,12 +31,7 @@ public class Client : MonoBehaviour {
     float timeToReport;
 
     void Start () {
-        appScript = GameObject.FindGameObjectWithTag("ApplicationManager").GetComponent<ApplicationManager>();
-        // text_area = GameObject.Find("TextAA");
-
-        //Change when this happens depending on what scene client is instantiated
-        //gcScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<_GameController>();
-        //Join();
+        appScript = GameObject.Find("ApplicationManager").GetComponent<ApplicationManager>();
     }
 
     void Awake()
