@@ -6,6 +6,7 @@ using UnityEngine.Networking;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using System;
+using System.Linq;
 
 
 public class Server : MonoBehaviour {
@@ -326,7 +327,6 @@ public class Server : MonoBehaviour {
 
     public void SendBombEvent(int player)
     {
-        Debug.Log("Sending Bomb");
         Send(player + ":" + "dropBomb");
     }
 	public string SendDeathEvent()
@@ -341,9 +341,39 @@ public class Server : MonoBehaviour {
 
     public void SendGameEnd()
     {
+        int[] scores = { 0, 0, 0, 0 };
+        int max = 0;            
+        int maxCount = 0;           //Number of players that got the max score
+        int winner = -1;
+
         SendDeathEvent();
         Send("GAME_END");
 
+        for (int i = 0; i < 4; i++)
+            scores[i] = gcScript.players[i].GetComponent<PlayerController>().score;
+
+        max = scores.Max();
+
+        for(int i = 0; i< 4; i++)
+        {
+            if (scores[i] == max)
+                maxCount++;
+        }
+        
+        usernames[0] = appManageScript.username;
+        for(int i = 0; i <4; i++)
+        {
+            int win = 0;
+            int s = scores[i];
+            string toSend = "";
+
+            if (s == max && maxCount == 1)
+                win = 1;
+
+            toSend += ("2:" + usernames[i] + ":" + scores[i] + ":" + "0:"  + win.ToString() + ":" + "1");
+            if(usernames[i] != "")
+                appManageScript.GetServerResponse(toSend);
+        }
     }
 
     public void Disconnect()

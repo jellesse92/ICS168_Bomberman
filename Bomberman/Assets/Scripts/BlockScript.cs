@@ -54,7 +54,6 @@ public class BlockScript : MonoBehaviour {
             default:
                 break;
         }
-        Debug.Log("New Tag: " + tag);
     }
 
     void MakePickUp()

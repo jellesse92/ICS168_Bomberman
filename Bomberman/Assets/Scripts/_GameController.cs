@@ -18,11 +18,12 @@ public class _GameController : MonoBehaviour {
 
     //Timer Variables
     public Text timerText;          //Text for timer
-    float timeRemaining = 120.0f;   //Starting time
+    float timeRemaining = 60.0f;   //Starting time
 
     //Networking Variables
     GameObject networkObject;
     bool isHost = false;
+    bool sentEnd = false;
 
     ApplicationManager appManageScript;
 
@@ -196,10 +197,11 @@ public class _GameController : MonoBehaviour {
         else
         {
             timerText.text = "00:00";
-            if (isHost)
+            if (isHost && !sentEnd)
             {
                 ActivateGameOver();
                 networkObject.GetComponent<Server>().SendGameEnd();
+                sentEnd = true;
             }
         }
     }
