@@ -1,17 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UI;
 
 public class _GameController : MonoBehaviour {
 
+    const int RANDOM_PICK_RANGE = 4;
+
+    //Player data
     public GameObject[] players;    //Tracks player game objects
     int controlledPlayer = -1;      //Keeps track of what player current client is
     bool playersJoined = false;     //Checks if player joined game for if host
 
-    //Timer Stuff
-    public Text timerText;          //Text for timer
-    float timeRemaining = 20.0f;   //Starting time
+    //Game Elements
+    List<GameObject> boxes;
+    string pickAssignment;          //Pick up value assignment
 
+    //Timer Variables
+    public Text timerText;          //Text for timer
+    float timeRemaining = 120.0f;   //Starting time
+
+    //Networking Variables
     GameObject networkObject;
     bool isHost = false;
 
@@ -22,11 +31,14 @@ public class _GameController : MonoBehaviour {
         networkObject = GameObject.Find("Network_Controller");
         appManageScript = GameObject.Find("ApplicationManager").GetComponent<ApplicationManager>();
         isHost = networkObject.GetComponent<Host>().isHost;
+        boxes = new List<GameObject>();
 
         if (isHost)
         {
             networkObject.GetComponent<Server>().CreateGame();
-        } else
+            AssignPickUps();
+        }  
+        else
         {
             string joinup = "5:" + appManageScript.username + ":" + networkObject.GetComponent<Client>().address + ":" + networkObject.GetComponent<Client>().port.ToString();
             Debug.Log(joinup);
@@ -195,6 +207,42 @@ public class _GameController : MonoBehaviour {
     public void SetTimeRemaining(float t)
     {
         timeRemaining = t;
+    }
+
+    public void AssignPickUps()
+    {
+        GameObject map = GameObject.FindGameObjectWithTag("Map");
+        foreach (Transform child in map.transform)
+        {
+            if(child.tag == "Destructable")
+            {
+                int random = (int)Random.Range(0, RANDOM_PICK_RANGE);
+                child.GetComponent<BlockScript>().SetTag(random);
+                pickAssignment += random.ToString();
+            }
+        }
+    }
+
+    public void SetPickUps(string set)
+    {
+        int i = 0;
+        GameObject map = GameObject.FindGameObjectWithTag("Map");
+
+        foreach (Transform child in map.transform)
+        {
+            if (child.tag == "Destructable")
+            {
+                int assign;
+                int.TryParse(set[i].ToString(), out assign);
+                child.GetComponent<BlockScript>().SetTag(assign);
+                i++;
+            }
+        }
+    }
+
+    public string GetPickUps()
+    {
+        return pickAssignment;
     }
 
 }
