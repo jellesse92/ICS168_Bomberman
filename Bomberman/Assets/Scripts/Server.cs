@@ -19,6 +19,7 @@ public class Server : MonoBehaviour {
     public bool initialized = false;
     public int port = 8888;
     string currentStats = "";
+    string[] usernames = { "", "", "", "" };
 
 
     //In Game Specific Server Parameters
@@ -35,14 +36,6 @@ public class Server : MonoBehaviour {
         address = Network.player.ipAddress;
         appManageScript = GameObject.Find("ApplicationManager").GetComponent<ApplicationManager>();
         InvokeRepeating("sendLoginServerScores", 0.0F, 15.0F);
-        //CreateGame();       //SET THIS TO A BUTTON OR SOMETHING
-        //if (gameStarted)
-        //{
-        //    gcScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<_GameController>();
-        //    gcScript.SetPlayer(0);
-        //}
-
-
     }
 
     void SetHost()
@@ -137,6 +130,7 @@ public class Server : MonoBehaviour {
                         SendToClient(connectionId, "Player:" + pl);
                         SendToClient(connectionId, "Time:" + gcScript.GetTimeRemaining());
                         SendToClient(connectionId, "Pick:" + gcScript.GetPickUps());
+                        
                         for (int i = 0; i < 4; i++)
                         {
                             if (playerID[i] != pl && playerID[i] != -1)
@@ -230,6 +224,7 @@ public class Server : MonoBehaviour {
                             {
                                 //adds connection to list of connections messages should be relayed to
                                 connectionIDs.Add(connectionId);
+                                
                                 Debug.Log("Server: Player " + connectionId.ToString() + " connected!");
                             }
 
@@ -287,11 +282,12 @@ public class Server : MonoBehaviour {
                 lastTimeRecorded[pID] = time;
             }
 
-        } else
-        {
-            Debug.Log(msg);
         }
 
+        if (msg.Length > 3 && msg.Substring(0, 5) == "User:") {
+            usernames[playerID[clientId]] = msg.Substring(5);
+            Debug.Log(usernames[playerID[clientId]]);
+        }
        
         //Drops bombs for players
         if(msg == "dropBomb"){
@@ -347,6 +343,7 @@ public class Server : MonoBehaviour {
     {
         SendDeathEvent();
         Send("GAME_END");
+
     }
 
     public void Disconnect()

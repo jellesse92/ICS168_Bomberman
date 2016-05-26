@@ -24,12 +24,14 @@ public class Client : MonoBehaviour {
     //In-Game Related Parameters
     _GameController gcScript;
     GameEndUIController guiScript;
+    ApplicationManager appScript;
     bool gameStarted = true;
 
     //Syncing
     float timeToReport;
 
     void Start () {
+        appScript = GameObject.FindGameObjectWithTag("ApplicationManager").GetComponent<ApplicationManager>();
         // text_area = GameObject.Find("TextAA");
 
         //Change when this happens depending on what scene client is instantiated
@@ -137,8 +139,9 @@ public class Client : MonoBehaviour {
                         {
                             Debug.Log("Client: Client connected to " + connectionId.ToString() + "!");
                             connectedToServer = true;
-                        connected = true;
+                            connected = true;
                             gameStarted = true;
+                            Send("User:" + appScript.username);
                         }
 
                         break;
