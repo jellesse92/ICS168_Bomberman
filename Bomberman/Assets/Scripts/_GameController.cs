@@ -163,7 +163,7 @@ public class _GameController : MonoBehaviour {
                 if(players[i].GetComponent<PlayerController>().score > finalScore)
                 {
                     gameObject.GetComponent<GameEndUIController>().ActivateLoseScreen();
-                    break;
+                    return;
                 }
                 if (players[i].GetComponent<PlayerController>().score == finalScore)
                     foundTie = true;
