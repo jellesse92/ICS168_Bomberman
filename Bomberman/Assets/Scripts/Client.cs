@@ -209,6 +209,18 @@ public class Client : MonoBehaviour {
         if (msg.Length == 0)
             return;
 
+        if(msg == "GAME_END")
+        {
+            gcScript.ActivateGameOver();
+        }
+
+        if(msg.Length > 5 && msg.Substring(0,5) == "Time:")
+        {
+            float t;
+            float.TryParse(msg.Substring(5), out t);
+            gcScript.SetTimeRemaining(t);
+        }
+
         if (msg.Substring(0, msg.Length - 1) == "Player:")
         {
             int.TryParse(msg.Substring(msg.Length - 1), out player);

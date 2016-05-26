@@ -10,7 +10,6 @@ public class PlayerController : MonoBehaviour {
     Vector2 newPosition;                        //Position to move towards 
 
     //TEMPORARY FUNCTIONALITY
-    public int lives = 3;              //Amount of lives player has
     public int score = 0;       //Player's score 
     int bombs = 0;              //Number of bombs player has dropped
 
@@ -91,18 +90,7 @@ public class PlayerController : MonoBehaviour {
     {
 		AudioSource.PlayClipAtPoint (playerHitSound, transform.position);
         StartCoroutine("StartInvincibility");
-        lives--;
-        if(lives > 0)
-            Respawn();
-        else
-        {
-            if(player != 1 && clientControlled)
-            {
-                gcScript.ActivateLose(player);
-            }
-            gameObject.SetActive(false);
-        }
-
+        Respawn();
     }
 
     void OnParticleCollision(GameObject obj)
