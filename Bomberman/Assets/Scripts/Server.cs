@@ -18,6 +18,7 @@ public class Server : MonoBehaviour {
     public string address;
     public bool initialized = false;
     public int port = 8888;
+    string currentStats = "";
 
 
     //In Game Specific Server Parameters
@@ -26,13 +27,14 @@ public class Server : MonoBehaviour {
     List<int> playerID = new List<int>(new int[] { 0,-1,-1,-1 });
     float[] lastTimeRecorded = { -1f, -1f, -1f, -1f };
     _GameController gcScript;
+    ApplicationManager appManageScript;
 
     // Use this for initialization
     void Start () {
 
         address = Network.player.ipAddress;
-
-        
+        appManageScript = GameObject.Find("ApplicationManager").GetComponent<ApplicationManager>();
+        InvokeRepeating("sendLoginServerScores", 120.0F, 15.0F);
         //CreateGame();       //SET THIS TO A BUTTON OR SOMETHING
         //if (gameStarted)
         //{
@@ -176,12 +178,24 @@ public class Server : MonoBehaviour {
         }
     }
 
+    void sendLoginServerScores()
+    {
+        if(gameStarted && initialized)
+        {
+            if(currentStats != "")
+            {
+                appManageScript.GetServerResponse(currentStats);
+            }
+        }
+
+    }
     void FixedUpdate()
     {
         if (gameStarted && initialized)
         {
+           
+            currentStats = "A:" + address + ":" + SendDeathEvent();
             Send(CurrentGameState());
-            SendDeathEvent();
 
         }
     }
@@ -319,14 +333,14 @@ public class Server : MonoBehaviour {
         Debug.Log("Sending Bomb");
         Send(player + ":" + "dropBomb");
     }
-	public void SendDeathEvent()
+	public string SendDeathEvent()
 	{
         string result = "Scores";
 		foreach(GameObject pScore in gcScript.players){
             result += (":" + pScore.GetComponent<PlayerController>().score);
 		}
 		Send (result);
-
+        return result;
 	}
 
     public void SendGameEnd()
