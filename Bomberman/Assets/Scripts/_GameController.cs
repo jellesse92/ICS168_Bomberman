@@ -187,4 +187,14 @@ public class _GameController : MonoBehaviour {
         }
     }
 
+    public float GetTimeRemaining()
+    {
+        return timeRemaining;
+    }
+
+    public void SetTimeRemaining(float t)
+    {
+        timeRemaining = t;
+    }
+
 }
