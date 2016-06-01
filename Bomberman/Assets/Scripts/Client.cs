@@ -210,6 +210,7 @@ public class Client : MonoBehaviour {
 
     void StartGame()
     {
+        Time.timeScale = 1.0f;
         GameObject.FindGameObjectWithTag("SceneManager").transform.GetChild(0).gameObject.SetActive(false);
         GameObject.FindGameObjectWithTag("SceneManager").transform.GetChild(1).gameObject.SetActive(true);
         gcScript.SetPlayer(setPlayer);
