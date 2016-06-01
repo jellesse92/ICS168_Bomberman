@@ -16,7 +16,7 @@ public class Client : MonoBehaviour {
     int _connID = -1;
     public int port = 8888;
     bool isHost = false;
-    bool connected = false;
+    public bool connected = false;
     bool connectedToServer = false;
     public int maxConnections = 4;
     public string address = "192.168.43.115";

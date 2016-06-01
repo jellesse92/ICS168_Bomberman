@@ -71,7 +71,7 @@ public class PanelManager : MonoBehaviour {
         PASSWORD ENCRYPTION END
     */
 
-
+ 
 
     public void OnPlay(int index = 0)
 	{

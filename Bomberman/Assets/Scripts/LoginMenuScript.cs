@@ -7,8 +7,8 @@ using System.Collections.Generic;
 public class LoginMenuScript : MonoBehaviour {
 
     public GameObject[] gameSelectButtons;
-    string[] ipAddress = new string[8];
-    string[] ports = new string[8];
+    string[] ipAddress = new string[9];
+    string[] ports = new string[9];
 
     ApplicationManager appManageScript;
     Client clientScript;
@@ -54,6 +54,12 @@ public class LoginMenuScript : MonoBehaviour {
                 }
             }
         }
+    }
+
+    public void AddGame(string ip, string port)
+    {
+        ipAddress[8] = ip;
+        ports[8] = port;
     }
 
     public void SetServerInfo(int index)

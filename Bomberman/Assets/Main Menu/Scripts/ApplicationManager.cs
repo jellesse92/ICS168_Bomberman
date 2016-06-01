@@ -106,6 +106,7 @@ public class ApplicationManager : MonoBehaviour {
         DontDestroyOnLoad(transform.gameObject);
         myip = Network.player.ipAddress.ToString();
         ipText.text = myip;
+        InvokeRepeating("CheckInvite", 0.0F, 5.0F);
 
 
     }
@@ -151,7 +152,27 @@ public class ApplicationManager : MonoBehaviour {
         }
     }
 
-   
+   public void closeInvite()
+    {
+        GameObject.Find("Invite").SetActive(false);
+    }
+   public void CheckInvite()
+    {
+        GameObject nc = GameObject.Find("Network_Controller");
+        if (nc.GetComponent<Server>().initialized == false && nc.GetComponent<Client>().connected == false && logged_in)
+        {
+            string resp = GetServerResponse("C:" + username).Trim();
+            if (resp.Split(':').Length > 1)
+            {
+                Debug.Log(resp);
+                Debug.Log(resp == "NONE");
+                string[] gameinfo = resp.Split(':');
+                GameObject.Find("Canvas").transform.FindChild("Invite").transform.FindChild("HPlayer").GetComponent<Text>().text = gameinfo[1];
+                GameObject.FindGameObjectWithTag("GameController").GetComponent<LoginMenuScript>().AddGame(gameinfo[2], gameinfo[3]);
+                GameObject.Find("Canvas").transform.FindChild("Invite").gameObject.SetActive(true);
+            }
+        }
+    }
     public void Quit () 
 	{
         LSDisconnect();
