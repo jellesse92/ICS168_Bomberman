@@ -21,10 +21,13 @@ public class GameEndUIController : MonoBehaviour {
 
     public void ActivateDisconnectScreen()
     {
-        GameEndPanel.SetActive(true);
-        GameEndText.text = "DISCONNECTED";
-        GameEndSubText.text = "You raging now?";
-        DisconnectScreen.SetActive(true);
+        if (GameEndPanel != null)
+        {
+            GameEndPanel.SetActive(true);
+            GameEndText.text = "DISCONNECTED";
+            GameEndSubText.text = "You raging now?";
+            DisconnectScreen.SetActive(true);
+        }
     }
 
     public void ActivateWinScreen()
