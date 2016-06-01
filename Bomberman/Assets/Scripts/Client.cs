@@ -178,11 +178,7 @@ public class Client : MonoBehaviour {
 
     void FixedUpdate()
     {
-        if (inLobby)
-        {
-
-        }
-        else if (gameStarted && connectedToServer)
+        if(!inLobby)
         {
             timeToReport = Time.time;
             Send(GetGameData());
@@ -210,13 +206,13 @@ public class Client : MonoBehaviour {
 
     void StartGame()
     {
+        inLobby = false;
         Time.timeScale = 1.0f;
         GameObject.FindGameObjectWithTag("SceneManager").transform.GetChild(0).gameObject.SetActive(false);
         GameObject.FindGameObjectWithTag("SceneManager").transform.GetChild(1).gameObject.SetActive(true);
         gcScript.SetPlayer(setPlayer);
         foreach(int p in ActivatePlayers)
             gcScript.ActivatePlayer(p);
-        inLobby = false;
     }
     
     void InterpretMessage(string msg)
