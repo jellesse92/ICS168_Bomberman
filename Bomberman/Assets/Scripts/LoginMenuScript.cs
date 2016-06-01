@@ -57,5 +57,7 @@ public class LoginMenuScript : MonoBehaviour {
     public void SetServerInfo(int index)
     {
         int p = 8888;
+        int.TryParse(ports[index].Trim(), out p);
+        clientScript.SetServer(ipAddress[index].Trim(), p);
     }
 }

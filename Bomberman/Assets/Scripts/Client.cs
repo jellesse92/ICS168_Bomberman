@@ -305,6 +305,10 @@ public class Client : MonoBehaviour {
     {
         address = serverIp;
         port = serverPort;
+        Debug.Log("CONNECT: " + address);
+        Debug.Log("ADDRESS LENGTH: " + address.Length);
+        Debug.Log("PORT: " + port);
+        
     }
 }
 
