@@ -153,6 +153,8 @@ public class Server : MonoBehaviour {
                         connectionIDs.Add(connectionId);
                         SendToClient(connectionId, "Player:" + pl);
 
+                        GameObject.FindGameObjectWithTag("Lobby").transform.GetChild(0).transform.GetChild(pl).gameObject.SetActive(true);
+
                         for (int i = 0; i < 4; i++)
                         {
                             if (playerID[i] != pl && playerID[i] != -1)
