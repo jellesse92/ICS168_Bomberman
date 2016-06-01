@@ -84,6 +84,7 @@ public class PanelManager : MonoBehaviour {
                 Application.LoadLevel(1);
         } else
         {
+            loginScript.SetServerInfo(index);
             Application.LoadLevel(1);
         }
 
