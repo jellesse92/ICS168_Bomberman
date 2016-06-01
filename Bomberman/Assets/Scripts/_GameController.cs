@@ -42,7 +42,6 @@ public class _GameController : MonoBehaviour {
         if (isHost)
         {
             networkObject.GetComponent<Server>().CreateGame();
-            AssignPickUps();
         }  
         else
         {
