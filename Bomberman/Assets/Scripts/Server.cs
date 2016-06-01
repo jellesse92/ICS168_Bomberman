@@ -153,6 +153,7 @@ public class Server : MonoBehaviour {
                         playerID[pl] = connectionId;
                         connectionIDs.Add(connectionId);
                         SendToClient(connectionId, "Player:" + pl);
+                       
 
                         GameObject.FindGameObjectWithTag("GameController").GetComponent<LobbyScript>().ActivatePlayer(pl);
 
@@ -219,6 +220,10 @@ public class Server : MonoBehaviour {
                         connectionIDs.Add(connectionId);
                         SendToClient(connectionId, "Player:" + pl);
                         
+                        if(inLobby)
+                            GameObject.FindGameObjectWithTag("GameController").GetComponent<LobbyScript>().ActivatePlayer(pl);
+
+
                         for (int i = 0; i < 4; i++)
                         {
                             if (playerID[i] != pl && playerID[i] != -1)
