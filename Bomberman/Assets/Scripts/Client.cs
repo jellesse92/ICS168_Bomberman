@@ -300,5 +300,11 @@ public class Client : MonoBehaviour {
             Debug.Log(error.ToString());
         }
     }
+
+    public void SetServer(string serverIp, int serverPort = 8888)
+    {
+        address = serverIp;
+        port = serverPort;
+    }
 }
 

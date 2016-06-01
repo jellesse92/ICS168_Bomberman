@@ -5,15 +5,25 @@ using UnityEngine.UI;
 
 public class LoginMenuScript : MonoBehaviour {
 
+    [Serializable]
+    class serverInfo
+    {
+        public string ipAddress;
+        public string portNumber;
+    }
 
 
     public GameObject[] gameSelectButtons;
+    serverInfo[] gameServerInfo;
 
     ApplicationManager appManageScript;
+    Client clientScript;
 
 	// Use this for initialization
 	void Start () {
         appManageScript = GameObject.Find("ApplicationManager").GetComponent<ApplicationManager>();
+        clientScript = GameObject.Find("Network_Controller").GetComponent<Client>();
+        gameServerInfo = new serverInfo[10];
 	}
 
     //Deactivates all b
@@ -43,9 +53,17 @@ public class LoginMenuScript : MonoBehaviour {
                 {
                     gameSelectButtons[i].transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = gameInfo[0];
                     gameSelectButtons[i].SetActive(true);
+                    gameServerInfo[i].ipAddress = gameInfo[1];
+                    gameServerInfo[i].portNumber = gameInfo[2];
                 }
             }
         }
+    }
 
+    public void SetServerInfo(int index)
+    {
+        int p = 8888;
+        int.TryParse(gameServerInfo[index].portNumber, out p);
+        clientScript.SetServer(gameServerInfo[index].ipAddress, p);
     }
 }

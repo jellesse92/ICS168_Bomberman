@@ -73,7 +73,7 @@ public class PanelManager : MonoBehaviour {
 
 
 
-    public void OnPlay()
+    public void OnPlay(int index = 0)
 	{
         if (serverInfo.isHost)
         {
