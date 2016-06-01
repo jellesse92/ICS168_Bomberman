@@ -83,6 +83,9 @@ public class PlayerController : MonoBehaviour {
     void Respawn()
     {
         StartCoroutine("RespawnWait");
+        speed = DEFAULT_SPEED;
+        explosionMultiplier = DEFAULT_EXPLOSION_MULTIPLIER;
+        maxBombsAllowed = DEFAULT_BOMB_AMOUNT;
         transform.position = new Vector2(spawnLocation.transform.position.x, spawnLocation.transform.position.y);
     }
 
