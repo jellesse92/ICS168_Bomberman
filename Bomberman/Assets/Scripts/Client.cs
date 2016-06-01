@@ -248,6 +248,8 @@ public class Client : MonoBehaviour {
         if (msg.Substring(0, msg.Length - 1) == "Player:")
         {
             int.TryParse(msg.Substring(msg.Length - 1), out setPlayer);
+            if (inLobby)
+                GameObject.FindGameObjectWithTag("GameController").GetComponent<LobbyScript>().ActivatePlayer(setPlayer);
             return;
         }
 
