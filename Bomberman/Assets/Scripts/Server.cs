@@ -154,7 +154,7 @@ public class Server : MonoBehaviour {
                         connectionIDs.Add(connectionId);
                         SendToClient(connectionId, "Player:" + pl);
 
-                        GameObject.FindGameObjectWithTag("Lobby").transform.GetChild(0).transform.GetChild(pl).gameObject.SetActive(true);
+                        GameObject.FindGameObjectWithTag("GameController").GetComponent<LobbyScript>().ActivatePlayer(pl);
 
                         for (int i = 0; i < 4; i++)
                         {

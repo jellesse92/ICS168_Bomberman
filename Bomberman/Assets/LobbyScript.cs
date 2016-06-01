@@ -4,6 +4,7 @@ using System.Collections;
 public class LobbyScript : MonoBehaviour {
 
     Server serverScript;
+    public GameObject[] playerImages;
 
     bool isHost = false;
 
@@ -31,5 +32,10 @@ public class LobbyScript : MonoBehaviour {
             serverScript.StartGame();
         }
 
+    }
+
+    public void ActivatePlayer(int index)
+    {
+        playerImages[index].SetActive(true);
     }
 }
