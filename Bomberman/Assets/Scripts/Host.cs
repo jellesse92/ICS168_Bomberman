@@ -43,7 +43,7 @@ public class Host : MonoBehaviour {
             cl.Disconnect();
         }
 
-        Application.LoadLevel(0);
+        Application.LoadLevel(2);
 
     }
 }

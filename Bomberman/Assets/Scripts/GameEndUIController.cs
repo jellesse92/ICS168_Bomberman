@@ -42,8 +42,11 @@ public class GameEndUIController : MonoBehaviour {
 
     public void ReturnToMain()
     {
-        if (!gameObject.GetComponent<_GameController>().isHosting() || gameObject.GetComponent<_GameController>().GetActivePlayers() <= 1)
-            Application.LoadLevel(0);
+		if (!gameObject.GetComponent<_GameController> ().isHosting () || gameObject.GetComponent<_GameController> ().GetActivePlayers () <= 1) {
+			GameObject.Find("Network_Controller").GetComponent<Host> ().disconnect ();
+			Application.LoadLevel (2);
+		}
+		
         else
             GameEndSubText.text = "You're the host. You're not going anywhere that easily.";
     }
