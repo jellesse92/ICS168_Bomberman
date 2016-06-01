@@ -18,7 +18,7 @@ public class _GameController : MonoBehaviour {
 
     //Timer Variables
     public Text timerText;          //Text for timer
-    float timeRemaining = 60.0f;   //Starting time
+    float timeRemaining = 120.0f;   //Starting time
 
     //Networking Variables
     GameObject networkObject;
