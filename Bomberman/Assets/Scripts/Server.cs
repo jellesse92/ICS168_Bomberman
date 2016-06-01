@@ -87,12 +87,12 @@ public class Server : MonoBehaviour {
     public void StartLobby()
     {
         inLobby = true;
-        gcScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<_GameController>();
 
     }
 
     public void StartGame()
     {
+        Time.timeScale = 1.0f;
         gameStarted = true;
         inLobby = false;
         GameObject.FindGameObjectWithTag("SceneManager").transform.GetChild(0).gameObject.SetActive(false);
@@ -237,7 +237,7 @@ public class Server : MonoBehaviour {
 
                     InterpretMessage(msg, connectionId);
 
-                    //Debug.Log("Server: Received Data from " + connectionId.ToString() + "! Message: " + msg);
+                    Debug.Log("Server: Received Data from " + connectionId.ToString() + "! Message: " + msg);
                     Send(msg);
                 }
                 break;
@@ -297,10 +297,10 @@ public class Server : MonoBehaviour {
             do
             {
                 networkEvent = NetworkTransport.Receive(out recHostId, out connectionId, out channelId, buffer, 1024, out dataSize, out error);
-                if (gameStarted)
-                    NetworkSwitchGame(networkEvent, recHostId, connectionId,buffer);
-                else if(inLobby)
+                if (inLobby)
                     NetworkSwitchLobby(networkEvent, recHostId, connectionId, buffer);
+                else if (gameStarted)
+                    NetworkSwitchGame(networkEvent, recHostId, connectionId,buffer);                
                 else
                 {
                     switch (networkEvent)

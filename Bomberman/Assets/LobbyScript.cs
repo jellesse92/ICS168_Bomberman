@@ -9,6 +9,7 @@ public class LobbyScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        Time.timeScale = 0.0f;
         if (GameObject.FindGameObjectWithTag("Network").GetComponent<Host>().isHost)
         {
             isHost = true;

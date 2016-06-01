@@ -54,12 +54,13 @@ public class _GameController : MonoBehaviour {
 
     void Update()
     {
-        RunTimer();
+        //RunTimer();
     }
 
     void FixedUpdate()
     {
-        if(GetActivePlayers() == 1)
+        RunTimer();
+        if (GetActivePlayers() == 1)
         {
             if(controlledPlayer != -1)
             {
