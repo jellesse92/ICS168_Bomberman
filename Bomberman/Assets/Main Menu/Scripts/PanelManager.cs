@@ -75,7 +75,8 @@ public class PanelManager : MonoBehaviour {
 
     public void OnPlay(int index = 0)
 	{
-        if (serverInfo.isHost)
+        loginScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<LoginMenuScript>();
+        if (serverInfo != null && serverInfo.isHost)
         {
             string serverMsg = "4:" + appManageScript.username + ":" + appManageScript.myip + ":" + serverInfo.serverport.ToString();
             string resp = appManageScript.GetServerResponse(serverMsg).Substring(0, 7);

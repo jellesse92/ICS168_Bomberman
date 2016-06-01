@@ -95,6 +95,7 @@ public class Server : MonoBehaviour {
         Time.timeScale = 1.0f;
         gameStarted = true;
         inLobby = false;
+        //appManageScript.GetServerResponse("6:" + address);
         GameObject.FindGameObjectWithTag("SceneManager").transform.GetChild(0).gameObject.SetActive(false);
         GameObject.FindGameObjectWithTag("SceneManager").transform.GetChild(1).gameObject.SetActive(true);
 
