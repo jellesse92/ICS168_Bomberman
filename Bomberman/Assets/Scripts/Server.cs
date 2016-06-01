@@ -206,7 +206,6 @@ public class Server : MonoBehaviour {
         if (initialized)
         {
             NetworkEventType networkEvent = NetworkEventType.DataEvent;
-        //Debug.Log("Initialized == " + initialized);
 
             do
             {

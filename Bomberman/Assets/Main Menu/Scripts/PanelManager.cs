@@ -33,6 +33,7 @@ public class PanelManager : MonoBehaviour {
     const string SALT_VALUE = ":123";
 
     private ApplicationManager appManageScript;
+    private LoginMenuScript loginScript;
     GameObject playPanel;
     private Host serverInfo;
 
@@ -40,6 +41,7 @@ public class PanelManager : MonoBehaviour {
     {
         appManageScript = GameObject.Find("ApplicationManager").GetComponent<ApplicationManager>();
         serverInfo = GameObject.Find("Network_Controller").GetComponent<Host>();
+        loginScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<LoginMenuScript>();
         playPanel = GameObject.FindGameObjectWithTag("PlayButton");
         playPanel.transform.GetChild(0).GetComponent<Image>().material.color = Color.grey;
         playPanel.transform.GetChild(0).GetChild(0).GetComponent<Text>().color = Color.grey;
@@ -98,6 +100,12 @@ public class PanelManager : MonoBehaviour {
 
 		OpenPanel(initiallyOpen);
 	}
+
+    public void OpenConnectGamePanel(Animator anim)
+    {
+        loginScript.FindGames();
+        OpenPanel(anim);
+    }
 
 	public void OpenPanel (Animator anim)
 	{
