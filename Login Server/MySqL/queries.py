@@ -59,9 +59,9 @@ def log_out(username: str):
   
    
 
-def update_stats(user: str, k: int, d: int, w: int, g: int) -> str:
+def update_stats(user: str, k: str, d: str, w: str, g: str) -> str:
    cursor = gameconnection.cursor()
-   userInfo = (str(k), str(d), str(w), str(g), user)
+   userInfo = (k, d, w, g, user)
    statUpdate = ("UPDATE users SET kills = kills + %s, deaths = deaths + %s, wins = wins + %s, games= games + %s WHERE username = %s")
    try:
       cursor.execute(statUpdate, userInfo)
@@ -98,11 +98,16 @@ def get_stats(user: str) -> str:
 #Get Currently available games.
 def get_games()->str:
    cursor = gameconnection.cursor()
-   cursor.execute("SELECT host, ipaddr, port FROM games")
-   rows = cursor.fetchall()
    results = ""
-   for row in rows:
-      results = "{}:{}:{} ".format(row[0], row[1],row[2])
+   try:
+      cursor.execute("SELECT host, ipaddr, port FROM games")
+      rows = cursor.fetchall()
+      if len(rows) <= 0:
+         return "NONE"
+      for row in rows:
+         results += "{}:{}:{} ".format(row[0], row[1],row[2])
+   except:
+      return "NONE"
    cursor.close()
    return results
 
@@ -124,20 +129,26 @@ def host_game(user: str, ip_addy: str, portno: str)->str:
       cursor.close()
       return "SUCCESS"
 
-#Join Game Belonging to host user
-def join_game(user: str, hostuser: str, hostip:str, hostport: str)->str:
+##Join Game Belonging to host user
+def join_game(user: str, hostip:str, hostport: str)->str:
+   print("Join Game Called")
    cursor = gameconnection.cursor()
-   userInfo=(user, hostuser, hostip, hostport)
-   gameInfo = (hostuser, hostip, hostport, "INACTIVE")
+   userInfo=(user, hostip, hostport)
+   gameInfo = (hostip, hostport, "INACTIVE")
    players = ["player2", "player3", "player4"]
-   selectGame = "SELECT * FROM games WHERE host = %s AND ipaddr= %s AND port = %s AND status=%s"
-
-   cursor.execute(selectGame, gameInfo)
-   if cursor.rowcount == 0:
+   selectGame = "SELECT * FROM games WHERE ipaddr= %s AND port = %s AND status=%s"
+   print("Trying To Execute")
+   try:
+      cursor.execute(selectGame, gameInfo)
+   except:
+      print("error Raised.")
+   rows = cursor.fetchall()
+   if len(rows) == 0:
+      print("Fail")
       cursor.close()
-      return "DNE"
+      return 'DNE'
    else:
-      rows = cursor.fetchall()
+      print(rows)
       for row in rows:
          if row[-1] == 3 or row[-2] == 'ACTIVE':
             cursor.close()
@@ -146,8 +157,8 @@ def join_game(user: str, hostuser: str, hostip:str, hostport: str)->str:
             i = 4
             for player in players:
                if row[i] == "EMPTY":
-                  userJoin = (user, hostuser, hostip, hostport)
-                  joinGame = "UPDATE games SET " + player + " = %s, players = players+1 WHERE host=%s AND ipaddr=%s AND port = %s"
+                  userJoin = (user, hostip, hostport)
+                  joinGame = "UPDATE games SET " + player + " = %s, players = players+1 WHERE ipaddr=%s AND port = %s"
 ##                  cursor.execute(joinGame, userJoin)
 ##                  gameconnection.commit()
                   try:
@@ -208,6 +219,7 @@ def destroy_game(ip: str)->str:
       if _changePlayerStatus("ONLINE", results[0][player]) == 0:
          continue
    deleteGame = "DELETE FROM games WHERE ipaddr = %s"
+   deleteStats = "DELETE FROM gamestats WHERE gameip = %s"
    try:
       cursor.execute(deleteGame, (ip,))
       gameconnection.commit()
@@ -216,30 +228,34 @@ def destroy_game(ip: str)->str:
       cursor.close()
       return "FAIL"
    else:
-      cursor.close()
-      return "SUCCESS"
+      try:
+         cursor.execute(deleteStats, (ip,))
+         gameconnection.commit()
+      except:
+         print("Error (Destroy_Game): Failed to Delete Game Stats from Database")
+         cursor.close()
+         return "FAIL"
+      else:
+         return "SUCCESS"
 
 
 #Send game stats to database. Game is active.
-def send_game_stats(ip: str, gamestats: dict)->str:
+def send_game_stats(ip: str, p1: str, p2: str, p3: str, p4: str)->str:
    #gamestats[playernumber] = (score, status)
    cursor = gameconnection.cursor()
-   pnfo = ();
-   for key, value in gamestats.items():
-      pnfo += (str(value[0]), str(value[1]))
-   pnfo += pnfo
-   pnfo = (ip,) + pnfo
-   to_update = ("INSERT INTO gamestats (gameip, p1score, p1status, p2score, p2status, p3score, p3status, p4score, p4status)"
-                "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s) ON DUPLICATE KEY UPDATE p1score = p1score + %s, p1status = %s, "
-                "p2score = p2score + %s, p2status = %s, p3score = p3score + %s, p3status = %s, p4score = p4score + %s, p4status = %s")
-                
+
+   pnfo = (p1, p2, p3, p4)
+   pnfo = (ip,) + pnfo + pnfo;
+   to_update = ("INSERT INTO gamestats (gameip, p1score, p2score, p3score, p4score)"
+                "VALUES (%s, %s, %s, %s, %s) ON DUPLICATE KEY UPDATE p1score = %s, "
+                "p2score = %s, p3score = %s, p4score = %s")
+
    try:
       cursor.execute(to_update, pnfo)
       gameconnection.commit()
    except:
       print("Error (send_game_stats): Failed to update game stats.")
       cursor.close()
-      return "FAIL"
    else:
       cursor.close()
       return "SUCCESS"
@@ -257,7 +273,18 @@ def can_invite(user: str)-> bool:
    else:
       cursor.close()
       return False
-   
+
+def get_users()->str:
+   cursor = gameconnection.cursor()
+   cursor.execute("SELECT username FROM users WHERE status='ONLINE'")
+   rows = cursor.fetchall()
+   results = ""
+   for row in rows:
+      results = "{} ".format(row[0], row[1],row[2])
+   cursor.close()
+   if results == "":
+      results = "NONE"
+   return results
    
 def leave_game(user:str)->str:
    _changePlayerStatus("ONLINE", user)
