@@ -26,6 +26,10 @@ public class Client : MonoBehaviour {
     GameEndUIController guiScript;
     ApplicationManager appScript;
     bool gameStarted = true;
+    bool inLobby = true;
+
+    int setPlayer = -1;
+    List<int> ActivatePlayers;
 
     //Syncing
     float timeToReport;
@@ -174,7 +178,7 @@ public class Client : MonoBehaviour {
 
     void FixedUpdate()
     {
-        if (gameStarted && connectedToServer)
+        if(!inLobby)
         {
             timeToReport = Time.time;
             Send(GetGameData());
@@ -200,12 +204,28 @@ public class Client : MonoBehaviour {
 		Send ("Death:" + killer);
 	}
 
+    void StartGame()
+    {
+        inLobby = false;
+        Time.timeScale = 1.0f;
+        GameObject.FindGameObjectWithTag("SceneManager").transform.GetChild(0).gameObject.SetActive(false);
+        GameObject.FindGameObjectWithTag("SceneManager").transform.GetChild(1).gameObject.SetActive(true);
+        gcScript.SetPlayer(setPlayer);
+        foreach(int p in ActivatePlayers)
+            gcScript.ActivatePlayer(p);
+    }
+    
     void InterpretMessage(string msg)
     {
     
         int player = -1;
         if (msg.Length == 0)
             return;
+
+        if(msg == "START")
+        {
+            StartGame();
+        }
 
         if(msg == "GAME_END")
         {
@@ -227,8 +247,7 @@ public class Client : MonoBehaviour {
 
         if (msg.Substring(0, msg.Length - 1) == "Player:")
         {
-            int.TryParse(msg.Substring(msg.Length - 1), out player);
-            gcScript.SetPlayer(player);
+            int.TryParse(msg.Substring(msg.Length - 1), out setPlayer);
             return;
         }
 
@@ -236,14 +255,13 @@ public class Client : MonoBehaviour {
         {
             int newPlayer = 0;
             int.TryParse(msg.Substring(msg.Length - 1), out newPlayer);
-            gcScript.ActivatePlayer(newPlayer);
+            ActivatePlayers.Add(newPlayer);
+            
         }
         if(msg.Substring(0, msg.Length - 1) == "Deactivate:")
         {
             int newPlayer = 0;
             int.TryParse(msg.Substring(msg.Length - 1), out newPlayer);
-            Debug.Log("Player: " + player);
-            Debug.Log(msg);
             gcScript.DeactivatePlayer(newPlayer);
         }
         int.TryParse(msg.Substring(0, 1), out player);
@@ -265,7 +283,6 @@ public class Client : MonoBehaviour {
 			string[] temp = msg.Substring(7).Split(new[] { ':', ' ' }, StringSplitOptions.RemoveEmptyEntries);
 			for(int i = 0; i < gcScript.players.Length; i++){
 				int.TryParse (temp[i], out gcScript.players[i].GetComponent<PlayerController>().score);
-                Debug.Log("PLAYER: " + (i + 1) + "TEMP: " + temp[i] + "= Score: " + gcScript.players[i].GetComponent<PlayerController>().score);
                 gcScript.players[i].GetComponent<PlayerController>().UpdateScoreDisplay();
 
             }

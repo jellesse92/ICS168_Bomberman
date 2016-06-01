@@ -25,6 +25,8 @@ public class Server : MonoBehaviour {
 
     //In Game Specific Server Parameters
     public bool gameStarted = false;
+    public bool inLobby = false;
+
     List<int> playersAvailable = new List<int>(new int[] { 1, 2, 3 });
     List<int> playerID = new List<int>(new int[] { 0,-1,-1,-1 });
     float[] lastTimeRecorded = { -1f, -1f, -1f, -1f };
@@ -81,6 +83,28 @@ public class Server : MonoBehaviour {
         }
 
     }
+    
+    public void StartLobby()
+    {
+        inLobby = true;
+
+    }
+
+    public void StartGame()
+    {
+        Time.timeScale = 1.0f;
+        gameStarted = true;
+        inLobby = false;
+        GameObject.FindGameObjectWithTag("SceneManager").transform.GetChild(0).gameObject.SetActive(false);
+        GameObject.FindGameObjectWithTag("SceneManager").transform.GetChild(1).gameObject.SetActive(true);
+
+        gcScript.SetPlayer(0);
+        gcScript.AssignPickUps();
+        Send("START");
+        Send("Time:" + gcScript.GetTimeRemaining());
+        Send("Pick:" + gcScript.GetPickUps());
+    }
+
     void SendGameInformation()
     {
         //something to send game information to online server.
@@ -108,6 +132,68 @@ public class Server : MonoBehaviour {
         //if (error > 0) { Debug.Log("Error (" + ((NetworkError)error).ToString() + ") When Sending Message: " + message); }
     }
 
+    void NetworkSwitchLobby(NetworkEventType networkEvent, int recHostId, int connectionId, byte[] buffer)
+    {
+        switch (networkEvent)
+        {
+            case NetworkEventType.Nothing:
+                break;
+            case NetworkEventType.ConnectEvent:
+                if (recHostId == _serverID)
+                {
+                    //Adds player to game
+                    if (playersAvailable.Count > 0)
+                    {
+                        int pl = playersAvailable[0];
+                        Send("Active:" + pl);
+                        gcScript.ActivatePlayer(pl);
+                        gcScript.PlayerJoined();
+                        playersAvailable.Remove(pl);
+                        playerID[pl] = connectionId;
+                        connectionIDs.Add(connectionId);
+                        SendToClient(connectionId, "Player:" + pl);
+
+                        for (int i = 0; i < 4; i++)
+                        {
+                            if (playerID[i] != pl && playerID[i] != -1)
+                                SendToClient(connectionId, "Active:" + playerID[i]);
+                        }
+                        Debug.Log("Server: Player " + pl + " connected!");
+                    }
+
+                }
+
+                break;
+
+            case NetworkEventType.DataEvent:
+                if (recHostId == _serverID)
+                {
+                    // deserialize data
+                    Stream stream = new MemoryStream(buffer);
+                    BinaryFormatter bf = new BinaryFormatter();
+                    string msg = bf.Deserialize(stream).ToString();
+
+                    InterpretMessage(msg, connectionId);
+
+                    //Debug.Log("Server: Received Data from " + connectionId.ToString() + "! Message: " + msg);
+                    Send(msg);
+                }
+                break;
+
+            case NetworkEventType.DisconnectEvent:
+
+                Debug.Log("Server: Received disconnect from " + connectionId.ToString());
+                int p = playerID.IndexOf(connectionId);
+                connectionIDs.Remove(connectionId);
+                playersAvailable.Add(p);
+                gcScript.DeactivatePlayer(p);
+                playerID[p] = -1;
+                Send("Deactivate:" + p);
+                Debug.Log("Deactivating Player : " + p);
+                break;
+        }
+    }
+
     //Switch statement to go through if the game has started
     void NetworkSwitchGame(NetworkEventType networkEvent, int recHostId, int connectionId, byte[] buffer)
     {
@@ -129,15 +215,12 @@ public class Server : MonoBehaviour {
                         playerID[pl] = connectionId;
                         connectionIDs.Add(connectionId);
                         SendToClient(connectionId, "Player:" + pl);
-                        SendToClient(connectionId, "Time:" + gcScript.GetTimeRemaining());
-                        SendToClient(connectionId, "Pick:" + gcScript.GetPickUps());
                         
                         for (int i = 0; i < 4; i++)
                         {
                             if (playerID[i] != pl && playerID[i] != -1)
                                 SendToClient(connectionId, "Active:" + playerID[i]);
                         }
-                        Debug.Log("Server: Player " + pl + " connected!");
                     }
                     
                 }
@@ -154,7 +237,7 @@ public class Server : MonoBehaviour {
 
                     InterpretMessage(msg, connectionId);
 
-                    //Debug.Log("Server: Received Data from " + connectionId.ToString() + "! Message: " + msg);
+                    Debug.Log("Server: Received Data from " + connectionId.ToString() + "! Message: " + msg);
                     Send(msg);
                 }
                 break;
@@ -193,6 +276,10 @@ public class Server : MonoBehaviour {
             Send(CurrentGameState());
 
         }
+        else if(initialized && inLobby)
+        {
+
+        }
     }
 
     // Update is called once per frame
@@ -210,8 +297,10 @@ public class Server : MonoBehaviour {
             do
             {
                 networkEvent = NetworkTransport.Receive(out recHostId, out connectionId, out channelId, buffer, 1024, out dataSize, out error);
-                if (gameStarted)
-                    NetworkSwitchGame(networkEvent, recHostId, connectionId,buffer);
+                if (inLobby)
+                    NetworkSwitchLobby(networkEvent, recHostId, connectionId, buffer);
+                else if (gameStarted)
+                    NetworkSwitchGame(networkEvent, recHostId, connectionId,buffer);                
                 else
                 {
                     switch (networkEvent)
