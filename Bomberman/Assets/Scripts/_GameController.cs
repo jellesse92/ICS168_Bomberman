@@ -225,6 +225,7 @@ public class _GameController : MonoBehaviour {
             {
                 int random = (int)Random.Range(0, RANDOM_PICK_RANGE);
                 child.GetComponent<BlockScript>().SetTag(random);
+                Debug.Log("TAG!" + random);
                 pickAssignment += random.ToString();
             }
         }

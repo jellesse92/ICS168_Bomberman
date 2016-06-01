@@ -256,8 +256,11 @@ public class Client : MonoBehaviour {
             int newPlayer = 0;
             int.TryParse(msg.Substring(msg.Length - 1), out newPlayer);
             ActivatePlayers.Add(newPlayer);
+            if(inLobby)
+                GameObject.FindGameObjectWithTag("Lobby").transform.GetChild(0).transform.GetChild(newPlayer).gameObject.SetActive(true);
+
         }
-        if(msg.Substring(0, msg.Length - 1) == "Deactivate:")
+        if (msg.Substring(0, msg.Length - 1) == "Deactivate:")
         {
             int newPlayer = 0;
             int.TryParse(msg.Substring(msg.Length - 1), out newPlayer);
