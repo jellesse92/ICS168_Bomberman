@@ -15,11 +15,6 @@ public class LoginMenuScript : MonoBehaviour {
 	void Start () {
         appManageScript = GameObject.Find("ApplicationManager").GetComponent<ApplicationManager>();
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 
     //Deactivates all b
     public void FindGames()
@@ -33,8 +28,6 @@ public class LoginMenuScript : MonoBehaviour {
 
         if(serverRes.Substring(0,4) != "NONE")
         {
-
-            Debug.Log("WHY?!!" + serverRes);
             string[] gamesAvailable;
 
             gamesAvailable = serverRes.Trim().Split(new[] { ' '}, StringSplitOptions.RemoveEmptyEntries);
@@ -46,8 +39,11 @@ public class LoginMenuScript : MonoBehaviour {
 
                 string[] gameInfo = gamesAvailable[i].Split(new[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
 
-                gameSelectButtons[i].transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = gameInfo[0];
-                gameSelectButtons[i].SetActive(true);
+                if(gameInfo.Length > 1)
+                {
+                    gameSelectButtons[i].transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = gameInfo[0];
+                    gameSelectButtons[i].SetActive(true);
+                }
             }
         }
 
