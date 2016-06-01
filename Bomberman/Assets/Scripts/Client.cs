@@ -281,6 +281,9 @@ public class Client : MonoBehaviour {
 
                 float x, y;
                 string[] pos = posData.Substring(2).Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+                if (pos.Length < 2)
+                    return;
                 float.TryParse(pos[0], out x);
                 float.TryParse(pos[1], out y);
                 if(player != gcScript.ControlledPlayer())

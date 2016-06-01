@@ -30,6 +30,8 @@ public class LoginMenuScript : MonoBehaviour {
 
         serverRes = appManageScript.GetServerResponse("5:");
 
+        Debug.Log("Getting Server resp: " + serverRes);
+
         if(serverRes.Substring(0,4) != "NONE")
         {
             string[] gamesAvailable;
