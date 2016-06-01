@@ -29,7 +29,7 @@ public class Client : MonoBehaviour {
     bool inLobby = true;
 
     int setPlayer = -1;
-    List<int> ActivatePlayers;
+    List<int> ActivatePlayers = new List<int>();
 
     //Syncing
     float timeToReport;
@@ -256,7 +256,6 @@ public class Client : MonoBehaviour {
             int newPlayer = 0;
             int.TryParse(msg.Substring(msg.Length - 1), out newPlayer);
             ActivatePlayers.Add(newPlayer);
-            Debug.Log("PLAYER JOiNED: " + newPlayer);
         }
         if(msg.Substring(0, msg.Length - 1) == "Deactivate:")
         {
